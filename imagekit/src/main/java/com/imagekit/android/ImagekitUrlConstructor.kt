@@ -305,6 +305,16 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
+    /**
+     * Method used to provide more granular control over the positioning of the overlay image on the input image.
+     * The top left corner of the input image is considered as (0,0) and the bottom right corner is considered as (w, h)
+     * where w is the width and h is the height of the input image.
+     * @param overlayPosX Possible values include zero and positive integers.
+     * @return the current ImagekitUrlConstructor object.
+     * @throws ImagekitException if not a single overlay is specified
+     * or the overlay focus has already been applied
+     * or overlayPosX is less than 0.
+     */
     fun overlayPosX(overlayPosX: Int): ImagekitUrlConstructor {
         if (!transformationMap.containsKey(TranformationMapping.overlayImage)
             || !transformationMap.containsKey(TranformationMapping.overlayText)
@@ -321,6 +331,16 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
+    /**
+     * Method used to provide more granular control over the positioning of the overlay image on the input image.
+     * The top left corner of the input image is considered as (0,0) and the bottom right corner is considered as (w, h)
+     * where w is the width and h is the height of the input image.
+     * @param overlayPosY Possible values include zero and positive integers.
+     * @return the current ImagekitUrlConstructor object.
+     * @throws ImagekitException if not a single overlay is specified
+     * or the overlay focus has already been applied
+     * or overlayPosY is less than 0.
+     */
     fun overlayPosY(overlayPosY: Int): ImagekitUrlConstructor {
         if (!transformationMap.containsKey(TranformationMapping.overlayImage)
             || !transformationMap.containsKey(TranformationMapping.overlayText)
@@ -337,6 +357,17 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
+    /**
+     * Method used to provide more granular control over the positioning of the overlay image on the input image.
+     * Negative values are supported with a leading capital N in front of the value provided. The value provided
+     * is subtracted from the original dimension of the image & positioned accordingly.
+     * @param overlayNegX Possible values include integers less than zero.
+     * @return the current ImagekitUrlConstructor object.
+     * @throws ImagekitException if not a single overlay is specified
+     * or the overlay focus has already been applied
+     * or overlayPosY is not a negative integer.
+     * @see overlayPosX
+     */
     fun overlayNegX(overlayNegX: Int): ImagekitUrlConstructor {
         if (!transformationMap.containsKey(TranformationMapping.overlayImage)
             || !transformationMap.containsKey(TranformationMapping.overlayText)
@@ -354,6 +385,17 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
+    /**
+     * Method used to provide more granular control over the positioning of the overlay image on the input image.
+     * Negative values are supported with a leading capital N in front of the value provided. The value provided
+     * is subtracted from the original dimension of the image & positioned accordingly.
+     * @param overlayNegY Possible values include integers less than zero.
+     * @return the current ImagekitUrlConstructor object.
+     * @throws ImagekitException if not a single overlay is specified
+     * or the overlay focus has already been applied
+     * or overlayPosY is not a negative integer.
+     * @see overlayPosY
+     */
     fun overlayNegY(overlayNegY: Int): ImagekitUrlConstructor {
         if (!transformationMap.containsKey(TranformationMapping.overlayImage)
             || !transformationMap.containsKey(TranformationMapping.overlayText)
@@ -371,18 +413,33 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
+    /**
+     * Method used to specify the width of the overlaid image.
+     * @param overlayWidth
+     * @return the current ImagekitUrlConstructor object.
+     */
     fun overlayWidth(overlayWidth: Float): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.overlayWidth] = overlayWidth
         transformationList.add(String.format("%s-%f", TranformationMapping.overlayWidth, overlayWidth))
         return this
     }
 
+    /**
+     * Method used to specify the height of the overlaid image.
+     * @param overlayHeight
+     * @return the current ImagekitUrlConstructor object.
+     */
     fun overlayHeight(overlayHeight: Float): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.overlayHeight] = overlayHeight
         transformationList.add(String.format("%s-%f", TranformationMapping.overlayHeight, overlayHeight))
         return this
     }
 
+    /**
+     * Method used to overlay text over an image. Our current support is limited to alphanumberic & special characters _ & - only.
+     * @param overlayText
+     * @return the current ImagekitUrlConstructor object.
+     */
     fun overlayText(overlayText: String): ImagekitUrlConstructor {
         val regex = Regex("[\\w\\s-]+")
         if (!regex.matches(overlayText))
@@ -393,6 +450,11 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
+    /**
+     * Method used to specify the color of the overlaid text on the image.
+     * @param overlayTextColor Possible value is a valid valid RGB Hex Code
+     * @return the current ImagekitUrlConstructor object.
+     */
     fun overlayTextColor(overlayTextColor: String): ImagekitUrlConstructor {
         if (!transformationMap.containsKey(TranformationMapping.overlayText))
             throw ImagekitException("fwdjgnwr") // TODO exception message
@@ -410,7 +472,14 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
-    fun overlayTextFont(overlayTextFont: FocusType): ImagekitUrlConstructor {
+    /**
+     * Method used to specify the font family for the overlaid text.
+     * @param overlayTextFont
+     * @return the current ImagekitUrlConstructor object.
+     * @see <a href="https://docs.imagekit.io/#server-side-image-upload">Supported fonts</a>.
+     * @see OverlayTextFont
+     */
+    fun overlayTextFont(overlayTextFont: OverlayTextFont): ImagekitUrlConstructor {
         if (!transformationMap.containsKey(TranformationMapping.overlayText))
             throw ImagekitException("fwdjgnwr") // TODO exception message
 
@@ -419,6 +488,11 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
+    /**
+     * Method used to specify the size of the overlaid text.
+     * @param overlayTextSize Possible values include any integer. Default value - 14px
+     * @return the current ImagekitUrlConstructor object.
+     */
     fun overlayTextSize(overlayTextSize: Int): ImagekitUrlConstructor {
         if (!transformationMap.containsKey(TranformationMapping.overlayText))
             throw ImagekitException("fwdjgnwr") // TODO exception message
@@ -428,6 +502,15 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
+    /**
+     * Method used to specify the typography of the font family used for the overlaid text. Possible values include bold b and italics i.
+     * Note Bold & Italics are not supported for all provided fonts.
+     * @param overlayTextTypography
+     * @return the current ImagekitUrlConstructor object.
+     * @throws ImagekitException if overlay text has not been specified
+     * @see <a href="https://docs.imagekit.io/#server-side-image-upload">Supported fonts</a>.
+     * @see OverlayTextTypography
+     */
     fun overlayTextTypography(overlayTextTypography: OverlayTextTypography): ImagekitUrlConstructor {
         if (!transformationMap.containsKey(TranformationMapping.overlayText))
             throw ImagekitException("fwdjgnwr") // TODO exception message
@@ -443,6 +526,12 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
+    /**
+     * Method used to specify the colour of background canvas to be overlaid. Possible values include a valid RGB Hex code.
+     * @param overlayBackgroundColor
+     * @return the current ImagekitUrlConstructor object.
+     * @throws ImagekitException if color is not a valid RGB Hex code.
+     */
     fun overlayBackgroundColor(overlayBackgroundColor: String): ImagekitUrlConstructor {
         if (overlayBackgroundColor.length != 6 || !Pattern.matches("[A-Fa-f0-9]+", overlayBackgroundColor))
             throw ImagekitException("fwdjgnwr") // TODO exception message
@@ -458,6 +547,13 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
+    /**
+     * Method used to specify the transparency level for the overlaid image.
+     * Note Overlay transparency is currently supported for overlay texts & backgrounds only.
+     * @param overlayTransparency Possible values include integer from 1 to 9.
+     * @return the current ImagekitUrlConstructor object.
+     * @throws ImagekitException if neither an overlay text nor background is specified
+     */
     fun overlayTransparency(overlayTransparency: Int): ImagekitUrlConstructor {
         if (!transformationMap.containsKey(TranformationMapping.overlayText)
             || !transformationMap.containsKey(TranformationMapping.overlayBackground)
@@ -471,25 +567,56 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
+    /**
+     * Method used to specify if the output image should contain the color profile that is initially available
+     * from the original image. It is recommended to remove the color profile before serving the image on web and apps.
+     * However, in cases where you feel that the image looks faded or washed-out after using ImageKit and want to preserve
+     * the colors in your image, then you should set this option to true. Possible values include true and false.
+     * @param flag Default value - false
+     * @return the current ImagekitUrlConstructor object.
+     */
     fun includeColorProfile(flag: Boolean): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.colorProfile] = flag
         transformationList.add(String.format("%s-%b", TranformationMapping.colorProfile, flag))
         return this
     }
 
+    /**
+     * Method used to specify if the output image should contain all the metadata that is initially available from
+     * the original image. Enabling this is not recommended because this metadata is not relevant for rendering on the
+     * web and mobile apps. The only reason where you should enable the metadata option is when you have knowingly wanted
+     * the additional data like camera information, lens information and other image profiles attached to your image.
+     * Possible values include true and false.
+     * @param flag Default value - false
+     * @return the current ImagekitUrlConstructor object.
+     */
     fun includeImageMetadata(flag: Boolean): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.imageMetadata] = flag
         transformationList.add(String.format("%s-%b", TranformationMapping.imageMetadata, flag))
         return this
     }
 
-
+    /**
+     * Method used to specify the degrees by which the output image has to be rotated or specifies the use of
+     * EXIF Orientation tag for the rotation of the image using auto.
+     * @param rotation Possible values include 0, 90, 180, 270, 360 and auto.
+     * Default value - center
+     * @see Rotation
+     * @return the current ImagekitUrlConstructor object.
+     */
     fun rotate(rotation: Rotation): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.rotate] = rotation
         transformationList.add(String.format("%s-%s", TranformationMapping.rotate, rotation.value))
         return this
     }
 
+    /**
+     * Method used to specify the radius to be used to get a rounded corner image.
+     * This option is applied after resizing of the image, if any.
+     * @param radius Possible values include positive integer.
+     * @return the current ImagekitUrlConstructor object.
+     * @throws ImagekitException if radius has already been specified
+     */
     fun radius(radius: Int): ImagekitUrlConstructor {
         if (transformationMap.containsKey(TranformationMapping.radius))
             throw ImagekitException("fwdjgnwr") // TODO exception message
@@ -499,6 +626,12 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
+    /**
+     * Method used to get a perfectly rounded image.
+     * This option is applied after resizing of the image, if any.
+     * @return the current ImagekitUrlConstructor object.
+     * @throws ImagekitException if radius has already been specified
+     */
     fun round(): ImagekitUrlConstructor {
         if (transformationMap.containsKey(TranformationMapping.radius))
             throw ImagekitException("fwdjgnwr") // TODO exception message
@@ -508,6 +641,12 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
+    /**
+     * Method used to specify the background color as RGB hex code (e.g. FF0000) to be used for the image.
+     * @param backgroundHexColor Default value - Black 000000
+     * @return the current ImagekitUrlConstructor object.
+     * @throws ImagekitException if color is not a valid RGB Hex code.
+     */
     fun backgroundHexColor(backgroundHexColor: String): ImagekitUrlConstructor {
         if (backgroundHexColor.length != 6 || !Pattern.matches("[A-Fa-f0-9]+", backgroundHexColor))
             throw ImagekitException("fwdjgnwr") // TODO exception message
@@ -523,6 +662,15 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
+    /**
+     * Method used to specify the background color as an RGBA code (e.g. FFAABB50) to be used for the image.
+     * @param backgroundRGBAColor If you specify an 8-character background, the last two characters should be numbers from
+     * 00 to 99 which indicate the opacity level of the background. 00 corresponds to an opacity of 0.00,
+     * 01 corresponds to an opacity of 0.01 and so on.
+     * Default value - Black 000000
+     * @return the current ImagekitUrlConstructor object.
+     * @throws ImagekitException if color is not a valid RGBA code.
+     */
     fun backgroundRGBAColor(backgroundRGBAColor: String): ImagekitUrlConstructor {
         if (backgroundRGBAColor.length != 8 || !Pattern.matches("[A-Fa-f0-9]{6}[0-9]{2}+", backgroundRGBAColor))
             throw ImagekitException("fwdjgnwr") // TODO exception message
@@ -538,6 +686,15 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
+    /**
+     * Method used to specify the width and color of the border that is added around the image.
+     * The width is a positive integer that specifies the border width in pixels.
+     * The border color is specified as a standard RGB hex code e.g b-<width>_<color>
+     * @param borderWidth width of the border
+     * @param borderColor color of the border as RGB hex code
+     * @return the current ImagekitUrlConstructor object.
+     * @throws ImagekitException if color is not a valid RGB hex code.
+     */
     fun border(borderWidth: Int, borderColor: String): ImagekitUrlConstructor {
         if (borderColor.length != 6 || !Pattern.matches("[A-Fa-f0-9]+", borderColor))
             throw ImagekitException("fwdjgnwr") // TODO exception message
@@ -548,6 +705,13 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
+    /**
+     * Method used to automatically enhance the contrast of the image by using the full range of intensity values
+     * that a particular image format allows. This basically means that the lighter portions of the image would become
+     * even lighter and the darker portions of the image would become even brighter, thereby enhancing the contrast.
+     * @param flag
+     * @return the current ImagekitUrlConstructor object.
+     */
     fun stretchContrast(flag: Boolean): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.contrastStretch] = flag
 
@@ -557,12 +721,31 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
+    /**
+     * Method sharpens the input image. It is useful to highlight the edges and finer details in the image.
+     * If just e-sharpen is used, then a default sharpening is performed on the image. This behavior can be controlled
+     * by specifying a number that controls the extent of sharpening performed - higher the number,
+     * more the sharpening
+     * @param value
+     * @return the current ImagekitUrlConstructor object.
+     */
     fun sharpen(value: Int = 0): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.sharpen] = value
         transformationList.add(String.format("%s-%d", TranformationMapping.sharpen, value))
         return this
     }
 
+    /**
+     * Unsharp masking (USM) is an image sharpening technique.
+     * Method allows you to apply and control unsharp mask on your images. The amount of sharpening can be controlled
+     * by varying the 4 parameters - radius, sigma, amount and threshold. This results in perceptually better images
+     * compared to just e-sharpen.
+     * @param radius Possible values include positive floating point values.
+     * @param sigma Possible values include positive floating point values.
+     * @param amount Possible values include positive floating point values.
+     * @param threshold Possible values include positive floating point values.
+     * @return the current ImagekitUrlConstructor object.
+     */
     fun applyUnsharpMask(radius: Float, sigma: Float, amount: Float, threshold: Float): ImagekitUrlConstructor {
         val s = String.format("%s-%f-%f-%f-%f", TranformationMapping.unsharpMask, radius, sigma, amount, threshold)
         transformationMap[TranformationMapping.unsharpMask] = s
@@ -570,6 +753,12 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
+    /**
+     * Some transformations are dependent on the sequence in which they are carried out.
+     * Method used to add sequence dependent steps in a transform chain to obtain predictable results.
+     * @see <a href="https://docs.imagekit.io/#chained-transformations">Chained Transformations</a>.
+     * @return the current ImagekitUrlConstructor object.
+     */
     fun addTransformationStep(): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.transformationStep] = ":"
         transformationList.add(":")
@@ -577,6 +766,10 @@ class ImagekitUrlConstructor constructor(private val endpoint: String, private v
         return this
     }
 
+    /**
+     * Used to create the url using the transformations specified before invoking this method.
+     * @return the Url used to fetch an image after applying the specified transformations.
+     */
     fun create(): String {
         var url = endpoint
 
