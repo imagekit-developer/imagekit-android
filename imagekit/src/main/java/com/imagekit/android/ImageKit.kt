@@ -46,7 +46,7 @@ class ImageKit private constructor(context: Context, clientPublicKey: String, im
 
         fun getInstance(): ImageKit {
             return if (imageKit == null) {
-                throw IllegalStateException("Must Initialize CabFare before using getInstance()")
+                throw IllegalStateException("Must Initialize ImageKit before using getInstance()")
             } else {
                 imageKit!!
             }

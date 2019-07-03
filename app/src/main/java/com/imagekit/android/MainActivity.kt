@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), ImageKitCallback {
 //            , this
 //        )
 
-        val imagePath = ImagekitUrlConstructor("https://ik.imagekit.io/bowstring", "icLauncher.png")
+        val imagePath = ImagekitUrlConstructor(this, "https://ik.imagekit.io/bowstring", "icLauncher.png")
             .width(600f)
             .aspectRatio(4,3)
             .create()
