@@ -1,0 +1,35 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>ImageKit.uploadFile - imagekit</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">imagekit</a>&nbsp;/&nbsp;<a href="../index.html">com.imagekit.android</a>&nbsp;/&nbsp;<a href="index.html">ImageKit</a>&nbsp;/&nbsp;<a href="./upload-file.html">uploadFile</a><br/>
+<br/>
+<h1>uploadFile</h1>
+<a name="com.imagekit.android.ImageKit$uploadFile(java.io.File, kotlin.String, kotlin.String, kotlin.Long, kotlin.Boolean, kotlin.Array((kotlin.String)), kotlin.String, com.imagekit.android.ImageKitCallback)"></a>
+<code><span class="keyword">fun </span><span class="identifier">uploadFile</span><span class="symbol">(</span><span class="identifier" id="com.imagekit.android.ImageKit$uploadFile(java.io.File, kotlin.String, kotlin.String, kotlin.Long, kotlin.Boolean, kotlin.Array((kotlin.String)), kotlin.String, com.imagekit.android.ImageKitCallback)/file">file</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/6/docs/api/java/io/File.html"><span class="identifier">File</span></a><span class="symbol">, </span><span class="identifier" id="com.imagekit.android.ImageKit$uploadFile(java.io.File, kotlin.String, kotlin.String, kotlin.Long, kotlin.Boolean, kotlin.Array((kotlin.String)), kotlin.String, com.imagekit.android.ImageKitCallback)/fileName">fileName</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.imagekit.android.ImageKit$uploadFile(java.io.File, kotlin.String, kotlin.String, kotlin.Long, kotlin.Boolean, kotlin.Array((kotlin.String)), kotlin.String, com.imagekit.android.ImageKitCallback)/signature">signature</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.imagekit.android.ImageKit$uploadFile(java.io.File, kotlin.String, kotlin.String, kotlin.Long, kotlin.Boolean, kotlin.Array((kotlin.String)), kotlin.String, com.imagekit.android.ImageKitCallback)/timestamp">timestamp</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="com.imagekit.android.ImageKit$uploadFile(java.io.File, kotlin.String, kotlin.String, kotlin.Long, kotlin.Boolean, kotlin.Array((kotlin.String)), kotlin.String, com.imagekit.android.ImageKitCallback)/useUniqueFilename">useUniqueFilename</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;true<span class="symbol">, </span><span class="identifier" id="com.imagekit.android.ImageKit$uploadFile(java.io.File, kotlin.String, kotlin.String, kotlin.Long, kotlin.Boolean, kotlin.Array((kotlin.String)), kotlin.String, com.imagekit.android.ImageKitCallback)/tags">tags</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span class="identifier">Array</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.imagekit.android.ImageKit$uploadFile(java.io.File, kotlin.String, kotlin.String, kotlin.Long, kotlin.Boolean, kotlin.Array((kotlin.String)), kotlin.String, com.imagekit.android.ImageKitCallback)/folder">folder</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.imagekit.android.ImageKit$uploadFile(java.io.File, kotlin.String, kotlin.String, kotlin.Long, kotlin.Boolean, kotlin.Array((kotlin.String)), kotlin.String, com.imagekit.android.ImageKitCallback)/imageKitCallback">imageKitCallback</span><span class="symbol">:</span>&nbsp;<a href="../-image-kit-callback/index.html"><span class="identifier">ImageKitCallback</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Method to upload an image to ImageKit.</p>
+<h3>Parameters</h3>
+<p><a name="file"></a>
+<code>file</code> - The file that is to be uploaded. Supported formats: PDF, JS, CSS and TXT</p>
+<p><a name="fileName"></a>
+<code>fileName</code> - The name with which the file has to be uploaded</p>
+<p><a name="signature"></a>
+<code>signature</code> - HMAC-SHA1 signature generated for the file upload.
+See https://docs.imagekit.io/#server-side-image-upload
+for more information. * @param timestamp UTC timestamp in seconds. The request will be valid for 30 minutes from this timestamp.</p>
+<p><a name="useUniqueFilename"></a>
+<code>useUniqueFilename</code> - “true” or “false”. If set to true, ImageKit will add a unique code to the filename parameter
+to get a unique filename. If false, the image is uploaded with the filename parameter as name. If an image exists
+with the same name, this new image will override it. Default is “true”</p>
+<p><a name="tags"></a>
+<code>tags</code> - Array of tags e.g tag1,tag2,tag3. The maximum length of all characters should not exceed 500.
+% is not allowed. If this field is not specified and the file is overwritten then tags will be removed.</p>
+<p><a name="folder"></a>
+<code>folder</code> - The folder path (eg- /images/folder/) in which the image has to be uploaded. Default is “/”</p>
+<p><a name="imageKitCallback"></a>
+<code>imageKitCallback</code> - Callback to communicate the result of the upload operation</p>
+</BODY>
+</HTML>
