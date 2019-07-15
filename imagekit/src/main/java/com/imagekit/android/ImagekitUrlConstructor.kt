@@ -690,7 +690,7 @@ class ImagekitUrlConstructor constructor(private val context: Context, private v
     /**
      * Method used to specify the width and color of the border that is added around the image.
      * The width is a positive integer that specifies the border width in pixels.
-     * The border color is specified as a standard RGB hex code e.g b-<width>_<color>
+     * The border color is specified as a standard RGB hex code e.g b-{width}_{color}
      * @param borderWidth width of the border
      * @param borderColor color of the border as RGB hex code
      * @return the current ImagekitUrlConstructor object.
