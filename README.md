@@ -32,7 +32,7 @@ ImageKit.init(applicationContext, <CLIENT_PUBLIC_KEY>, <IMAGEKIT_ID>)
 
 ### Image Upload
 
-The following example uploads a bitmap or a file using the given filename, a list of tags to associate with the uploaded image and an image upload callback:
+The following example uploads a bitmap or an image file using the given filename, a list of tags to associate with the uploaded image and an image upload callback:
 ``` kotlin
         val filename = "icLauncher.png"
         val timestamp = System.currentTimeMillis()
