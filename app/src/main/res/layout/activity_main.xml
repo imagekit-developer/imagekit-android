@@ -33,6 +33,7 @@
         android:id="@+id/btUploadFile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_marginTop="16dp"
         android:text="Upload File"
         app:layout_constraintEnd_toEndOf="parent"

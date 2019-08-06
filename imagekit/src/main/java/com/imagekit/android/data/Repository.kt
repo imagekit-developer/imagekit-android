@@ -21,8 +21,6 @@ import javax.inject.Inject
 
 class Repository @Inject constructor(private val context: Context, private val sharedPrefUtil: SharedPrefUtil) {
 
-    private val uploadUrl: String = "https://upload.imagekit.io/rest/api/image/v2/${sharedPrefUtil.getImageKitId()}"
-
     // Takes Bitmap
     @SuppressLint("CheckResult")
     fun uploadImage(
@@ -35,6 +33,8 @@ class Repository @Inject constructor(private val context: Context, private val s
         image: Bitmap,
         imageKitCallback: ImageKitCallback
     ) {
+        val uploadUrl = "https://upload.imagekit.io/rest/api/image/v2/${sharedPrefUtil.getImageKitId()}"
+
         var commaSeparatedTags: String? = null
         if (tags != null)
             commaSeparatedTags = tags.joinToString { "\'$it\'" }
@@ -75,6 +75,8 @@ class Repository @Inject constructor(private val context: Context, private val s
         image: File,
         imageKitCallback: ImageKitCallback
     ) {
+        val uploadUrl = "https://upload.imagekit.io/rest/api/image/v2/${sharedPrefUtil.getImageKitId()}"
+
         var commaSeparatedTags: String? = null
         if (tags != null)
             commaSeparatedTags = tags.joinToString { "\'$it\'" }
@@ -114,6 +116,8 @@ class Repository @Inject constructor(private val context: Context, private val s
         file: File,
         imageKitCallback: ImageKitCallback
     ) {
+        val uploadUrl = "https://upload.imagekit.io/rest/api/image/v2/${sharedPrefUtil.getImageKitId()}"
+
         var commaSeparatedTags: String? = null
         if (tags != null)
             commaSeparatedTags = tags.joinToString { "\'$it\'" }

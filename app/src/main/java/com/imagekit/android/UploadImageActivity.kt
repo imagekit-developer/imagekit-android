@@ -1,6 +1,7 @@
 package com.imagekit.android
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -17,6 +18,9 @@ import java.io.FileNotFoundException
 
 
 class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickListener {
+    private var uploadResultDialog: AlertDialog? = null
+    private var loadingDialog: AlertDialog? = null
+
     private var bitmap: Bitmap? = null
 
     override fun onClick(v: View?) {
@@ -44,6 +48,11 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
 
     private fun uploadImage() {
         bitmap?.let {
+            loadingDialog = AlertDialog.Builder(this)
+                    .setMessage("Uploading image...")
+                    .setCancelable(false)
+                    .show()
+
             val filename = "icLauncher.png"
             val timestamp = System.currentTimeMillis()
             ImageKit.getInstance().uploadImage(
@@ -71,6 +80,7 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
                 ivImage.setImageBitmap(selectedImage)
 
                 bitmap = selectedImage
+                btUpload.visibility = View.VISIBLE
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
@@ -83,9 +93,30 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
 
     override fun onError(uploadError: UploadError) {
         Log.d(MainActivity::class.simpleName, "ERROR")
+        loadingDialog?.dismiss()
+        uploadResultDialog = AlertDialog.Builder(this)
+                .setTitle("Upload Failed")
+                .setMessage("Error: ${uploadError.message}")
+                .setNeutralButton("Ok") { _, _ ->
+                    // Do nothing
+                }.show()
     }
 
     override fun onSuccess(uploadResponse: UploadResponse) {
         Log.d(MainActivity::class.simpleName, "SUCCESS")
+        loadingDialog?.dismiss()
+
+        uploadResultDialog = AlertDialog.Builder(this)
+                .setTitle("Upload Complete")
+                .setMessage("The uploaded image can be accessed using url: ${uploadResponse.url}")
+                .setNeutralButton("Ok") { _, _ ->
+                    // Do nothing
+                }.show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        loadingDialog?.dismiss()
+        uploadResultDialog?.dismiss()
     }
 }
