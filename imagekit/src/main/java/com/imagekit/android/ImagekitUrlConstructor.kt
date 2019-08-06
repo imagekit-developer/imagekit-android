@@ -4,6 +4,7 @@ import android.content.Context
 import com.imagekit.android.entity.*
 import com.imagekit.android.util.TranformationMapping
 import java.util.regex.Pattern
+import kotlin.math.abs
 
 @Suppress("unused")
 class ImagekitUrlConstructor constructor(private val context: Context, private val endpoint: String, private val imagePath: String) {
@@ -47,8 +48,8 @@ class ImagekitUrlConstructor constructor(private val context: Context, private v
      * @throws ImagekitException if both width and height are not provided.
      */
     fun aspectRatio(width: Int, height: Int): ImagekitUrlConstructor {
-        if (!transformationMap.containsKey(TranformationMapping.width) &&
-            !transformationMap.containsKey(TranformationMapping.height)
+        if (!transformationMap.containsKey(TranformationMapping.width)
+                && !transformationMap.containsKey(TranformationMapping.height)
         )
             throw ImagekitException(context.getString(R.string.error_required_transform_value_not_specified))
 
@@ -292,12 +293,12 @@ class ImagekitUrlConstructor constructor(private val context: Context, private v
      */
     fun overlayFocus(overlayFocus: OverlayFocusType): ImagekitUrlConstructor {
         if (!transformationMap.containsKey(TranformationMapping.overlayImage)
-            || !transformationMap.containsKey(TranformationMapping.overlayText)
-            || !transformationMap.containsKey(TranformationMapping.overlayBackground)
+                && !transformationMap.containsKey(TranformationMapping.overlayText)
+                && !transformationMap.containsKey(TranformationMapping.overlayBackground)
         )
             throw ImagekitException(context.getString(R.string.error_required_transform_value_not_specified))
         else if (transformationMap.containsKey(TranformationMapping.overlayX)
-            || transformationMap.containsKey(TranformationMapping.overlayY)
+                || transformationMap.containsKey(TranformationMapping.overlayY)
         )
             throw ImagekitException(context.getString(R.string.error_transform_value_already_exists))
 
@@ -318,8 +319,8 @@ class ImagekitUrlConstructor constructor(private val context: Context, private v
      */
     fun overlayPosX(overlayPosX: Int): ImagekitUrlConstructor {
         if (!transformationMap.containsKey(TranformationMapping.overlayImage)
-            || !transformationMap.containsKey(TranformationMapping.overlayText)
-            || !transformationMap.containsKey(TranformationMapping.overlayBackground)
+                && !transformationMap.containsKey(TranformationMapping.overlayText)
+                && !transformationMap.containsKey(TranformationMapping.overlayBackground)
         )
             throw ImagekitException(context.getString(R.string.error_required_transform_value_not_specified))
         else if (transformationMap.containsKey(TranformationMapping.overlayFocus))
@@ -344,8 +345,8 @@ class ImagekitUrlConstructor constructor(private val context: Context, private v
      */
     fun overlayPosY(overlayPosY: Int): ImagekitUrlConstructor {
         if (!transformationMap.containsKey(TranformationMapping.overlayImage)
-            || !transformationMap.containsKey(TranformationMapping.overlayText)
-            || !transformationMap.containsKey(TranformationMapping.overlayBackground)
+                && !transformationMap.containsKey(TranformationMapping.overlayText)
+                && !transformationMap.containsKey(TranformationMapping.overlayBackground)
         )
             throw ImagekitException(context.getString(R.string.error_required_transform_value_not_specified))
         else if (transformationMap.containsKey(TranformationMapping.overlayFocus))
@@ -371,8 +372,8 @@ class ImagekitUrlConstructor constructor(private val context: Context, private v
      */
     fun overlayNegX(overlayNegX: Int): ImagekitUrlConstructor {
         if (!transformationMap.containsKey(TranformationMapping.overlayImage)
-            || !transformationMap.containsKey(TranformationMapping.overlayText)
-            || !transformationMap.containsKey(TranformationMapping.overlayBackground)
+                && !transformationMap.containsKey(TranformationMapping.overlayText)
+                && !transformationMap.containsKey(TranformationMapping.overlayBackground)
         )
             throw ImagekitException(context.getString(R.string.error_required_transform_value_not_specified))
         else if (transformationMap.containsKey(TranformationMapping.overlayFocus))
@@ -380,7 +381,7 @@ class ImagekitUrlConstructor constructor(private val context: Context, private v
         else if (overlayNegX >= 0)
             throw ImagekitException(context.getString(R.string.error_transform_value_out_of_range))
 
-        val s = String.format("%s-N%s", TranformationMapping.overlayX, overlayNegX)
+        val s = String.format("%s-N%s", TranformationMapping.overlayX, abs(overlayNegX))
         transformationMap[TranformationMapping.overlayX] = s
         transformationList.add(s)
         return this
@@ -399,8 +400,8 @@ class ImagekitUrlConstructor constructor(private val context: Context, private v
      */
     fun overlayNegY(overlayNegY: Int): ImagekitUrlConstructor {
         if (!transformationMap.containsKey(TranformationMapping.overlayImage)
-            || !transformationMap.containsKey(TranformationMapping.overlayText)
-            || !transformationMap.containsKey(TranformationMapping.overlayBackground)
+                && !transformationMap.containsKey(TranformationMapping.overlayText)
+                && !transformationMap.containsKey(TranformationMapping.overlayBackground)
         )
             throw ImagekitException(context.getString(R.string.error_required_transform_value_not_specified))
         else if (transformationMap.containsKey(TranformationMapping.overlayFocus))
@@ -408,7 +409,7 @@ class ImagekitUrlConstructor constructor(private val context: Context, private v
         else if (overlayNegY >= 0)
             throw ImagekitException(context.getString(R.string.error_transform_value_out_of_range))
 
-        val s = String.format("%s-N%s", TranformationMapping.overlayY, overlayNegY)
+        val s = String.format("%s-N%s", TranformationMapping.overlayY, abs(overlayNegY))
         transformationMap[TranformationMapping.overlayY] = s
         transformationList.add(s)
         return this
@@ -464,11 +465,11 @@ class ImagekitUrlConstructor constructor(private val context: Context, private v
 
         transformationMap[TranformationMapping.overlayTextColor] = overlayTextColor.toUpperCase()
         transformationList.add(
-            String.format(
-                "%s-%s",
-                TranformationMapping.overlayTextColor,
-                overlayTextColor.toUpperCase()
-            )
+                String.format(
+                        "%s-%s",
+                        TranformationMapping.overlayTextColor,
+                        overlayTextColor.toUpperCase()
+                )
         )
         return this
     }
@@ -518,11 +519,11 @@ class ImagekitUrlConstructor constructor(private val context: Context, private v
 
         transformationMap[TranformationMapping.overlayTextTypography] = overlayTextTypography
         transformationList.add(
-            String.format(
-                "%s-%s",
-                TranformationMapping.overlayTextTypography,
-                overlayTextTypography.value
-            )
+                String.format(
+                        "%s-%s",
+                        TranformationMapping.overlayTextTypography,
+                        overlayTextTypography.value
+                )
         )
         return this
     }
@@ -539,11 +540,11 @@ class ImagekitUrlConstructor constructor(private val context: Context, private v
 
         transformationMap[TranformationMapping.overlayBackground] = overlayBackgroundColor.toUpperCase()
         transformationList.add(
-            String.format(
-                "%s-%s",
-                TranformationMapping.overlayBackground,
-                overlayBackgroundColor.toUpperCase()
-            )
+                String.format(
+                        "%s-%s",
+                        TranformationMapping.overlayBackground,
+                        overlayBackgroundColor.toUpperCase()
+                )
         )
         return this
     }
@@ -557,7 +558,7 @@ class ImagekitUrlConstructor constructor(private val context: Context, private v
      */
     fun overlayTransparency(overlayTransparency: Int): ImagekitUrlConstructor {
         if (!transformationMap.containsKey(TranformationMapping.overlayText)
-            || !transformationMap.containsKey(TranformationMapping.overlayBackground)
+                && !transformationMap.containsKey(TranformationMapping.overlayBackground)
         )
             throw ImagekitException(context.getString(R.string.error_required_transform_value_not_specified))
         else if (overlayTransparency !in 1..9)
@@ -654,11 +655,11 @@ class ImagekitUrlConstructor constructor(private val context: Context, private v
 
         transformationMap[TranformationMapping.backgroundColor] = backgroundHexColor.toUpperCase()
         transformationList.add(
-            String.format(
-                "%s-%s",
-                TranformationMapping.backgroundColor,
-                backgroundHexColor.toUpperCase()
-            )
+                String.format(
+                        "%s-%s",
+                        TranformationMapping.backgroundColor,
+                        backgroundHexColor.toUpperCase()
+                )
         )
         return this
     }
@@ -678,11 +679,11 @@ class ImagekitUrlConstructor constructor(private val context: Context, private v
 
         transformationMap[TranformationMapping.backgroundColor] = backgroundRGBAColor.toUpperCase()
         transformationList.add(
-            String.format(
-                "%s-%s",
-                TranformationMapping.backgroundColor,
-                backgroundRGBAColor.toUpperCase()
-            )
+                String.format(
+                        "%s-%s",
+                        TranformationMapping.backgroundColor,
+                        backgroundRGBAColor.toUpperCase()
+                )
         )
         return this
     }
