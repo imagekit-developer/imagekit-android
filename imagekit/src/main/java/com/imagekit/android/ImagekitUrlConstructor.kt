@@ -214,7 +214,7 @@ class ImagekitUrlConstructor constructor(private val context: Context, private v
      * @param flag Possible values include true and false. Default value - false
      * @return the current ImagekitUrlConstructor object.
      */
-    fun isProgressiveJPEG(flag: Boolean): ImagekitUrlConstructor {
+    fun setProgressiveJPEG(flag: Boolean): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.progressiveJPEG] = flag
         transformationList.add(String.format("%s-%b", TranformationMapping.progressiveJPEG, flag))
         return this
@@ -228,7 +228,7 @@ class ImagekitUrlConstructor constructor(private val context: Context, private v
      * @param flag Possible values include true and false. Default value - false
      * @return the current ImagekitUrlConstructor object.
      */
-    fun isLossless(flag: Boolean): ImagekitUrlConstructor {
+    fun setLossless(flag: Boolean): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.lossless] = flag
         transformationList.add(String.format("%s-%b", TranformationMapping.lossless, flag))
         return this
@@ -761,7 +761,7 @@ class ImagekitUrlConstructor constructor(private val context: Context, private v
      * @see <a href="https://docs.imagekit.io/#chained-transformations">Chained Transformations</a>.
      * @return the current ImagekitUrlConstructor object.
      */
-    fun addTransformationStep(): ImagekitUrlConstructor {
+    fun chainTransformation(): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.transformationStep] = ":"
         transformationList.add(":")
 

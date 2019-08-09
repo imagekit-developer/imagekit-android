@@ -15,7 +15,7 @@ internal object TranformationMapping {
     const val namedTransformation = "n"
     const val defaultImage = "di"
     const val progressiveJPEG = "pr"
-    const val lossless = "l"
+    const val lossless = "lo"
     const val trimEdges = "t"
     const val overlayImage = "oi"
     const val overlayFocus = "ofo"

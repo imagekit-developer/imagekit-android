@@ -55,14 +55,14 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
 
             val filename = "icLauncher.png"
             val timestamp = System.currentTimeMillis()
-            ImageKit.getInstance().uploadImage(
+            ImageKit.getInstance().uploader().upload(
                     bitmap!!
                     , filename
                     , SignatureUtil.sign("apiKey=$CLIENT_PUBLIC_KEY&filename=$filename&timestamp=$timestamp")
                     , timestamp
                     , true
                     , arrayOf("nice", "copy", "books")
-                    , "/rishabh/folder/"
+                    , "/dummy/folder/"
                     , this
             )
         }

@@ -2,6 +2,7 @@
     <string name="app_name">imagekit</string>
 
     //Error
+    <string name="error_invalid_file_format">The file you are trying to upload has an extension that is currently not supported. </string>
     <string name="error_transform_value_out_of_range">Transform value is out of range!</string>
     <string name="error_transform_value_already_exists">Transform can only be applied once!</string>
     <string name="error_required_transform_value_not_specified">Prerequisite transforms should be applied first</string>
