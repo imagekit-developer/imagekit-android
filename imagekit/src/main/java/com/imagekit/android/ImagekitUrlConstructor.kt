@@ -687,6 +687,16 @@ class ImagekitUrlConstructor constructor(
     }
 
     /**
+     * Method allows adding custom transformations to the image.
+     * @return the current ImagekitUrlConstructor object.
+     */
+    fun addCustomTransformation(key: String, value: String): ImagekitUrlConstructor {
+        transformationMap[key] = value
+        transformationList.add(String.format("%s-%s", key, value))
+        return this
+    }
+
+    /**
      * Used to create the url using the transformations specified before invoking this method.
      * @return the Url used to fetch an image after applying the specified transformations.
      */
