@@ -267,8 +267,9 @@ class ImagekitUrlConstructor constructor(
      * @return the current ImagekitUrlConstructor object.
      */
     fun overlayImage(overlayImage: String): ImagekitUrlConstructor {
-        transformationMap[TranformationMapping.overlayImage] = overlayImage
-        transformationList.add(String.format("%s-%s", TranformationMapping.overlayImage, overlayImage))
+        val formattedOverlayImage = overlayImage.replace("/", "@@")
+        transformationMap[TranformationMapping.overlayImage] = formattedOverlayImage
+        transformationList.add(String.format("%s-%s", TranformationMapping.overlayImage, formattedOverlayImage))
         return this
     }
 
