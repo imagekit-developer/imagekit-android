@@ -1,6 +1,7 @@
 package com.imagekit.android.injection.component
 
 import com.imagekit.android.ImageKit
+import com.imagekit.android.ImagekitUrlConstructor
 import com.imagekit.android.injection.module.ContextModule
 import dagger.Component
 import javax.inject.Singleton
@@ -10,4 +11,5 @@ import javax.inject.Singleton
 @Singleton
 interface UtilComponent {
     fun inject(app: ImageKit)
+    fun inject(imagekitUrlConstructor: ImagekitUrlConstructor)
 }

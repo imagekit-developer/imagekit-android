@@ -2,22 +2,46 @@ package com.imagekit.android
 
 import android.content.Context
 import com.imagekit.android.entity.*
+import com.imagekit.android.injection.component.DaggerUtilComponent
+import com.imagekit.android.injection.module.ContextModule
 import com.imagekit.android.util.LogUtil.logError
+import com.imagekit.android.util.SharedPrefUtil
 import com.imagekit.android.util.TranformationMapping
 import java.util.regex.Pattern
+import javax.inject.Inject
 import kotlin.math.abs
 
 @Suppress("unused")
 class ImagekitUrlConstructor constructor(
     private val context: Context,
-    private val endpoint: String,
     private val imagePath: String
 ) {
+
+    @Inject
+    internal lateinit var mSharedPrefUtil: SharedPrefUtil
+
     private val transformationList: MutableList<String> = ArrayList()
     private val transformationMap = HashMap<String, Any>()
+    private var endpoint: String
+
+    constructor(
+        context: Context,
+        endpoint: String,
+        imagePath: String
+    ) : this(context, imagePath) {
+        this.endpoint = endpoint
+    }
 
     init {
         ImageKit.getInstance()
+        val appComponent = DaggerUtilComponent.builder()
+            .contextModule(ContextModule(context))
+            .build()
+
+        appComponent
+            .inject(this)
+
+        endpoint = mSharedPrefUtil.getImageKitEndpoint() ?: ""
     }
 
     /**

@@ -11,7 +11,7 @@ import com.imagekit.android.util.SharedPrefUtil
 import javax.inject.Inject
 
 @Suppress("unused")
-class ImageKit private constructor(val context: Context, clientPublicKey: String, imageKitId: String) {
+class ImageKit private constructor(val context: Context, clientPublicKey: String, imageKitId: String, imageKitEndpoint: String) {
 
     @Inject
     internal lateinit var mSharedPrefUtil: SharedPrefUtil
@@ -29,6 +29,7 @@ class ImageKit private constructor(val context: Context, clientPublicKey: String
 
         mSharedPrefUtil.setClientPublicKey(clientPublicKey)
         mSharedPrefUtil.setImageKitId(imageKitId)
+        mSharedPrefUtil.setImageKitEndpoint(imageKitEndpoint)
     }
 
     companion object {
@@ -36,11 +37,11 @@ class ImageKit private constructor(val context: Context, clientPublicKey: String
         @SuppressLint("StaticFieldLeak")
         private var imageKit: ImageKit? = null
 
-        fun init(context: Context, clientPublicKey: String, imageKitId: String) {
+        fun init(context: Context, clientPublicKey: String, imageKitId: String, imageKitEndpoint: String) {
             if (context !is Application)
                 throw ApplicationContextExpectedException()
 
-            imageKit = ImageKit(context, clientPublicKey, imageKitId)
+            imageKit = ImageKit(context, clientPublicKey, imageKitId, imageKitEndpoint)
         }
 
         fun getInstance(): ImageKit {
