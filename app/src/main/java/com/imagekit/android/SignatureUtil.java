@@ -21,7 +21,6 @@ public class SignatureUtil {
         }
     }
 
-
     private static String hmacSha1(String value, String key)
             throws NoSuchAlgorithmException,
             InvalidKeyException {
