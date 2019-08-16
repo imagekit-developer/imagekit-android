@@ -11,7 +11,12 @@ import com.imagekit.android.util.SharedPrefUtil
 import javax.inject.Inject
 
 @Suppress("unused")
-class ImageKit private constructor(val context: Context, clientPublicKey: String, imageKitId: String, imageKitEndpoint: String) {
+class ImageKit private constructor(
+    val context: Context,
+    clientPublicKey: String,
+    imageKitId: String,
+    imageKitEndpoint: String
+) {
 
     @Inject
     internal lateinit var mSharedPrefUtil: SharedPrefUtil
@@ -56,6 +61,8 @@ class ImageKit private constructor(val context: Context, clientPublicKey: String
     }
 
     fun url(endpoint: String, imagePath: String) = ImagekitUrlConstructor(context, endpoint, imagePath)
+
+    fun url(imagePath: String) = ImagekitUrlConstructor(context, mSharedPrefUtil.getImageKitEndpoint(), imagePath)
 
     fun uploader() = mImagekitUploader
 }

@@ -13,7 +13,7 @@ class SharedPrefUtil @Inject constructor(context: Context) {
     private val KEY_IMAGEKIT_ID_KEY = "ImageKit Id"
     private val KEY_IMAGEKIT_ENDPOINT_KEY = "ImageKit Endpoint"
 
-    private lateinit var mPref: SharedPreferences
+    private var mPref: SharedPreferences
 
     init {
         mPref = context.getSharedPreferences(SHARED_PREF_FILENAME, Context.MODE_PRIVATE)
@@ -26,7 +26,7 @@ class SharedPrefUtil @Inject constructor(context: Context) {
     fun getImageKitId() = mPref.getString(KEY_IMAGEKIT_ID_KEY, null)
 
     fun setImageKitEndpoint(imageKitEndpoint: String) = mPref.edit().putString(KEY_IMAGEKIT_ENDPOINT_KEY, imageKitEndpoint).apply()
-    fun getImageKitEndpoint() = mPref.getString(KEY_IMAGEKIT_ENDPOINT_KEY, null)
+    fun getImageKitEndpoint() = mPref.getString(KEY_IMAGEKIT_ENDPOINT_KEY, "")!!
 
     fun clear() = mPref.edit().clear()
 }

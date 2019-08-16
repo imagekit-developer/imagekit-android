@@ -36,7 +36,7 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 R.id.btTran2 -> {
                     //https://ik.imagekit.io/demo/img/tr:h-400,ar-3-2/default-image.jpg
-                    ImageKit.getInstance().url("https://ik.imagekit.io/demo/img", "default-image.jpg")
+                    ImageKit.getInstance().url( "default-image.jpg")
                         .height(400f)
                         .aspectRatio(3, 2)
                         .create()
