@@ -34,7 +34,7 @@ class ImageKit private constructor(
 
         mSharedPrefUtil.setClientPublicKey(clientPublicKey)
         mSharedPrefUtil.setImageKitId(imageKitId)
-        mSharedPrefUtil.setImageKitEndpoint(imageKitEndpoint)
+        mSharedPrefUtil.setImageKitUrlEndpoint(imageKitEndpoint)
     }
 
     companion object {
@@ -62,7 +62,7 @@ class ImageKit private constructor(
 
     fun url(endpoint: String, imagePath: String) = ImagekitUrlConstructor(context, endpoint, imagePath)
 
-    fun url(imagePath: String) = ImagekitUrlConstructor(context, mSharedPrefUtil.getImageKitEndpoint(), imagePath)
+    fun url(imagePath: String) = ImagekitUrlConstructor(context, mSharedPrefUtil.getImageKitUrlEndpoint(), imagePath)
 
     fun uploader() = mImagekitUploader
 }

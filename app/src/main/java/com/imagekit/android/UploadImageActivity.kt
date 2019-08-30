@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.imagekit.android.Constants.CLIENT_PUBLIC_KEY
 import com.imagekit.android.entity.UploadError
 import com.imagekit.android.entity.UploadResponse
 import kotlinx.android.synthetic.main.activity_upload_image.*
@@ -49,21 +48,18 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
     private fun uploadImage() {
         bitmap?.let {
             loadingDialog = AlertDialog.Builder(this)
-                    .setMessage("Uploading image...")
-                    .setCancelable(false)
-                    .show()
+                .setMessage("Uploading image...")
+                .setCancelable(false)
+                .show()
 
             val filename = "icLauncher.png"
-            val timestamp = System.currentTimeMillis()
             ImageKit.getInstance().uploader().upload(
-                    bitmap!!
-                    , filename
-                    , SignatureUtil.sign("apiKey=$CLIENT_PUBLIC_KEY&filename=$filename&timestamp=$timestamp")
-                    , timestamp
-                    , true
-                    , arrayOf("nice", "copy", "books")
-                    , "/dummy/folder/"
-                    , this
+                image = bitmap!!
+                , fileName = filename
+                , useUniqueFilename = true
+                , tags = arrayOf("nice", "copy", "books")
+                , folder = "/dummy/folder/"
+                , imageKitCallback = this
             )
         }
     }
@@ -95,11 +91,11 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
         Log.d(MainActivity::class.simpleName, "ERROR")
         loadingDialog?.dismiss()
         uploadResultDialog = AlertDialog.Builder(this)
-                .setTitle("Upload Failed")
-                .setMessage("Error: ${uploadError.message}")
-                .setNeutralButton("Ok") { _, _ ->
-                    // Do nothing
-                }.show()
+            .setTitle("Upload Failed")
+            .setMessage("Error: ${uploadError.message}")
+            .setNeutralButton("Ok") { _, _ ->
+                // Do nothing
+            }.show()
     }
 
     override fun onSuccess(uploadResponse: UploadResponse) {
@@ -107,11 +103,11 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
         loadingDialog?.dismiss()
 
         uploadResultDialog = AlertDialog.Builder(this)
-                .setTitle("Upload Complete")
-                .setMessage("The uploaded image can be accessed using url: ${uploadResponse.url}")
-                .setNeutralButton("Ok") { _, _ ->
-                    // Do nothing
-                }.show()
+            .setTitle("Upload Complete")
+            .setMessage("The uploaded image can be accessed using url: ${uploadResponse.url}")
+            .setNeutralButton("Ok") { _, _ ->
+                // Do nothing
+            }.show()
     }
 
     override fun onDestroy() {

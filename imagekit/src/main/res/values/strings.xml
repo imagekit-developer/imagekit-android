@@ -7,4 +7,5 @@
     <!--<string name="error_transform_value_already_exists">Transform can only be applied once!</string>-->
     <!--<string name="error_required_transform_value_not_specified">Prerequisite transforms should be applied first</string>-->
     <string name="error_transform_value_invalid">Invalid transform value specified! </string>
+    <string name="error_authentication_endpoint_is_missing">Upload failed! Authentication endpoint is missing.</string>
 </resources>
