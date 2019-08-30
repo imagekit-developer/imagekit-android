@@ -29,7 +29,7 @@ class SharedPrefUtil @Inject constructor(context: Context) {
     fun setImageKitUrlEndpoint(imageKitEndpoint: String) = mPref.edit().putString(KEY_IMAGEKIT_URL_ENDPOINT_KEY, imageKitEndpoint).apply()
     fun getImageKitUrlEndpoint() = mPref.getString(KEY_IMAGEKIT_URL_ENDPOINT_KEY, "")!!
 
-    fun setClientAuthenticationEndpoint(clientAuthenticationEndpoint: String) = mPref.edit().putString(KEY_CLIENT_AUTHENTICATION_ENDPOINT_KEY, clientAuthenticationEndpoint).apply()
+    fun setClientAuthenticationEndpoint(clientAuthenticationEndpoint: String?) = mPref.edit().putString(KEY_CLIENT_AUTHENTICATION_ENDPOINT_KEY, clientAuthenticationEndpoint).apply()
     fun getClientAuthenticationEndpoint() = mPref.getString(KEY_CLIENT_AUTHENTICATION_ENDPOINT_KEY, "")!!
 
     fun clear() = mPref.edit().clear()

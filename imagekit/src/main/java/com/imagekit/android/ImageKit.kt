@@ -15,7 +15,8 @@ class ImageKit private constructor(
     val context: Context,
     clientPublicKey: String,
     imageKitId: String,
-    imageKitEndpoint: String
+    imageKitEndpoint: String,
+    authenticationEndpoint: String? = null
 ) {
 
     @Inject
@@ -35,6 +36,7 @@ class ImageKit private constructor(
         mSharedPrefUtil.setClientPublicKey(clientPublicKey)
         mSharedPrefUtil.setImageKitId(imageKitId)
         mSharedPrefUtil.setImageKitUrlEndpoint(imageKitEndpoint)
+        mSharedPrefUtil.setClientAuthenticationEndpoint(authenticationEndpoint)
     }
 
     companion object {
@@ -42,11 +44,17 @@ class ImageKit private constructor(
         @SuppressLint("StaticFieldLeak")
         private var imageKit: ImageKit? = null
 
-        fun init(context: Context, clientPublicKey: String, imageKitId: String, imageKitEndpoint: String) {
+        fun init(
+            context: Context,
+            clientPublicKey: String,
+            imageKitId: String,
+            imageKitEndpoint: String,
+            authenticationEndpoint: String? = null
+        ) {
             if (context !is Application)
                 throw ApplicationContextExpectedException()
 
-            imageKit = ImageKit(context, clientPublicKey, imageKitId, imageKitEndpoint)
+            imageKit = ImageKit(context, clientPublicKey, imageKitId, imageKitEndpoint, authenticationEndpoint)
         }
 
         fun getInstance(): ImageKit {
@@ -60,9 +68,11 @@ class ImageKit private constructor(
         private lateinit var appComponent: UtilComponent
     }
 
-    fun url(endpoint: String, imagePath: String) = ImagekitUrlConstructor(context, endpoint, imagePath)
+    fun url(endpoint: String, imagePath: String) =
+        ImagekitUrlConstructor(context, endpoint, imagePath)
 
-    fun url(imagePath: String) = ImagekitUrlConstructor(context, mSharedPrefUtil.getImageKitUrlEndpoint(), imagePath)
+    fun url(imagePath: String) =
+        ImagekitUrlConstructor(context, mSharedPrefUtil.getImageKitUrlEndpoint(), imagePath)
 
     fun uploader() = mImagekitUploader
 }
