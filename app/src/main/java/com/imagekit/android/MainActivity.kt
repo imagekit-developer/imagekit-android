@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        ImageKit.init(applicationContext, Constants.CLIENT_PUBLIC_KEY, Constants.IMAGEKIT_ID, "https://ik.imagekit.io/demo")
+        ImageKit.init(applicationContext, Constants.CLIENT_PUBLIC_KEY, Constants.IMAGEKIT_ID, "https://ik.imagekit.io/demo", "https://ik.imagekit.io/demo")
 
         btUploadImage.setOnClickListener { startActivity(Intent(this@MainActivity, UploadImageActivity::class.java)) }
 

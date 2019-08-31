@@ -24,7 +24,7 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.btSelect -> selectImage()
+//            R.id.btSelect -> selectImage()
             else -> uploadImage()
         }
     }
@@ -46,7 +46,7 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
     }
 
     private fun uploadImage() {
-        bitmap?.let {
+//        bitmap?.let {
             loadingDialog = AlertDialog.Builder(this)
                 .setMessage("Uploading image...")
                 .setCancelable(false)
@@ -54,14 +54,14 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
 
             val filename = "icLauncher.png"
             ImageKit.getInstance().uploader().upload(
-                image = bitmap!!
+                fileUrl = "http://img.wennermedia.com/social/public-image-ltd-reissue-album-0a5c8dbc-75a8-40bd-a57e-cfa5c79f48b5.jpg"
                 , fileName = filename
                 , useUniqueFilename = true
                 , tags = arrayOf("nice", "copy", "books")
                 , folder = "/dummy/folder/"
                 , imageKitCallback = this
             )
-        }
+//        }
     }
 
     override fun onActivityResult(reqCode: Int, resultCode: Int, data: Intent?) {
