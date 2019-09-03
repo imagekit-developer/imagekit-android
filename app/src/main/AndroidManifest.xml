@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity android:name=".UploadImageActivity"></activity>
+        <activity android:name=".UploadFileActivity"></activity>
         <activity android:name=".FetchImageActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>

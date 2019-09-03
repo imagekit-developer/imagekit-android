@@ -48,9 +48,10 @@ public class SignatureUtil {
 
     private static final String ALGORITHM = "HmacSHA1";
 
-    public static String sign(String content) {
+    public static String sign(String content, String expire) {
         String encoded;
         try {
+            content = content.concat(expire.toString());
             SecretKeySpec signingKey = new SecretKeySpec(PRIVATE_CLIENT_KEY.getBytes(), ALGORITHM);
             Mac mac = Mac.getInstance(ALGORITHM);
             mac.init(signingKey);

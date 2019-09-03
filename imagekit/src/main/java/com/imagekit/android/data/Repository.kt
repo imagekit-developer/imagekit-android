@@ -6,25 +6,20 @@ import android.graphics.Bitmap
 import com.google.gson.Gson
 import com.imagekit.android.ImageKitCallback
 import com.imagekit.android.R
-import com.imagekit.android.SignatureUtil
 import com.imagekit.android.entity.SignatureResponse
 import com.imagekit.android.entity.UploadError
 import com.imagekit.android.entity.UploadResponse
-import com.imagekit.android.util.LogUtil
-import com.imagekit.android.util.SharedPrefUtil
-import com.mashape.unirest.http.HttpResponse
-import com.mashape.unirest.http.Unirest
+import com.imagekit.android.retrofit.SignatureApi
+import com.imagekit.android.retrofit.UploadApi
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
-import local.org.apache.http.HttpStatus
-import local.org.apache.http.HttpVersion
-import local.org.apache.http.entity.StringEntity
-import local.org.apache.http.impl.DefaultHttpResponseFactory
-import local.org.apache.http.message.BasicStatusLine
+import okhttp3.MediaType
+import okhttp3.ResponseBody
 import org.json.JSONObject
+import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -35,12 +30,11 @@ import javax.inject.Inject
 
 class Repository @Inject constructor(
     private val context: Context,
-    private val sharedPrefUtil: SharedPrefUtil
+    private val signatureApi: SignatureApi,
+    private val uploadApi: UploadApi
 ) {
-
     companion object {
         private const val DURATION_EXPIRY_MINUTES = 45L
-        private const val UPLOAD_URL = "https://api.imagekit.io/v1/files/upload"
     }
 
     // Takes Bitmap
@@ -54,42 +48,15 @@ class Repository @Inject constructor(
         isPrivateFile: Boolean? = null,
         customCoordinates: String? = null,
         responseFields: String? = null,
+        signatureHeaders: Map<String, String>? = null,
         imageKitCallback: ImageKitCallback
     ) {
-        fun performActualUpload(result: HttpResponse<String>, file: File): HttpResponse<String> {
-            return Unirest.post(UPLOAD_URL)
-                .header("accept", "application/json")
-                .field("file", file)
-                .field("publicKey", sharedPrefUtil.getClientPublicKey())
-                .field(
-                    "signature", Gson().fromJson(
-                        result.body,
-                        SignatureResponse::class.java
-                    ).signature
-                )
-                .field(
-                    "expire",
-                    (System.currentTimeMillis() / 1000) + TimeUnit.MINUTES.toSeconds(
-                        DURATION_EXPIRY_MINUTES
-                    )
-                )
-                .field(
-                    "token", Gson().fromJson(
-                        result.body,
-                        SignatureResponse::class.java
-                    ).token
-                )
-                .field("fileName", fileName)
-                .field("useUniqueFilename", useUniqueFilename)
-                .field("tags", getCommaSeparatedTagsFromTags(tags))
-                .field("folder", folder)
-                .field("isPrivateFile", isPrivateFile)
-                .field("customCoordinates", customCoordinates)
-                .field("responseFields", responseFields)
-                .asString()
-        }
 
-        val signatureObservable = getSignature()?.toObservable()
+        val expire = ((System.currentTimeMillis() / 1000) + TimeUnit.MINUTES.toSeconds(
+            DURATION_EXPIRY_MINUTES
+        )).toString()
+        val signatureObservable =
+            signatureApi.getSignature(signatureHeaders, expire)?.toObservable()
         if (signatureObservable != null) {
             Observable.zip(
                 signatureObservable,
@@ -100,24 +67,48 @@ class Repository @Inject constructor(
                         image
                     )
                 ).subscribeOn(Schedulers.io()).toObservable(),
-                BiFunction<HttpResponse<String>, File, HttpResponse<String>> { result: HttpResponse<String>, file: File ->
-                    performActualUpload(
-                        result,
-                        file
-                    )
+                BiFunction<Response<SignatureResponse>, File, Response<ResponseBody>> { result: Response<SignatureResponse>, file: File ->
+                    if (result.isSuccessful)
+                        uploadApi.getFileUploadCall(
+                            result.body()!!,
+                            file,
+                            fileName,
+                            useUniqueFilename,
+                            tags,
+                            folder,
+                            isPrivateFile,
+                            customCoordinates,
+                            responseFields,
+                            expire
+                        ).execute()
+                    else {
+                        val json = JSONObject()
+                        json.put(
+                            "message",
+                            context.getString(R.string.error_signature_generation_failed)
+                        )
+                        Response.error(
+                            400,
+                            ResponseBody.create(
+                                MediaType.parse("application/json"),
+                                json.toString()
+                            )
+                        )
+                    }
                 })
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe({ result ->
-                    when (result.code) {
-                        200 -> imageKitCallback.onSuccess(
+                    if (result.isSuccessful) {
+                        imageKitCallback.onSuccess(
                             Gson().fromJson(
-                                result.body,
+                                result.body()!!.string(),
                                 UploadResponse::class.java
                             )
                         )
-                        else -> imageKitCallback.onError(
+                    } else {
+                        imageKitCallback.onError(
                             Gson().fromJson(
-                                result.body,
+                                result.errorBody()!!.string(),
                                 UploadError::class.java
                             )
                         )
@@ -143,69 +134,70 @@ class Repository @Inject constructor(
         isPrivateFile: Boolean? = null,
         customCoordinates: String? = null,
         responseFields: String? = null,
+        signatureHeaders: Map<String, String>? = null,
         imageKitCallback: ImageKitCallback
     ) {
-        if (file.extension.isEmpty()) {
+        if (!file.exists()) {
             imageKitCallback.onError(
                 UploadError(
-                    false,
-                    1400,
-                    context.getString(R.string.error_invalid_file_format)
+                    exception = true,
+                    message = context.getString(R.string.error_file_not_found)
                 )
             )
             return
         }
 
-        val signatureSingle = getSignature()
+        val expire = ((System.currentTimeMillis() / 1000) + TimeUnit.MINUTES.toSeconds(
+            DURATION_EXPIRY_MINUTES
+        )).toString()
+        val signatureSingle = signatureApi.getSignature(signatureHeaders, expire)
         if (signatureSingle != null) {
             signatureSingle
                 .subscribeOn(Schedulers.io())
                 .flatMap { result ->
                     Single.just(
-                        Unirest.post(UPLOAD_URL)
-                            .header("accept", "application/json")
-                            .field("file", file)
-                            .field("publicKey", sharedPrefUtil.getClientPublicKey())
-                            .field(
-                                "signature", Gson().fromJson(
-                                    result.body,
-                                    SignatureResponse::class.java
-                                ).signature
+                        if (result.isSuccessful)
+                            uploadApi.getFileUploadCall(
+                                result.body()!!,
+                                file,
+                                fileName,
+                                useUniqueFilename,
+                                tags,
+                                folder,
+                                isPrivateFile,
+                                customCoordinates,
+                                responseFields,
+                                expire
+                            ).execute()
+                        else {
+                            val json = JSONObject()
+                            json.put(
+                                "message",
+                                context.getString(R.string.error_signature_generation_failed)
                             )
-                            .field(
-                                "expire",
-                                System.currentTimeMillis() + TimeUnit.MINUTES.toSeconds(
-                                    DURATION_EXPIRY_MINUTES
+                            Response.error(
+                                400,
+                                ResponseBody.create(
+                                    MediaType.parse("application/json"),
+                                    json.toString()
                                 )
                             )
-                            .field(
-                                "token", Gson().fromJson(
-                                    result.body,
-                                    SignatureResponse::class.java
-                                ).token
-                            )
-                            .field("fileName", fileName)
-                            .field("useUniqueFilename", useUniqueFilename)
-                            .field("tags", getCommaSeparatedTagsFromTags(tags))
-                            .field("folder", folder)
-                            .field("isPrivateFile", isPrivateFile)
-                            .field("customCoordinates", customCoordinates)
-                            .field("responseFields", responseFields)
-                            .asString()
+                        }
                     )
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
-                    when (result.code) {
-                        200 -> imageKitCallback.onSuccess(
+                    if (result.isSuccessful) {
+                        imageKitCallback.onSuccess(
                             Gson().fromJson(
-                                result.body,
+                                result.body()!!.string(),
                                 UploadResponse::class.java
                             )
                         )
-                        else -> imageKitCallback.onError(
+                    } else {
+                        imageKitCallback.onError(
                             Gson().fromJson(
-                                result.body,
+                                result.errorBody()!!.string(),
                                 UploadError::class.java
                             )
                         )
@@ -228,61 +220,63 @@ class Repository @Inject constructor(
         useUniqueFilename: Boolean = true,
         tags: Array<String>?,
         folder: String?,
-        isPrivateFile: Boolean? = null,
+        isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
         responseFields: String? = null,
+        signatureHeaders: Map<String, String>? = null,
         imageKitCallback: ImageKitCallback
     ) {
-        val signatureSingle = getSignature()
+        val expire = ((System.currentTimeMillis() / 1000) + TimeUnit.MINUTES.toSeconds(
+            DURATION_EXPIRY_MINUTES
+        )).toString()
+        val signatureSingle = signatureApi.getSignature(signatureHeaders, expire)
         if (signatureSingle != null) {
             signatureSingle
                 .subscribeOn(Schedulers.io())
                 .flatMap { result ->
                     Single.just(
-                        Unirest.post(UPLOAD_URL)
-                            .header("accept", "application/json")
-                            .field("file", fileUrl)
-                            .field("publicKey", sharedPrefUtil.getClientPublicKey())
-                            .field(
-                                "signature", Gson().fromJson(
-                                    result.body,
-                                    SignatureResponse::class.java
-                                ).signature
+                        if (result.isSuccessful)
+                            uploadApi.getFileUploadCall(
+                                result.body()!!,
+                                fileUrl,
+                                fileName,
+                                useUniqueFilename,
+                                tags,
+                                folder,
+                                isPrivateFile,
+                                customCoordinates,
+                                responseFields,
+                                expire
+                            ).execute()
+                        else {
+                            val json = JSONObject()
+                            json.put(
+                                "message",
+                                context.getString(R.string.error_signature_generation_failed)
                             )
-                            .field(
-                                "expire",
-                                System.currentTimeMillis() + TimeUnit.MINUTES.toSeconds(
-                                    DURATION_EXPIRY_MINUTES
+                            Response.error(
+                                400,
+                                ResponseBody.create(
+                                    MediaType.parse("application/json"),
+                                    json.toString()
                                 )
                             )
-                            .field(
-                                "token", Gson().fromJson(
-                                    result.body,
-                                    SignatureResponse::class.java
-                                ).token
-                            )
-                            .field("fileName", fileName)
-                            .field("useUniqueFilename", useUniqueFilename)
-                            .field("tags", getCommaSeparatedTagsFromTags(tags))
-                            .field("folder", folder)
-                            .field("isPrivateFile", isPrivateFile)
-                            .field("customCoordinates", customCoordinates)
-                            .field("responseFields", responseFields)
-                            .asString()
+                        }
                     )
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
-                    when (result.code) {
-                        200 -> imageKitCallback.onSuccess(
+                    if (result.isSuccessful) {
+                        imageKitCallback.onSuccess(
                             Gson().fromJson(
-                                result.body,
+                                result.body()!!.string(),
                                 UploadResponse::class.java
                             )
                         )
-                        else -> imageKitCallback.onError(
+                    } else {
+                        imageKitCallback.onError(
                             Gson().fromJson(
-                                result.body,
+                                result.errorBody()!!.string(),
                                 UploadError::class.java
                             )
                         )
@@ -295,10 +289,6 @@ class Repository @Inject constructor(
                     message = context.getString(R.string.error_signature_generation_failed)
                 )
             )
-    }
-
-    private fun getCommaSeparatedTagsFromTags(tags: Array<String>?): String? {
-        return tags?.joinToString { "\'$it\'" }
     }
 
     @Throws(IOException::class)
@@ -318,35 +308,5 @@ class Repository @Inject constructor(
         fos.close()
 
         return f
-    }
-
-    private fun getSignature(headerMap: Map<String, String>? = null): Single<HttpResponse<String>>? {
-        val endPoint = sharedPrefUtil.getClientAuthenticationEndpoint()
-        if (endPoint.isBlank()) {
-            LogUtil.logError(context.getString(R.string.error_authentication_endpoint_is_missing))
-            return null
-        }
-
-        val token =
-            "apiKey=CLIENT_PUBLIC_KEY&filename=filename&timestamp=${System.currentTimeMillis()}"
-
-        val factory = DefaultHttpResponseFactory()
-        val response = factory.newHttpResponse(
-            BasicStatusLine(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, null),
-            null
-        )
-        val json = JSONObject()
-        json.put("token", token)
-        json.put("signature", SignatureUtil.sign(token))
-        response.entity = StringEntity(json.toString())
-        val httpResponse = HttpResponse<String>(response, String::class.java)
-
-        return Single.just(
-//            Unirest.get(endPoint)
-//                .headers(headerMap)
-//                .asString()
-
-            httpResponse
-        ).subscribeOn(Schedulers.io())
     }
 }

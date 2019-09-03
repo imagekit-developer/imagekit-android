@@ -24,7 +24,8 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-//            R.id.btSelect -> selectImage()
+            R.id.btSelect -> selectImage()
+//            R.id.btSelect -> uploadUrlImage()
             else -> uploadImage()
         }
     }
@@ -46,7 +47,7 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
     }
 
     private fun uploadImage() {
-//        bitmap?.let {
+        bitmap?.let {
             loadingDialog = AlertDialog.Builder(this)
                 .setMessage("Uploading image...")
                 .setCancelable(false)
@@ -54,14 +55,31 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
 
             val filename = "icLauncher.png"
             ImageKit.getInstance().uploader().upload(
-                fileUrl = "http://img.wennermedia.com/social/public-image-ltd-reissue-album-0a5c8dbc-75a8-40bd-a57e-cfa5c79f48b5.jpg"
+                image = bitmap!!
                 , fileName = filename
                 , useUniqueFilename = true
                 , tags = arrayOf("nice", "copy", "books")
                 , folder = "/dummy/folder/"
                 , imageKitCallback = this
             )
-//        }
+        }
+    }
+
+    private fun uploadUrlImage() {
+        loadingDialog = AlertDialog.Builder(this)
+            .setMessage("Uploading image...")
+            .setCancelable(false)
+            .show()
+
+        val filename = "icLauncher.png"
+        ImageKit.getInstance().uploader().upload(
+            fileUrl = "https://ik.imagekit.io/demo/img/default-image.jpg"
+            , fileName = filename
+            , useUniqueFilename = true
+            , tags = arrayOf("nice", "copy", "books")
+            , folder = "/dummy/folder/"
+            , imageKitCallback = this
+        )
     }
 
     override fun onActivityResult(reqCode: Int, resultCode: Int, data: Intent?) {

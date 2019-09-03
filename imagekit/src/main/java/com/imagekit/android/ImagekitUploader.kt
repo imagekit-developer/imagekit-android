@@ -36,9 +36,10 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
         useUniqueFilename: Boolean = true,
         tags: Array<String>?,
         folder: String?,
-        isPrivateFile: Boolean? = null,
+        isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
         responseFields: String? = null,
+        signatureHeaders: Map<String, String>? = null,
         imageKitCallback: ImageKitCallback
     ) = mRepository.upload(
         image,
@@ -49,6 +50,7 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
         isPrivateFile,
         customCoordinates,
         responseFields,
+        signatureHeaders,
         imageKitCallback
     )
 
@@ -81,9 +83,10 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
         useUniqueFilename: Boolean = true,
         tags: Array<String>?,
         folder: String?,
-        isPrivateFile: Boolean? = null,
+        isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
         responseFields: String? = null,
+        signatureHeaders: Map<String, String>? = null,
         imageKitCallback: ImageKitCallback
     ) = mRepository.upload(
         file,
@@ -94,6 +97,7 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
         isPrivateFile,
         customCoordinates,
         responseFields,
+        signatureHeaders,
         imageKitCallback
     )
 
@@ -126,9 +130,10 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
         useUniqueFilename: Boolean = true,
         tags: Array<String>?,
         folder: String?,
-        isPrivateFile: Boolean? = null,
+        isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
         responseFields: String? = null,
+        signatureHeaders: Map<String, String>? = null,
         imageKitCallback: ImageKitCallback
     ) = mRepository.upload(
         fileUrl,
@@ -139,6 +144,7 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
         isPrivateFile,
         customCoordinates,
         responseFields,
+        signatureHeaders,
         imageKitCallback
     )
 }

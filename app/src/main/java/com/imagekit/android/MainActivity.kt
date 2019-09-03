@@ -3,6 +3,7 @@ package com.imagekit.android
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.imagekit.android.entity.TransformationPosition
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -11,9 +12,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        ImageKit.init(applicationContext, Constants.CLIENT_PUBLIC_KEY, Constants.IMAGEKIT_ID, "https://ik.imagekit.io/demo", "https://ik.imagekit.io/demo")
+        ImageKit.init(applicationContext, Constants.CLIENT_PUBLIC_KEY, TransformationPosition.PATH, "https://ik.imagekit.io/demo", "https://ik.imagekit.io/demo")
 
         btUploadImage.setOnClickListener { startActivity(Intent(this@MainActivity, UploadImageActivity::class.java)) }
+
+        btUploadFile.setOnClickListener { startActivity(Intent(this@MainActivity, UploadFileActivity::class.java)) }
 
         btUrlConstruct.setOnClickListener { startActivity(Intent(this@MainActivity, FetchImageActivity::class.java)) }
     }

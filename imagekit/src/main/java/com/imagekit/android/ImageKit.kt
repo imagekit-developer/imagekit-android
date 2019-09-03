@@ -3,10 +3,12 @@ package com.imagekit.android
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import com.imagekit.android.entity.TransformationPosition
 import com.imagekit.android.exception.ApplicationContextExpectedException
 import com.imagekit.android.injection.component.DaggerUtilComponent
 import com.imagekit.android.injection.component.UtilComponent
 import com.imagekit.android.injection.module.ContextModule
+import com.imagekit.android.retrofit.NetworkManager
 import com.imagekit.android.util.SharedPrefUtil
 import javax.inject.Inject
 
@@ -14,8 +16,8 @@ import javax.inject.Inject
 class ImageKit private constructor(
     val context: Context,
     clientPublicKey: String,
-    imageKitId: String,
     imageKitEndpoint: String,
+    transformationPosition: TransformationPosition,
     authenticationEndpoint: String? = null
 ) {
 
@@ -34,9 +36,11 @@ class ImageKit private constructor(
             .inject(this)
 
         mSharedPrefUtil.setClientPublicKey(clientPublicKey)
-        mSharedPrefUtil.setImageKitId(imageKitId)
         mSharedPrefUtil.setImageKitUrlEndpoint(imageKitEndpoint)
+        mSharedPrefUtil.setTransformationPosition(transformationPosition)
         mSharedPrefUtil.setClientAuthenticationEndpoint(authenticationEndpoint)
+
+        NetworkManager.initialize()
     }
 
     companion object {
@@ -47,14 +51,20 @@ class ImageKit private constructor(
         fun init(
             context: Context,
             clientPublicKey: String,
-            imageKitId: String,
+            transformationPosition: TransformationPosition = TransformationPosition.PATH,
             imageKitEndpoint: String,
             authenticationEndpoint: String? = null
         ) {
             if (context !is Application)
                 throw ApplicationContextExpectedException()
 
-            imageKit = ImageKit(context, clientPublicKey, imageKitId, imageKitEndpoint, authenticationEndpoint)
+            imageKit = ImageKit(
+                context,
+                clientPublicKey,
+                imageKitEndpoint,
+                transformationPosition,
+                authenticationEndpoint
+            )
         }
 
         fun getInstance(): ImageKit {
