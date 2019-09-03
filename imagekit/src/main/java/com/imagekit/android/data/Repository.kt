@@ -11,6 +11,7 @@ import com.imagekit.android.entity.UploadError
 import com.imagekit.android.entity.UploadResponse
 import com.imagekit.android.retrofit.SignatureApi
 import com.imagekit.android.retrofit.UploadApi
+import com.imagekit.android.util.BitmapUtil.bitmapToFile
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,10 +21,7 @@ import okhttp3.MediaType
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Response
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -289,24 +287,5 @@ class Repository @Inject constructor(
                     message = context.getString(R.string.error_signature_generation_failed)
                 )
             )
-    }
-
-    @Throws(IOException::class)
-    private fun bitmapToFile(context: Context, filename: String, bitmap: Bitmap): File {
-        val f = File(context.cacheDir, filename)
-        f.createNewFile()
-
-        //Convert bitmap to byte array
-        val bos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos)
-        val bitmapdata = bos.toByteArray()
-
-        //write the bytes in file
-        val fos = FileOutputStream(f)
-        fos.write(bitmapdata)
-        fos.flush()
-        fos.close()
-
-        return f
     }
 }
