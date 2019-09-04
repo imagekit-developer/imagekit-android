@@ -44,4 +44,11 @@ public interface ApiInterface {
             @Query("token") String token,
             @Query("expire") String expire
     );
+
+    @GET()
+    Call<SignatureResponse> getSignature(
+            @Url String url,
+            @Query("token") String token,
+            @Query("expire") String expire
+    );
 }

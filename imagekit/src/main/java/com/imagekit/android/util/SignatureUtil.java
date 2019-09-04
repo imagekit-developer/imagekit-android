@@ -1,4 +1,4 @@
-package com.imagekit.android;
+package com.imagekit.android.util;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;

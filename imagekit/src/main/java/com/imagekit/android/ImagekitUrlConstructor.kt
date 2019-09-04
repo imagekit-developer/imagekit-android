@@ -2,6 +2,8 @@ package com.imagekit.android
 
 import android.content.Context
 import com.imagekit.android.entity.*
+import com.imagekit.android.injection.component.DaggerUtilComponent
+import com.imagekit.android.injection.module.ContextModule
 import com.imagekit.android.util.LogUtil.logError
 import com.imagekit.android.util.SharedPrefUtil
 import com.imagekit.android.util.TranformationMapping
@@ -12,8 +14,9 @@ import kotlin.math.abs
 @Suppress("unused")
 class ImagekitUrlConstructor constructor(
     private val context: Context,
-    private val endpoint: String,
-    private val imagePath: String
+    private var endpoint: String = "",
+    private val path: String,
+    private var transformationPosition: TransformationPosition? = null
 ) {
 
     @Inject
@@ -24,6 +27,18 @@ class ImagekitUrlConstructor constructor(
 
     init {
         ImageKit.getInstance()
+        val appComponent = DaggerUtilComponent.builder()
+            .contextModule(ContextModule(context))
+            .build()
+
+        appComponent
+            .inject(this)
+
+        if (endpoint.isBlank())
+            endpoint = mSharedPrefUtil.getImageKitUrlEndpoint()
+
+        if (transformationPosition == null)
+            transformationPosition = mSharedPrefUtil.getTransformationPosition()
     }
 
     /**
@@ -87,7 +102,13 @@ class ImagekitUrlConstructor constructor(
      */
     fun cropMode(cropMode: CropMode): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.cropMode] = cropMode
-        transformationList.add(String.format("%s-%s", TranformationMapping.cropMode, cropMode.value))
+        transformationList.add(
+            String.format(
+                "%s-%s",
+                TranformationMapping.cropMode,
+                cropMode.value
+            )
+        )
         return this
     }
 
@@ -193,7 +214,13 @@ class ImagekitUrlConstructor constructor(
      */
     fun namedTransformation(namedTransformation: String): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.namedTransformation] = namedTransformation
-        transformationList.add(String.format("%s-%s", TranformationMapping.namedTransformation, namedTransformation))
+        transformationList.add(
+            String.format(
+                "%s-%s",
+                TranformationMapping.namedTransformation,
+                namedTransformation
+            )
+        )
         return this
     }
 
@@ -204,7 +231,13 @@ class ImagekitUrlConstructor constructor(
      */
     fun defaultImage(defaultImage: String): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.defaultImage] = defaultImage
-        transformationList.add(String.format("%s-%s", TranformationMapping.defaultImage, defaultImage))
+        transformationList.add(
+            String.format(
+                "%s-%s",
+                TranformationMapping.defaultImage,
+                defaultImage
+            )
+        )
         return this
     }
 
@@ -275,7 +308,13 @@ class ImagekitUrlConstructor constructor(
     fun overlayImage(overlayImage: String): ImagekitUrlConstructor {
         val formattedOverlayImage = overlayImage.replace("/", "@@")
         transformationMap[TranformationMapping.overlayImage] = formattedOverlayImage
-        transformationList.add(String.format("%s-%s", TranformationMapping.overlayImage, formattedOverlayImage))
+        transformationList.add(
+            String.format(
+                "%s-%s",
+                TranformationMapping.overlayImage,
+                formattedOverlayImage
+            )
+        )
         return this
     }
 
@@ -289,7 +328,13 @@ class ImagekitUrlConstructor constructor(
      */
     fun overlayFocus(overlayFocus: OverlayFocusType): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.overlayFocus] = overlayFocus
-        transformationList.add(String.format("%s-%s", TranformationMapping.overlayFocus, overlayFocus.value))
+        transformationList.add(
+            String.format(
+                "%s-%s",
+                TranformationMapping.overlayFocus,
+                overlayFocus.value
+            )
+        )
         return this
     }
 
@@ -376,7 +421,13 @@ class ImagekitUrlConstructor constructor(
      */
     fun overlayWidth(overlayWidth: Float): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.overlayWidth] = overlayWidth
-        transformationList.add(String.format("%s-%f", TranformationMapping.overlayWidth, overlayWidth))
+        transformationList.add(
+            String.format(
+                "%s-%f",
+                TranformationMapping.overlayWidth,
+                overlayWidth
+            )
+        )
         return this
     }
 
@@ -387,7 +438,13 @@ class ImagekitUrlConstructor constructor(
      */
     fun overlayHeight(overlayHeight: Float): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.overlayHeight] = overlayHeight
-        transformationList.add(String.format("%s-%f", TranformationMapping.overlayHeight, overlayHeight))
+        transformationList.add(
+            String.format(
+                "%s-%f",
+                TranformationMapping.overlayHeight,
+                overlayHeight
+            )
+        )
         return this
     }
 
@@ -402,7 +459,13 @@ class ImagekitUrlConstructor constructor(
             logError(context.getString(R.string.error_transform_value_invalid))
 
         transformationMap[TranformationMapping.overlayText] = overlayText
-        transformationList.add(String.format("%s-%s", TranformationMapping.overlayText, overlayText))
+        transformationList.add(
+            String.format(
+                "%s-%s",
+                TranformationMapping.overlayText,
+                overlayText
+            )
+        )
         return this
     }
 
@@ -435,7 +498,13 @@ class ImagekitUrlConstructor constructor(
      */
     fun overlayTextFont(overlayTextFont: OverlayTextFont): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.overlayTextFont] = overlayTextFont
-        transformationList.add(String.format("%s-%s", TranformationMapping.overlayFocus, overlayTextFont.value))
+        transformationList.add(
+            String.format(
+                "%s-%s",
+                TranformationMapping.overlayFocus,
+                overlayTextFont.value
+            )
+        )
         return this
     }
 
@@ -446,7 +515,13 @@ class ImagekitUrlConstructor constructor(
      */
     fun overlayTextSize(overlayTextSize: Int): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.overlayTextSize] = overlayTextSize
-        transformationList.add(String.format("%s-%d", TranformationMapping.overlayTextSize, overlayTextSize))
+        transformationList.add(
+            String.format(
+                "%s-%d",
+                TranformationMapping.overlayTextSize,
+                overlayTextSize
+            )
+        )
         return this
     }
 
@@ -479,7 +554,8 @@ class ImagekitUrlConstructor constructor(
         if (!Pattern.matches("[A-Fa-f0-9]+", overlayBackgroundColor))
             logError(context.getString(R.string.error_transform_value_invalid))
 
-        transformationMap[TranformationMapping.overlayBackground] = overlayBackgroundColor.toUpperCase()
+        transformationMap[TranformationMapping.overlayBackground] =
+            overlayBackgroundColor.toUpperCase()
         transformationList.add(
             String.format(
                 "%s-%s",
@@ -501,7 +577,13 @@ class ImagekitUrlConstructor constructor(
             logError(context.getString(R.string.error_transform_value_out_of_range))
 
         transformationMap[TranformationMapping.overlayTransparency] = overlayTransparency
-        transformationList.add(String.format("%s-%d", TranformationMapping.overlayTransparency, overlayTransparency))
+        transformationList.add(
+            String.format(
+                "%s-%d",
+                TranformationMapping.overlayTransparency,
+                overlayTransparency
+            )
+        )
         return this
     }
 
@@ -626,7 +708,12 @@ class ImagekitUrlConstructor constructor(
         if (!Pattern.matches("[A-Fa-f0-9]+", borderColor))
             logError(context.getString(R.string.error_transform_value_invalid))
 
-        val s = String.format("%s-%d_%s", TranformationMapping.border, borderWidth, borderColor.toUpperCase())
+        val s = String.format(
+            "%s-%d_%s",
+            TranformationMapping.border,
+            borderWidth,
+            borderColor.toUpperCase()
+        )
         transformationMap[TranformationMapping.border] = s
         transformationList.add(s)
         return this
@@ -673,8 +760,20 @@ class ImagekitUrlConstructor constructor(
      * @param threshold Possible values include positive floating point values.
      * @return the current ImagekitUrlConstructor object.
      */
-    fun applyUnsharpMask(radius: Float, sigma: Float, amount: Float, threshold: Float): ImagekitUrlConstructor {
-        val s = String.format("%s-%f-%f-%f-%f", TranformationMapping.unsharpMask, radius, sigma, amount, threshold)
+    fun applyUnsharpMask(
+        radius: Float,
+        sigma: Float,
+        amount: Float,
+        threshold: Float
+    ): ImagekitUrlConstructor {
+        val s = String.format(
+            "%s-%f-%f-%f-%f",
+            TranformationMapping.unsharpMask,
+            radius,
+            sigma,
+            amount,
+            threshold
+        )
         transformationMap[TranformationMapping.unsharpMask] = s
         transformationList.add(s)
         return this
@@ -714,14 +813,18 @@ class ImagekitUrlConstructor constructor(
             url = String.format("%s/tr:", url)
             for (t in 0 until transformationList.size) {
                 url = when {
-                    transformationList[t].contentEquals(":") -> String.format("%s%s", url, transformationList[t])
+                    transformationList[t].contentEquals(":") -> String.format(
+                        "%s%s",
+                        url,
+                        transformationList[t]
+                    )
                     url.endsWith(":") -> String.format("%s%s", url, transformationList[t])
                     else -> String.format("%s,%s", url, transformationList[t])
                 }
             }
         }
 
-        url = String.format("%s/%s", url, imagePath)
+        url = String.format("%s/%s", url, path)
         return url
     }
 }

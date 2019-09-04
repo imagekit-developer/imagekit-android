@@ -2,7 +2,7 @@ package com.imagekit.android.retrofit
 
 import android.content.Context
 import com.imagekit.android.R
-import com.imagekit.android.SignatureUtil
+import com.imagekit.android.util.SignatureUtil
 import com.imagekit.android.entity.SignatureResponse
 import com.imagekit.android.util.LogUtil
 import com.imagekit.android.util.SharedPrefUtil
@@ -14,7 +14,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SignatureApi @Inject constructor(private val context: Context, private val sharedPrefUtil: SharedPrefUtil){
+class SignatureApi @Inject constructor(
+    private val context: Context,
+    private val sharedPrefUtil: SharedPrefUtil
+) {
 
     fun getSignature(
         headerMap: Map<String, String>? = null,
@@ -34,11 +37,16 @@ class SignatureApi @Inject constructor(private val context: Context, private val
         json.put("signature", SignatureUtil.sign(token, expire))
 
         return Single.just(
-            NetworkManager
-                .getApiInterface()
-                .getSignature(endPoint, headerMap, token, expire)
-                .execute()
-
+            if (headerMap != null)
+                NetworkManager
+                    .getApiInterface()
+                    .getSignature(endPoint, headerMap, token, expire)
+                    .execute()
+            else
+                NetworkManager
+                    .getApiInterface()
+                    .getSignature(endPoint, token, expire)
+                    .execute()
 //                    httpResponse
         ).subscribeOn(Schedulers.io())
     }

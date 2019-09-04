@@ -57,14 +57,15 @@ class ImageKit private constructor(
         ) {
             if (context !is Application)
                 throw ApplicationContextExpectedException()
+            else check(!(clientPublicKey.isBlank() || imageKitEndpoint.isBlank())) { "Missing publicKey/urlEndpoint during initialization" }
 
-            imageKit = ImageKit(
-                context,
-                clientPublicKey,
-                imageKitEndpoint,
-                transformationPosition,
-                authenticationEndpoint
-            )
+                imageKit = ImageKit(
+                    context,
+                    clientPublicKey,
+                    imageKitEndpoint,
+                    transformationPosition,
+                    authenticationEndpoint
+                )
         }
 
         fun getInstance(): ImageKit {
