@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.imagekit.android.entity.CropMode
 import com.imagekit.android.entity.Rotation
+import com.imagekit.android.entity.TransformationPosition
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_fetch_image.*
 
@@ -26,8 +27,8 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
         showImage(
             when (v!!.id) {
                 R.id.btTran1 -> {
-                    //https://ik.imagekit.io/demo/img/plant.jpeg?tr=w-300,h-200,cm-pad_resize,bg-F3F3F3
-                    ImageKit.getInstance().url("https://ik.imagekit.io/demo/img", "plant.jpeg")
+                    //https://ik.imagekit.io/demo/img/tr:w-300.00,h-200.00,cm-pad_resize,bg-F3F3F3/plant.jpeg
+                    ImageKit.getInstance().url("plant.jpeg", "https://ik.imagekit.io/demo/img")
                         .width(300f)
                         .height(200f)
                         .cropMode(CropMode.PAD_RESIZE)
@@ -35,15 +36,22 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                         .create()
                 }
                 R.id.btTran2 -> {
-                    //https://ik.imagekit.io/demo/img/tr:h-400,ar-3-2/default-image.jpg
-                    ImageKit.getInstance().url( "default-image.jpg")
+                    //https://ik.imagekit.io/demo/default-image.jpg?tr:h-400.00,ar-3-2
+                    ImageKit.getInstance().url(
+                        imagePath = "default-image.jpg",
+                        transformationPosition = TransformationPosition.QUERY
+                    )
                         .height(400f)
                         .aspectRatio(3, 2)
                         .create()
                 }
                 R.id.btTran3 -> {
-                    //https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20/medium_cafe_B1iTdD0C.jpg
-                    ImageKit.getInstance().url("https://ik.imagekit.io/demo", "medium_cafe_B1iTdD0C.jpg")
+                    //https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20
+                    ImageKit.getInstance()
+                        .url(
+                            src = "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg",
+                            transformationPosition = TransformationPosition.PATH
+                        )
                         .overlayImage("logo-white_SJwqB4Nfe.png")
                         .overlayPosX(10)
                         .overlayPosY(20)
@@ -52,15 +60,14 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 R.id.btTran4 -> {
                     //https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,ox-N10,oy-20/medium_cafe_B1iTdD0C.jpg
-                    ImageKit.getInstance().url("https://ik.imagekit.io/demo", "medium_cafe_B1iTdD0C.jpg")
-                        .overlayImage("logo-white_SJwqB4Nfe.png")
-                        .overlayNegX(-10)
-                        .overlayPosY(20)
+                    ImageKit.getInstance()
+                        .url(src = "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,ox-N10,oy-20/medium_cafe_B1iTdD0C.jpg")
                         .create()
                 }
                 R.id.btTran5 -> {
-                    //https://ik.imagekit.io/demo/img/tr:ot-Hand%20with%20a%20green%20plant,otc-264120,ots-30,ox-10,oy-10/plant.jpeg
-                    ImageKit.getInstance().url("https://ik.imagekit.io/demo/img", "plant.jpeg")
+                    //https://ik.imagekit.io/demo/img/plant.jpeg?tr=ot-Hand with a green plant,otc-264120,ots-30,ox-10,oy-10
+                    ImageKit.getInstance()
+                        .url(src = "https://ik.imagekit.io/demo/img/plant.jpeg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20")
                         .overlayText("Hand with a green plant")
                         .overlayTextColor("264120")
                         .overlayTextSize(30)
@@ -70,7 +77,8 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 R.id.btTran6 -> {
                     //https://ik.imagekit.io/demo/img/tr:w-400,h-300:rt-90/default-image.jpg
-                    ImageKit.getInstance().url("https://ik.imagekit.io/demo/img", "default-image.jpg")
+                    ImageKit.getInstance()
+                        .url(src = "https://ik.imagekit.io/demo/img/tr:ot-Hand%20with%20a%20green%20plant,otc-264120,ots-30,ox-10,oy-10/default-image.jpg")
                         .width(400f)
                         .height(300f)
                         .chainTransformation()

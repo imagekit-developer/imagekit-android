@@ -812,27 +812,41 @@ class ImagekitUrlConstructor constructor(
      * @return the Url used to fetch an image after applying the specified transformations.
      */
     fun create(): String {
-        var url = source
+        try {
+            var url = source
 
-        if (isSource) {
-            if (transformationList.isNotEmpty()) {
-                transformationPosition = TransformationPosition.QUERY
-                if (url.contains("?tr=")) {
-                    url = url.substring(0, url.indexOf("?tr="))
-                } else if (url.contains("/tr=")) {
-                    url = url.replace(url.substring(url.indexOf("/tr="), url.indexOf("/")), "")
+            if (isSource) {
+                if (transformationList.isNotEmpty()) {
+                    transformationPosition = TransformationPosition.QUERY
+                    if (url.contains("?tr=")) {
+                        url = url.substring(0, url.indexOf("?tr="))
+                    } else if (url.contains("/tr:")) {
+                        url = url.replace(
+                            url.substring(url.indexOf("/tr:"), url.lastIndexOf("/")),
+                            ""
+                        )
+                    }
+
+                    url = addQueryParams(url)
                 }
+            } else if (transformationList.isNotEmpty()) {
+                url = when (transformationPosition) {
+                    TransformationPosition.PATH -> String.format("%s/%s", addPathParams(url), path)
+                    TransformationPosition.QUERY -> addQueryParams(
+                        String.format(
+                            "%s/%s",
+                            url,
+                            path
+                        )
+                    )
+                }
+            }
 
-                url = addQueryParams(url)
-            }
-        } else if (transformationList.isNotEmpty()) {
-            url = when (transformationPosition) {
-                TransformationPosition.PATH -> String.format("%s/%s", addPathParams(url), path)
-                TransformationPosition.QUERY -> addQueryParams(String.format("%s/%s", url, path))
-            }
+            return url
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return context.getString(R.string.error_url_construction_error)
         }
-
-        return url
     }
 
     private fun addPathParams(endpoint: String): String {
@@ -855,7 +869,7 @@ class ImagekitUrlConstructor constructor(
 
     private fun addQueryParams(endpoint: String): String {
 
-        var url = String.format("%s?tr:", endpoint)
+        var url = String.format("%s?tr=", endpoint)
         for (t in 0 until transformationList.size) {
             url = when {
                 transformationList[t].contentEquals(":") -> String.format(
@@ -864,6 +878,7 @@ class ImagekitUrlConstructor constructor(
                     transformationList[t]
                 )
                 url.endsWith(":") -> String.format("%s%s", url, transformationList[t])
+                url.endsWith("=") -> String.format("%s%s", url, transformationList[t])
                 else -> String.format("%s,%s", url, transformationList[t])
             }
         }

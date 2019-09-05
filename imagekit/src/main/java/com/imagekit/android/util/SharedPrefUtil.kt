@@ -34,9 +34,9 @@ class SharedPrefUtil @Inject constructor(context: Context) {
     fun getImageKitUrlEndpoint() = mPref.getString(KEY_IMAGEKIT_URL_ENDPOINT_KEY, "")!!
 
     fun setTransformationPosition(transformationPosition: TransformationPosition) =
-        mPref.edit().putString(KEY_TRANSFORMATION_POSITION_KEY, transformationPosition.value).apply()
+        mPref.edit().putString(KEY_TRANSFORMATION_POSITION_KEY, transformationPosition.name).apply()
 
-    fun getTransformationPosition() = TransformationPosition.valueOf(mPref.getString(KEY_TRANSFORMATION_POSITION_KEY, TransformationPosition.PATH.value)!!)
+    fun getTransformationPosition() = TransformationPosition.valueOf(mPref.getString(KEY_TRANSFORMATION_POSITION_KEY, TransformationPosition.PATH.name)!!)
 
     fun setClientAuthenticationEndpoint(clientAuthenticationEndpoint: String?) =
         mPref.edit().putString(
