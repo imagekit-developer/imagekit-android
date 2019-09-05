@@ -5,25 +5,33 @@ import com.imagekit.android.entity.*
 import com.imagekit.android.injection.component.DaggerUtilComponent
 import com.imagekit.android.injection.module.ContextModule
 import com.imagekit.android.util.LogUtil.logError
-import com.imagekit.android.util.SharedPrefUtil
 import com.imagekit.android.util.TranformationMapping
+import java.util.*
 import java.util.regex.Pattern
-import javax.inject.Inject
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 import kotlin.math.abs
 
 @Suppress("unused")
 class ImagekitUrlConstructor constructor(
     private val context: Context,
-    private var endpoint: String = "",
-    private val path: String,
-    private var transformationPosition: TransformationPosition? = null
+    private var source: String,
+    private var transformationPosition: TransformationPosition
 ) {
-
-    @Inject
-    internal lateinit var mSharedPrefUtil: SharedPrefUtil
-
     private val transformationList: MutableList<String> = ArrayList()
     private val transformationMap = HashMap<String, Any>()
+    private var path: String? = null
+    private var isSource: Boolean = true
+
+    constructor(
+        context: Context,
+        endpoint: String,
+        path: String,
+        transformationPosition: TransformationPosition
+    ) : this(context, endpoint, transformationPosition) {
+        this.path = path
+        isSource = false
+    }
 
     init {
         ImageKit.getInstance()
@@ -33,12 +41,6 @@ class ImagekitUrlConstructor constructor(
 
         appComponent
             .inject(this)
-
-        if (endpoint.isBlank())
-            endpoint = mSharedPrefUtil.getImageKitUrlEndpoint()
-
-        if (transformationPosition == null)
-            transformationPosition = mSharedPrefUtil.getTransformationPosition()
     }
 
     /**
@@ -478,12 +480,13 @@ class ImagekitUrlConstructor constructor(
         if (!Pattern.matches("[A-Fa-f0-9]+", overlayTextColor))
             logError(context.getString(R.string.error_transform_value_invalid))
 
-        transformationMap[TranformationMapping.overlayTextColor] = overlayTextColor.toUpperCase()
+        transformationMap[TranformationMapping.overlayTextColor] =
+            overlayTextColor.toUpperCase(Locale.getDefault())
         transformationList.add(
             String.format(
                 "%s-%s",
                 TranformationMapping.overlayTextColor,
-                overlayTextColor.toUpperCase()
+                overlayTextColor.toUpperCase(Locale.getDefault())
             )
         )
         return this
@@ -555,12 +558,12 @@ class ImagekitUrlConstructor constructor(
             logError(context.getString(R.string.error_transform_value_invalid))
 
         transformationMap[TranformationMapping.overlayBackground] =
-            overlayBackgroundColor.toUpperCase()
+            overlayBackgroundColor.toUpperCase(Locale.getDefault())
         transformationList.add(
             String.format(
                 "%s-%s",
                 TranformationMapping.overlayBackground,
-                overlayBackgroundColor.toUpperCase()
+                overlayBackgroundColor.toUpperCase(Locale.getDefault())
             )
         )
         return this
@@ -662,12 +665,13 @@ class ImagekitUrlConstructor constructor(
         if (!Pattern.matches("[A-Fa-f0-9]+", backgroundHexColor))
             logError(context.getString(R.string.error_transform_value_invalid))
 
-        transformationMap[TranformationMapping.backgroundColor] = backgroundHexColor.toUpperCase()
+        transformationMap[TranformationMapping.backgroundColor] =
+            backgroundHexColor.toUpperCase(Locale.getDefault())
         transformationList.add(
             String.format(
                 "%s-%s",
                 TranformationMapping.backgroundColor,
-                backgroundHexColor.toUpperCase()
+                backgroundHexColor.toUpperCase(Locale.getDefault())
             )
         )
         return this
@@ -685,12 +689,13 @@ class ImagekitUrlConstructor constructor(
         if (!Pattern.matches("[A-Fa-f0-9]{6}[0-9]{2}+", backgroundRGBAColor))
             logError(context.getString(R.string.error_transform_value_invalid))
 
-        transformationMap[TranformationMapping.backgroundColor] = backgroundRGBAColor.toUpperCase()
+        transformationMap[TranformationMapping.backgroundColor] =
+            backgroundRGBAColor.toUpperCase(Locale.getDefault())
         transformationList.add(
             String.format(
                 "%s-%s",
                 TranformationMapping.backgroundColor,
-                backgroundRGBAColor.toUpperCase()
+                backgroundRGBAColor.toUpperCase(Locale.getDefault())
             )
         )
         return this
@@ -712,7 +717,7 @@ class ImagekitUrlConstructor constructor(
             "%s-%d_%s",
             TranformationMapping.border,
             borderWidth,
-            borderColor.toUpperCase()
+            borderColor.toUpperCase(Locale.getDefault())
         )
         transformationMap[TranformationMapping.border] = s
         transformationList.add(s)
@@ -807,24 +812,62 @@ class ImagekitUrlConstructor constructor(
      * @return the Url used to fetch an image after applying the specified transformations.
      */
     fun create(): String {
-        var url = endpoint
+        var url = source
 
-        if (transformationList.isNotEmpty()) {
-            url = String.format("%s/tr:", url)
-            for (t in 0 until transformationList.size) {
-                url = when {
-                    transformationList[t].contentEquals(":") -> String.format(
-                        "%s%s",
-                        url,
-                        transformationList[t]
-                    )
-                    url.endsWith(":") -> String.format("%s%s", url, transformationList[t])
-                    else -> String.format("%s,%s", url, transformationList[t])
+        if (isSource) {
+            if (transformationList.isNotEmpty()) {
+                transformationPosition = TransformationPosition.QUERY
+                if (url.contains("?tr=")) {
+                    url = url.substring(0, url.indexOf("?tr="))
+                } else if (url.contains("/tr=")) {
+                    url = url.replace(url.substring(url.indexOf("/tr="), url.indexOf("/")), "")
                 }
+
+                url = addQueryParams(url)
+            }
+        } else if (transformationList.isNotEmpty()) {
+            url = when (transformationPosition) {
+                TransformationPosition.PATH -> String.format("%s/%s", addPathParams(url), path)
+                TransformationPosition.QUERY -> addQueryParams(String.format("%s/%s", url, path))
             }
         }
 
-        url = String.format("%s/%s", url, path)
+        return url
+    }
+
+    private fun addPathParams(endpoint: String): String {
+
+        var url = String.format("%s/tr:", endpoint)
+        for (t in 0 until transformationList.size) {
+            url = when {
+                transformationList[t].contentEquals(":") -> String.format(
+                    "%s%s",
+                    url,
+                    transformationList[t]
+                )
+                url.endsWith(":") -> String.format("%s%s", url, transformationList[t])
+                else -> String.format("%s,%s", url, transformationList[t])
+            }
+        }
+
+        return url
+    }
+
+    private fun addQueryParams(endpoint: String): String {
+
+        var url = String.format("%s?tr:", endpoint)
+        for (t in 0 until transformationList.size) {
+            url = when {
+                transformationList[t].contentEquals(":") -> String.format(
+                    "%s%s",
+                    url,
+                    transformationList[t]
+                )
+                url.endsWith(":") -> String.format("%s%s", url, transformationList[t])
+                else -> String.format("%s,%s", url, transformationList[t])
+            }
+        }
+
         return url
     }
 }

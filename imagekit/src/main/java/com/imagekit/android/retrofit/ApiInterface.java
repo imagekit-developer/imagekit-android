@@ -5,9 +5,9 @@ import com.imagekit.android.entity.SignatureResponse;
 
 import java.util.Map;
 
+import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.Multipart;
@@ -22,7 +22,7 @@ import retrofit2.http.Url;
 public interface ApiInterface {
     @Multipart
     @POST("https://api.imagekit.io/v1/files/upload")
-    Call<ResponseBody> uploadImage(
+    Single<ResponseBody> uploadImage(
             @Part MultipartBody.Part file
             , @Part MultipartBody.Part publicKey
             , @Part MultipartBody.Part signature
@@ -38,7 +38,7 @@ public interface ApiInterface {
     );
 
     @GET()
-    Call<SignatureResponse> getSignature(
+    Single<SignatureResponse> getSignature(
             @Url String url,
             @HeaderMap Map<String, String> headerMap,
             @Query("token") String token,
@@ -46,7 +46,7 @@ public interface ApiInterface {
     );
 
     @GET()
-    Call<SignatureResponse> getSignature(
+    Single<SignatureResponse> getSignature(
             @Url String url,
             @Query("token") String token,
             @Query("expire") String expire

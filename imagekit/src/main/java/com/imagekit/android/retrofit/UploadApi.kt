@@ -3,11 +3,11 @@ package com.imagekit.android.retrofit
 import android.content.Context
 import com.imagekit.android.entity.SignatureResponse
 import com.imagekit.android.util.SharedPrefUtil
+import io.reactivex.Single
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
-import retrofit2.Call
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -28,7 +28,7 @@ class UploadApi @Inject constructor(
         customCoordinates: String? = null,
         responseFields: String? = null,
         expire: String
-    ): Call<ResponseBody> {
+    ): Single<ResponseBody> {
 
         val commaSeparatedTags = getCommaSeparatedTagsFromTags(tags)
 

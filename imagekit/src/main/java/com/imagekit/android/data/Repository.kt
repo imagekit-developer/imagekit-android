@@ -17,10 +17,8 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
-import okhttp3.MediaType
 import okhttp3.ResponseBody
-import org.json.JSONObject
-import retrofit2.Response
+import retrofit2.HttpException
 import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -64,54 +62,54 @@ class Repository @Inject constructor(
                         fileName,
                         image
                     )
-                ).subscribeOn(Schedulers.io()).toObservable(),
-                BiFunction<Response<SignatureResponse>, File, Response<ResponseBody>> { result: Response<SignatureResponse>, file: File ->
-                    if (result.isSuccessful)
-                        uploadApi.getFileUploadCall(
-                            result.body()!!,
-                            file,
-                            fileName,
-                            useUniqueFilename,
-                            tags,
-                            folder,
-                            isPrivateFile,
-                            customCoordinates,
-                            responseFields,
-                            expire
-                        ).execute()
-                    else {
-                        val json = JSONObject()
-                        json.put(
-                            "message",
-                            context.getString(R.string.error_signature_generation_failed)
-                        )
-                        Response.error(
-                            400,
-                            ResponseBody.create(
-                                MediaType.parse("application/json"),
-                                json.toString()
-                            )
-                        )
-                    }
+                ).toObservable(),
+                BiFunction<SignatureResponse, File, Observable<ResponseBody>> { result: SignatureResponse, file: File ->
+                    uploadApi.getFileUploadCall(
+                        result,
+                        file,
+                        fileName,
+                        useUniqueFilename,
+                        tags,
+                        folder,
+                        isPrivateFile,
+                        customCoordinates,
+                        responseFields,
+                        expire
+                    ).toObservable()
                 })
+                ?.subscribeOn(Schedulers.io())
+                ?.flatMap { result -> result }
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe({ result ->
-                    if (result.isSuccessful) {
-                        imageKitCallback.onSuccess(
-                            Gson().fromJson(
-                                result.body()!!.string(),
-                                UploadResponse::class.java
-                            )
+                    imageKitCallback.onSuccess(
+                        Gson().fromJson(
+                            result.string(),
+                            UploadResponse::class.java
                         )
-                    } else {
-                        imageKitCallback.onError(
-                            Gson().fromJson(
-                                result.errorBody()!!.string(),
-                                UploadError::class.java
-                            )
-                        )
-                    }
-                }, { imageKitCallback.onError(UploadError(true)) })
+                    )
+                }, { e ->
+                    if (e is HttpException) {
+                        e.response()?.let {
+                            try {
+                                imageKitCallback.onError(
+                                    Gson().fromJson(
+                                        it.errorBody()!!.string(),
+                                        UploadError::class.java
+                                    )
+                                )
+                            } catch (exception: IllegalStateException) {
+                                imageKitCallback.onError(
+                                    UploadError(
+                                        exception = true,
+                                        statusNumber = e.code(),
+                                        message = e.message()
+                                    )
+                                )
+                            }
+                        }
+                    } else
+                        imageKitCallback.onError(UploadError(true))
+                })
         } else
             imageKitCallback.onError(
                 UploadError(
@@ -149,58 +147,53 @@ class Repository @Inject constructor(
             DURATION_EXPIRY_MINUTES
         )).toString()
         val signatureSingle = signatureApi.getSignature(signatureHeaders, expire)
+
         if (signatureSingle != null) {
             signatureSingle
                 .subscribeOn(Schedulers.io())
                 .flatMap { result ->
-                    Single.just(
-                        if (result.isSuccessful)
-                            uploadApi.getFileUploadCall(
-                                result.body()!!,
-                                file,
-                                fileName,
-                                useUniqueFilename,
-                                tags,
-                                folder,
-                                isPrivateFile,
-                                customCoordinates,
-                                responseFields,
-                                expire
-                            ).execute()
-                        else {
-                            val json = JSONObject()
-                            json.put(
-                                "message",
-                                context.getString(R.string.error_signature_generation_failed)
-                            )
-                            Response.error(
-                                400,
-                                ResponseBody.create(
-                                    MediaType.parse("application/json"),
-                                    json.toString()
-                                )
-                            )
-                        }
+                    uploadApi.getFileUploadCall(
+                        result,
+                        file,
+                        fileName,
+                        useUniqueFilename,
+                        tags,
+                        folder,
+                        isPrivateFile,
+                        customCoordinates,
+                        responseFields,
+                        expire
                     )
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result ->
-                    if (result.isSuccessful) {
-                        imageKitCallback.onSuccess(
-                            Gson().fromJson(
-                                result.body()!!.string(),
-                                UploadResponse::class.java
-                            )
+                }.observeOn(AndroidSchedulers.mainThread())?.subscribe({ result ->
+                    imageKitCallback.onSuccess(
+                        Gson().fromJson(
+                            result.string(),
+                            UploadResponse::class.java
                         )
-                    } else {
-                        imageKitCallback.onError(
-                            Gson().fromJson(
-                                result.errorBody()!!.string(),
-                                UploadError::class.java
-                            )
-                        )
-                    }
-                }, { imageKitCallback.onError(UploadError(true)) })
+                    )
+                }, { e ->
+                    if (e is HttpException) {
+                        e.response()?.let {
+                            try {
+                                imageKitCallback.onError(
+                                    Gson().fromJson(
+                                        it.errorBody()!!.string(),
+                                        UploadError::class.java
+                                    )
+                                )
+                            } catch (exception: IllegalStateException) {
+                                imageKitCallback.onError(
+                                    UploadError(
+                                        exception = true,
+                                        statusNumber = e.code(),
+                                        message = e.message()
+                                    )
+                                )
+                            }
+                        }
+                    } else
+                        imageKitCallback.onError(UploadError(true))
+                })
         } else
             imageKitCallback.onError(
                 UploadError(
@@ -232,54 +225,50 @@ class Repository @Inject constructor(
             signatureSingle
                 .subscribeOn(Schedulers.io())
                 .flatMap { result ->
-                    Single.just(
-                        if (result.isSuccessful)
-                            uploadApi.getFileUploadCall(
-                                result.body()!!,
-                                fileUrl,
-                                fileName,
-                                useUniqueFilename,
-                                tags,
-                                folder,
-                                isPrivateFile,
-                                customCoordinates,
-                                responseFields,
-                                expire
-                            ).execute()
-                        else {
-                            val json = JSONObject()
-                            json.put(
-                                "message",
-                                context.getString(R.string.error_signature_generation_failed)
-                            )
-                            Response.error(
-                                400,
-                                ResponseBody.create(
-                                    MediaType.parse("application/json"),
-                                    json.toString()
-                                )
-                            )
-                        }
+                    uploadApi.getFileUploadCall(
+                        result,
+                        fileUrl,
+                        fileName,
+                        useUniqueFilename,
+                        tags,
+                        folder,
+                        isPrivateFile,
+                        customCoordinates,
+                        responseFields,
+                        expire
                     )
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
-                    if (result.isSuccessful) {
-                        imageKitCallback.onSuccess(
-                            Gson().fromJson(
-                                result.body()!!.string(),
-                                UploadResponse::class.java
-                            )
+                    imageKitCallback.onSuccess(
+                        Gson().fromJson(
+                            result.string(),
+                            UploadResponse::class.java
                         )
-                    } else {
-                        imageKitCallback.onError(
-                            Gson().fromJson(
-                                result.errorBody()!!.string(),
-                                UploadError::class.java
-                            )
-                        )
-                    }
-                }, { imageKitCallback.onError(UploadError(true)) })
+                    )
+                }, { e ->
+                    if (e is HttpException) {
+                        e.response()?.let {
+                            try {
+                                imageKitCallback.onError(
+                                    Gson().fromJson(
+                                        it.errorBody()!!.string(),
+                                        UploadError::class.java
+                                    )
+                                )
+                            } catch (exception: IllegalStateException) {
+                                imageKitCallback.onError(
+                                    UploadError(
+                                        exception = true,
+                                        statusNumber = e.code(),
+                                        message = e.message()
+                                    )
+                                )
+                            }
+                        }
+                    } else
+                        imageKitCallback.onError(UploadError(true))
+                })
         } else
             imageKitCallback.onError(
                 UploadError(
