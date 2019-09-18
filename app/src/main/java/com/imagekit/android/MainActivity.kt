@@ -12,12 +12,39 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        ImageKit.init(applicationContext, Constants.CLIENT_PUBLIC_KEY, TransformationPosition.PATH, "https://ik.imagekit.io/demo", "https://ik.imagekit.io/demo")
+        ImageKit.init(
+            context = applicationContext,
+            clientPublicKey = Constants.CLIENT_PUBLIC_KEY,
+            transformationPosition = TransformationPosition.PATH,
+            imageKitEndpoint = "https://ik.imagekit.io/demo",
+            authenticationEndpoint = "https://ik.imagekit.io/demo"
+        )
 
-        btUploadImage.setOnClickListener { startActivity(Intent(this@MainActivity, UploadImageActivity::class.java)) }
+        btUploadImage.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@MainActivity,
+                    UploadImageActivity::class.java
+                )
+            )
+        }
 
-        btUploadFile.setOnClickListener { startActivity(Intent(this@MainActivity, UploadFileActivity::class.java)) }
+        btUploadFile.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@MainActivity,
+                    UploadFileActivity::class.java
+                )
+            )
+        }
 
-        btUrlConstruct.setOnClickListener { startActivity(Intent(this@MainActivity, FetchImageActivity::class.java)) }
+        btUrlConstruct.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@MainActivity,
+                    FetchImageActivity::class.java
+                )
+            )
+        }
     }
 }

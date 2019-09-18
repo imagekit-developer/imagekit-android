@@ -55,7 +55,7 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
 
             val filename = "icLauncher.png"
             ImageKit.getInstance().uploader().upload(
-                image = bitmap!!
+                file = bitmap!!
                 , fileName = filename
                 , useUniqueFilename = true
                 , tags = arrayOf("nice", "copy", "books")

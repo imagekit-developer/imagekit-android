@@ -31,7 +31,7 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
      * @param imageKitCallback Callback to communicate the result of the upload operation
      */
     fun upload(
-        image: Bitmap,
+        file: Bitmap,
         fileName: String,
         useUniqueFilename: Boolean = true,
         tags: Array<String>?,
@@ -42,7 +42,7 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
         signatureHeaders: Map<String, String>? = null,
         imageKitCallback: ImageKitCallback
     ) = mRepository.upload(
-        image,
+        file,
         fileName,
         useUniqueFilename,
         tags,
@@ -125,7 +125,7 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
      * @param imageKitCallback Callback to communicate the result of the upload operation
      */
     fun upload(
-        fileUrl: String,
+        file: String,
         fileName: String,
         useUniqueFilename: Boolean = true,
         tags: Array<String>?,
@@ -136,7 +136,7 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
         signatureHeaders: Map<String, String>? = null,
         imageKitCallback: ImageKitCallback
     ) = mRepository.upload(
-        fileUrl,
+        file,
         fileName,
         useUniqueFilename,
         tags,
