@@ -65,9 +65,10 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                         .create()
                 }
                 R.id.btTran5 -> {
-                    //https://ik.imagekit.io/demo/img/plant.jpeg?tr=ot-Hand with a green plant,otc-264120,ots-30,ox-10,oy-10
+                    //https://ik.imagekit.io/demo/img/plant.jpeg?tr=w-400,ot-Hand with a green plant,otc-264120,ots-30,ox-10,oy-10
                     ImageKit.getInstance()
                         .url(src = "https://ik.imagekit.io/demo/img/plant.jpeg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20")
+                        .addCustomTransformation("w", "400")
                         .overlayText("Hand with a green plant")
                         .overlayTextColor("264120")
                         .overlayTextSize(30)

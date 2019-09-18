@@ -73,7 +73,7 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
 
         val filename = "icLauncher.png"
         ImageKit.getInstance().uploader().upload(
-            fileUrl = "https://ik.imagekit.io/demo/img/default-image.jpg"
+            file = "https://ik.imagekit.io/demo/img/default-image.jpg"
             , fileName = filename
             , useUniqueFilename = true
             , tags = arrayOf("nice", "copy", "books")
