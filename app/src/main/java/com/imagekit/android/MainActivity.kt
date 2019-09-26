@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
             clientPublicKey = Constants.CLIENT_PUBLIC_KEY,
             transformationPosition = TransformationPosition.PATH,
             imageKitEndpoint = "https://ik.imagekit.io/demo",
-            authenticationEndpoint = "https://ik.imagekit.io/demo"
+            authenticationEndpoint = "https://imagekit.io/temp/client-side-upload-signature"
         )
 
         btUploadImage.setOnClickListener {

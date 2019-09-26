@@ -41,14 +41,12 @@ public interface ApiInterface {
     Single<SignatureResponse> getSignature(
             @Url String url,
             @HeaderMap Map<String, String> headerMap,
-            @Query("token") String token,
             @Query("expire") String expire
     );
 
     @GET()
     Single<SignatureResponse> getSignature(
             @Url String url,
-            @Query("token") String token,
             @Query("expire") String expire
     );
 }

@@ -5,7 +5,6 @@ import com.imagekit.android.R
 import com.imagekit.android.entity.SignatureResponse
 import com.imagekit.android.util.LogUtil
 import com.imagekit.android.util.SharedPrefUtil
-import com.imagekit.android.util.SignatureUtil
 import io.reactivex.Single
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -26,17 +25,13 @@ class SignatureApi @Inject constructor(
             return null
         }
 
-        val token =
-            "apiKey=CLIENT_PUBLIC_KEY&filename=filename&timestamp=${System.currentTimeMillis()}"
-
-//        return if (headerMap != null)
-//                NetworkManager
-//                    .getApiInterface()
-//                    .getSignature(endPoint, headerMap, token, expire)
-//            else
-//                NetworkManager
-//                    .getApiInterface()
-//                    .getSignature(endPoint, token, expire)
-                return Single.just(SignatureResponse(token, SignatureUtil.sign(token, expire)))
+        return if (headerMap != null)
+            NetworkManager
+                .getApiInterface()
+                .getSignature(endPoint, headerMap, expire)
+        else
+            NetworkManager
+                .getApiInterface()
+                .getSignature(endPoint, expire)
     }
 }
