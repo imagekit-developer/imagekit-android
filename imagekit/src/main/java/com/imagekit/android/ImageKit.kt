@@ -50,19 +50,19 @@ class ImageKit private constructor(
 
         fun init(
             context: Context,
-            clientPublicKey: String,
+            publicKey: String,
+            urlEndpoint: String,
             transformationPosition: TransformationPosition = TransformationPosition.PATH,
-            imageKitEndpoint: String,
             authenticationEndpoint: String? = null
         ) {
             if (context !is Application)
                 throw ApplicationContextExpectedException()
-            else check(!(clientPublicKey.isBlank() || imageKitEndpoint.isBlank())) { "Missing publicKey/urlEndpoint during initialization" }
+            else check(!(publicKey.isBlank() || urlEndpoint.isBlank())) { "Missing publicKey/urlEndpoint during initialization" }
 
             imageKit = ImageKit(
                 context,
-                clientPublicKey,
-                imageKitEndpoint,
+                publicKey,
+                urlEndpoint,
                 transformationPosition,
                 authenticationEndpoint
             )
@@ -80,11 +80,11 @@ class ImageKit private constructor(
     }
 
     fun url(
-        imagePath: String,
-        endpoint: String = mSharedPrefUtil.getImageKitUrlEndpoint(),
+        urlEndpoint: String = mSharedPrefUtil.getImageKitUrlEndpoint(),
+        path: String,
         transformationPosition: TransformationPosition = mSharedPrefUtil.getTransformationPosition()
     ) =
-        ImagekitUrlConstructor(context, endpoint, imagePath, transformationPosition)
+        ImagekitUrlConstructor(context, urlEndpoint, path, transformationPosition)
 
     fun url(
         src: String,

@@ -38,7 +38,7 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                 R.id.btTran2 -> {
                     //https://ik.imagekit.io/demo/default-image.jpg?tr:h-400.00,ar-3-2
                     ImageKit.getInstance().url(
-                        imagePath = "default-image.jpg",
+                        path = "default-image.jpg",
                         transformationPosition = TransformationPosition.QUERY
                     )
                         .height(400f)

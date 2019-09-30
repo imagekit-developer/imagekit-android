@@ -25,10 +25,10 @@ class ImagekitUrlConstructor constructor(
 
     constructor(
         context: Context,
-        endpoint: String,
+        urlEndpoint: String,
         path: String,
         transformationPosition: TransformationPosition
-    ) : this(context, endpoint, transformationPosition) {
+    ) : this(context, urlEndpoint, transformationPosition) {
         this.path = path
         isSource = false
     }

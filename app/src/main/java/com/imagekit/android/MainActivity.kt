@@ -14,9 +14,9 @@ class MainActivity : AppCompatActivity() {
 
         ImageKit.init(
             context = applicationContext,
-            clientPublicKey = Constants.CLIENT_PUBLIC_KEY,
+            publicKey = Constants.CLIENT_PUBLIC_KEY,
             transformationPosition = TransformationPosition.PATH,
-            imageKitEndpoint = "https://ik.imagekit.io/demo",
+            urlEndpoint = "https://ik.imagekit.io/demo",
             authenticationEndpoint = "https://imagekit.io/temp/client-side-upload-signature"
         )
 
