@@ -36,7 +36,7 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                         .create()
                 }
                 R.id.btTran2 -> {
-                    //https://ik.imagekit.io/demo/default-image.jpg?tr:h-400.00,ar-3-2
+                    //https://ik.imagekit.io/demo/default-image.jpg?tr=h-400.00,ar-3-2
                     ImageKit.getInstance().url(
                         path = "default-image.jpg",
                         transformationPosition = TransformationPosition.QUERY
@@ -77,7 +77,7 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                         .create()
                 }
                 R.id.btTran6 -> {
-                    //https://ik.imagekit.io/demo/img/tr:w-400,h-300:rt-90/default-image.jpg
+                    //https://ik.imagekit.io/demo/img/default-image.jpg?tr=w-400.00,h-300.00:rt-90
                     ImageKit.getInstance()
                         .url(src = "https://ik.imagekit.io/demo/img/tr:ot-Hand%20with%20a%20green%20plant,otc-264120,ots-30,ox-10,oy-10/default-image.jpg")
                         .width(400f)
