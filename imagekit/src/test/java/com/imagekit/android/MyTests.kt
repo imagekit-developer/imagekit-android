@@ -51,7 +51,7 @@ class MyTests {
     @Test
     fun urlConstructionTransformation1() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/img/tr:w-300.00,h-200.00,cm-pad_resize,bg-F3F3F3/plant.jpeg"
+            "https://ik.imagekit.io/demo/img/tr:w-300.00,h-200.00,cm-pad_resize,bg-F3F3F3/plant.jpeg?sdk=android-${BuildConfig.API_VERSION}"
         val actualTransformation =
             ImageKit.getInstance().url("https://ik.imagekit.io/demo/img", "plant.jpeg")
                 .width(300f)
@@ -66,7 +66,7 @@ class MyTests {
     @Test
     fun urlConstructionTransformation2() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/default-image.jpg?tr=h-400.00,ar-3-2"
+            "https://ik.imagekit.io/demo/default-image.jpg?sdk=android-${BuildConfig.API_VERSION}&tr=h-400.00,ar-3-2"
         val actualTransformation =
             ImageKit.getInstance().url(
                 path = "default-image.jpg",
@@ -82,7 +82,7 @@ class MyTests {
     @Test
     fun urlConstructionTransformation3() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?sdk=android-${BuildConfig.API_VERSION}&tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
@@ -112,7 +112,7 @@ class MyTests {
     @Test
     fun urlConstructionTransformation5() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/img/plant.jpeg?tr=w-400,ot-Hand with a green plant,otc-264120,ots-30,ox-10,oy-10"
+            "https://ik.imagekit.io/demo/img/plant.jpeg?sdk=android-${BuildConfig.API_VERSION}&tr=w-400,ot-Hand with a green plant,otc-264120,ots-30,ox-10,oy-10"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(src = "https://ik.imagekit.io/demo/img/plant.jpeg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20")
@@ -130,7 +130,7 @@ class MyTests {
     @Test
     fun urlConstructionTransformation6() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/img/default-image.jpg?tr=w-400.00,h-300.00:rt-90"
+            "https://ik.imagekit.io/demo/img/default-image.jpg?sdk=android-${BuildConfig.API_VERSION}&tr=w-400.00,h-300.00:rt-90"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(src = "https://ik.imagekit.io/demo/img/tr:ot-Hand%20with%20a%20green%20plant,otc-264120,ots-30,ox-10,oy-10/default-image.jpg")

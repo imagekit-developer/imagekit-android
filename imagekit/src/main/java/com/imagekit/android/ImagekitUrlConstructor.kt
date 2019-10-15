@@ -6,11 +6,9 @@ import com.imagekit.android.injection.component.DaggerUtilComponent
 import com.imagekit.android.injection.module.ContextModule
 import com.imagekit.android.util.LogUtil.logError
 import com.imagekit.android.util.TranformationMapping
+import java.lang.Math.abs
 import java.util.*
 import java.util.regex.Pattern
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
-import kotlin.math.abs
 
 @Suppress("unused")
 class ImagekitUrlConstructor constructor(
@@ -831,7 +829,7 @@ class ImagekitUrlConstructor constructor(
                 }
             } else if (transformationList.isNotEmpty()) {
                 url = when (transformationPosition) {
-                    TransformationPosition.PATH -> String.format("%s/%s", addPathParams(url), path)
+                    TransformationPosition.PATH -> String.format("%s/%s?sdk=android-${BuildConfig.API_VERSION}", addPathParams(url), path)
                     TransformationPosition.QUERY -> addQueryParams(
                         String.format(
                             "%s/%s",
@@ -868,8 +866,7 @@ class ImagekitUrlConstructor constructor(
     }
 
     private fun addQueryParams(endpoint: String): String {
-
-        var url = String.format("%s?tr=", endpoint)
+        var url = String.format("%s?sdk=android-${BuildConfig.API_VERSION}&tr=", endpoint)
         for (t in 0 until transformationList.size) {
             url = when {
                 transformationList[t].contentEquals(":") -> String.format(
