@@ -11,7 +11,7 @@ ImageKit is a complete image optimization and transformation solution that comes
 Android client for Imagekit Integration
 
 ## Requirements
-The library requires Android version 5.0.0 (API level 21 - Lollipop) and up.
+The library requires Android version 5.0.0 (API level 21 - Lollipop) or above.
 
 ## Installation
 In your root build.gradle file, add:
