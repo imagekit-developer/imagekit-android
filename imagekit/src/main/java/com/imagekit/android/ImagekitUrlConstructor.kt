@@ -829,7 +829,7 @@ class ImagekitUrlConstructor constructor(
                 }
             } else if (transformationList.isNotEmpty()) {
                 url = when (transformationPosition) {
-                    TransformationPosition.PATH -> String.format("%s/%s?sdk=android-${BuildConfig.API_VERSION}", addPathParams(url), path)
+                    TransformationPosition.PATH -> String.format("%s/%s?sdk-version=android-${BuildConfig.API_VERSION}", addPathParams(url), path)
                     TransformationPosition.QUERY -> addQueryParams(
                         String.format(
                             "%s/%s",
@@ -866,7 +866,7 @@ class ImagekitUrlConstructor constructor(
     }
 
     private fun addQueryParams(endpoint: String): String {
-        var url = String.format("%s?sdk=android-${BuildConfig.API_VERSION}&tr=", endpoint)
+        var url = String.format("%s?sdk-version=android-${BuildConfig.API_VERSION}&tr=", endpoint)
         for (t in 0 until transformationList.size) {
             url = when {
                 transformationList[t].contentEquals(":") -> String.format(
