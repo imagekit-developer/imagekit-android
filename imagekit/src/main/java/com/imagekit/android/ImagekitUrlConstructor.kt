@@ -6,6 +6,7 @@ import com.imagekit.android.injection.component.DaggerUtilComponent
 import com.imagekit.android.injection.module.ContextModule
 import com.imagekit.android.util.LogUtil.logError
 import com.imagekit.android.util.TranformationMapping
+import com.imagekit.android.util.TranformationMapping.overlayTransparency
 import java.lang.Math.abs
 import java.util.*
 import java.util.regex.Pattern
@@ -179,7 +180,7 @@ class ImagekitUrlConstructor constructor(
      * @param flag Accepts boolean value of either true or false. Default value is false.
      * @return the current ImagekitUrlConstructor object.
      */
-    fun showInGrayscale(flag: Boolean): ImagekitUrlConstructor {
+    fun effectGray(flag: Boolean): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.eGrayscale] = flag
 
         if (flag)
@@ -197,7 +198,7 @@ class ImagekitUrlConstructor constructor(
      * @param dpr Possible values: 0.1 to 5.0
      * @return the current ImagekitUrlConstructor object.
      */
-    fun devicePixelRatio(dpr: Float): ImagekitUrlConstructor {
+    fun dpr(dpr: Float): ImagekitUrlConstructor {
         if (dpr < 0.1 || dpr > 5)
             logError(context.getString(R.string.error_transform_value_out_of_range))
 
@@ -212,7 +213,7 @@ class ImagekitUrlConstructor constructor(
      * @param namedTransformation
      * @return the current ImagekitUrlConstructor object.
      */
-    fun namedTransformation(namedTransformation: String): ImagekitUrlConstructor {
+    fun named(namedTransformation: String): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.namedTransformation] = namedTransformation
         transformationList.add(
             String.format(
@@ -248,7 +249,7 @@ class ImagekitUrlConstructor constructor(
      * @param flag Possible values include true and false. Default value - false
      * @return the current ImagekitUrlConstructor object.
      */
-    fun setProgressiveJPEG(flag: Boolean): ImagekitUrlConstructor {
+    fun progressive(flag: Boolean): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.progressiveJPEG] = flag
         transformationList.add(String.format("%s-%b", TranformationMapping.progressiveJPEG, flag))
         return this
@@ -262,7 +263,7 @@ class ImagekitUrlConstructor constructor(
      * @param flag Possible values include true and false. Default value - false
      * @return the current ImagekitUrlConstructor object.
      */
-    fun setLossless(flag: Boolean): ImagekitUrlConstructor {
+    fun lossless(flag: Boolean): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.lossless] = flag
         transformationList.add(String.format("%s-%b", TranformationMapping.lossless, flag))
         return this
@@ -275,9 +276,9 @@ class ImagekitUrlConstructor constructor(
      * the background from the edges, leaving only the central object in the picture.
      * @param flag Possible values include true and false.
      * @return the current ImagekitUrlConstructor object.
-     * @see trimEdges
+     * @see trim
      */
-    fun trimEdges(flag: Boolean): ImagekitUrlConstructor {
+    fun trim(flag: Boolean): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.trimEdges] = flag
         transformationList.add(String.format("%s-%b", TranformationMapping.trimEdges, flag))
         return this
@@ -289,9 +290,9 @@ class ImagekitUrlConstructor constructor(
      * This transformation will trim the background from the edges, leaving only the central object in the picture.
      * @param value Number of pixels from the edge that need to be removed across all four sides.
      * @return the current ImagekitUrlConstructor object.
-     * @see trimEdges
+     * @see trim
      */
-    fun trimEdges(value: Int): ImagekitUrlConstructor {
+    fun trim(value: Int): ImagekitUrlConstructor {
         if (value < 1 || value > 99)
             logError(context.getString(R.string.error_transform_value_out_of_range))
 
@@ -342,53 +343,18 @@ class ImagekitUrlConstructor constructor(
      * Method used to provide more granular control over the positioning of the overlay image on the input image.
      * The top left corner of the input image is considered as (0,0) and the bottom right corner is considered as (w, h)
      * where w is the width and h is the height of the input image.
-     * @param overlayPosX Possible values include zero and positive integers.
-     * @return the current ImagekitUrlConstructor object.
-     * or the overlay focus has already been applied
-     * or overlayPosX is less than 0.
-     */
-    fun overlayPosX(overlayPosX: Int): ImagekitUrlConstructor {
-        if (overlayPosX < 0)
-            logError(context.getString(R.string.error_transform_value_out_of_range))
-
-        transformationMap[TranformationMapping.overlayX] = overlayPosX
-        transformationList.add(String.format("%s-%d", TranformationMapping.overlayX, overlayPosX))
-        return this
-    }
-
-    /**
-     * Method used to provide more granular control over the positioning of the overlay image on the input image.
-     * The top left corner of the input image is considered as (0,0) and the bottom right corner is considered as (w, h)
-     * where w is the width and h is the height of the input image.
-     * @param overlayPosY Possible values include zero and positive integers.
-     * @return the current ImagekitUrlConstructor object.
-     * or the overlay focus has already been applied
-     * or overlayPosY is less than 0.
-     */
-    fun overlayPosY(overlayPosY: Int): ImagekitUrlConstructor {
-        if (overlayPosY < 0)
-            logError(context.getString(R.string.error_transform_value_out_of_range))
-
-        transformationMap[TranformationMapping.overlayY] = overlayPosY
-        transformationList.add(String.format("%s-%d", TranformationMapping.overlayY, overlayPosY))
-        return this
-    }
-
-    /**
-     * Method used to provide more granular control over the positioning of the overlay image on the input image.
      * Negative values are supported with a leading capital N in front of the value provided. The value provided
      * is subtracted from the original dimension of the image & positioned accordingly.
-     * @param overlayNegX Possible values include integers less than zero.
+     * @param overlayX Possible values include all integers.
      * @return the current ImagekitUrlConstructor object.
      * or the overlay focus has already been applied
-     * or overlayPosY is not a negative integer.
-     * @see overlayPosX
      */
-    fun overlayNegX(overlayNegX: Int): ImagekitUrlConstructor {
-        if (overlayNegX >= 0)
-            logError(context.getString(R.string.error_transform_value_out_of_range))
+    fun overlayX(overlayX: Int): ImagekitUrlConstructor {
+        val s = if(overlayX < 0)
+            String.format("%s-N%s", TranformationMapping.overlayX, abs(overlayX))
+        else
+            String.format("%s-%d", TranformationMapping.overlayY, overlayX)
 
-        val s = String.format("%s-N%s", TranformationMapping.overlayX, abs(overlayNegX))
         transformationMap[TranformationMapping.overlayX] = s
         transformationList.add(s)
         return this
@@ -396,19 +362,20 @@ class ImagekitUrlConstructor constructor(
 
     /**
      * Method used to provide more granular control over the positioning of the overlay image on the input image.
+     * The top left corner of the input image is considered as (0,0) and the bottom right corner is considered as (w, h)
+     * where w is the width and h is the height of the input image.
      * Negative values are supported with a leading capital N in front of the value provided. The value provided
      * is subtracted from the original dimension of the image & positioned accordingly.
-     * @param overlayNegY Possible values include integers less than zero.
+     * @param overlayY Possible values include all integers.
      * @return the current ImagekitUrlConstructor object.
      * or the overlay focus has already been applied
-     * or overlayPosY is not a negative integer.
-     * @see overlayPosY
      */
-    fun overlayNegY(overlayNegY: Int): ImagekitUrlConstructor {
-        if (overlayNegY >= 0)
-            logError(context.getString(R.string.error_transform_value_out_of_range))
+    fun overlayY(overlayY: Int): ImagekitUrlConstructor {
+        val s = if(overlayY < 0)
+            String.format("%s-N%s", TranformationMapping.overlayY, abs(overlayY))
+        else
+            String.format("%s-%d", TranformationMapping.overlayY, overlayY)
 
-        val s = String.format("%s-N%s", TranformationMapping.overlayY, abs(overlayNegY))
         transformationMap[TranformationMapping.overlayY] = s
         transformationList.add(s)
         return this
@@ -492,17 +459,17 @@ class ImagekitUrlConstructor constructor(
 
     /**
      * Method used to specify the font family for the overlaid text.
-     * @param overlayTextFont
+     * @param overlayTextFontFamily
      * @return the current ImagekitUrlConstructor object.
-     * @see OverlayTextFont
+     * @see overlayTextFontFamily
      */
-    fun overlayTextFont(overlayTextFont: OverlayTextFont): ImagekitUrlConstructor {
-        transformationMap[TranformationMapping.overlayTextFont] = overlayTextFont
+    fun overlayTextFontFamily(overlayTextFontFamily: OverlayTextFont): ImagekitUrlConstructor {
+        transformationMap[TranformationMapping.overlayTextFont] = overlayTextFontFamily
         transformationList.add(
             String.format(
                 "%s-%s",
                 TranformationMapping.overlayFocus,
-                overlayTextFont.value
+                overlayTextFontFamily.value
             )
         )
         return this
@@ -510,16 +477,16 @@ class ImagekitUrlConstructor constructor(
 
     /**
      * Method used to specify the size of the overlaid text.
-     * @param overlayTextSize Possible values include any integer. Default value - 14px
+     * @param overlayTextFontSize Possible values include any integer. Default value - 14px
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayTextSize(overlayTextSize: Int): ImagekitUrlConstructor {
-        transformationMap[TranformationMapping.overlayTextSize] = overlayTextSize
+    fun overlayTextFontSize(overlayTextFontSize: Int): ImagekitUrlConstructor {
+        transformationMap[TranformationMapping.overlayTextSize] = overlayTextFontSize
         transformationList.add(
             String.format(
                 "%s-%d",
                 TranformationMapping.overlayTextSize,
-                overlayTextSize
+                overlayTextFontSize
             )
         )
         return this
@@ -546,20 +513,20 @@ class ImagekitUrlConstructor constructor(
 
     /**
      * Method used to specify the colour of background canvas to be overlaid. Possible values include a valid RGB Hex code.
-     * @param overlayBackgroundColor
+     * @param overlayBackground
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayBackgroundColor(overlayBackgroundColor: String): ImagekitUrlConstructor {
-        if (!Pattern.matches("[A-Fa-f0-9]+", overlayBackgroundColor))
+    fun overlayBackground(overlayBackground: String): ImagekitUrlConstructor {
+        if (!Pattern.matches("[A-Fa-f0-9]+", overlayBackground))
             logError(context.getString(R.string.error_transform_value_invalid))
 
         transformationMap[TranformationMapping.overlayBackground] =
-            overlayBackgroundColor.toUpperCase(Locale.getDefault())
+            overlayBackground.toUpperCase(Locale.getDefault())
         transformationList.add(
             String.format(
                 "%s-%s",
                 TranformationMapping.overlayBackground,
-                overlayBackgroundColor.toUpperCase(Locale.getDefault())
+                overlayBackground.toUpperCase(Locale.getDefault())
             )
         )
         return this
@@ -568,19 +535,19 @@ class ImagekitUrlConstructor constructor(
     /**
      * Method used to specify the transparency level for the overlaid image.
      * Note Overlay transparency is currently supported for overlay texts & backgrounds only.
-     * @param overlayTransparency Possible values include integer from 1 to 9.
+     * @param overlayAlpha Possible values include integer from 1 to 9.
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayTransparency(overlayTransparency: Int): ImagekitUrlConstructor {
-        if (overlayTransparency !in 1..9)
+    fun overlayAlpha(overlayAlpha: Int): ImagekitUrlConstructor {
+        if (overlayAlpha !in 1..9)
             logError(context.getString(R.string.error_transform_value_out_of_range))
 
-        transformationMap[TranformationMapping.overlayTransparency] = overlayTransparency
+        transformationMap[overlayTransparency] = overlayAlpha
         transformationList.add(
             String.format(
                 "%s-%d",
-                TranformationMapping.overlayTransparency,
-                overlayTransparency
+                overlayTransparency,
+                overlayAlpha
             )
         )
         return this
@@ -594,7 +561,7 @@ class ImagekitUrlConstructor constructor(
      * @param flag Default value - false
      * @return the current ImagekitUrlConstructor object.
      */
-    fun includeColorProfile(flag: Boolean): ImagekitUrlConstructor {
+    fun colorProfile(flag: Boolean): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.colorProfile] = flag
         transformationList.add(String.format("%s-%b", TranformationMapping.colorProfile, flag))
         return this
@@ -609,7 +576,7 @@ class ImagekitUrlConstructor constructor(
      * @param flag Default value - false
      * @return the current ImagekitUrlConstructor object.
      */
-    fun includeImageMetadata(flag: Boolean): ImagekitUrlConstructor {
+    fun metadata(flag: Boolean): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.imageMetadata] = flag
         transformationList.add(String.format("%s-%b", TranformationMapping.imageMetadata, flag))
         return this
@@ -623,7 +590,7 @@ class ImagekitUrlConstructor constructor(
      * @see Rotation
      * @return the current ImagekitUrlConstructor object.
      */
-    fun rotate(rotation: Rotation): ImagekitUrlConstructor {
+    fun rotation(rotation: Rotation): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.rotate] = rotation
         transformationList.add(String.format("%s-%s", TranformationMapping.rotate, rotation.value))
         return this
@@ -653,45 +620,22 @@ class ImagekitUrlConstructor constructor(
     }
 
     /**
-     * Method used to specify the background color as RGB hex code (e.g. FF0000) to be used for the image.
-     * @param backgroundHexColor Default value - Black 000000
+     * Method used to specify the background color as RGB hex code (e.g. FF0000) or an RGBA code (e.g. FFAABB50)
+     * to be used for the image.
+     * @param backgroundColor Default value - Black 000000
      * @return the current ImagekitUrlConstructor object.
      */
-    fun backgroundHexColor(backgroundHexColor: String): ImagekitUrlConstructor {
-        if (!Pattern.matches("[A-Fa-f0-9]+", backgroundHexColor))
+    fun background(backgroundColor: String): ImagekitUrlConstructor {
+        if (!Pattern.matches("[A-Fa-f0-9]+", backgroundColor) && !Pattern.matches("[A-Fa-f0-9]{6}[0-9]{2}+", backgroundColor))
             logError(context.getString(R.string.error_transform_value_invalid))
 
         transformationMap[TranformationMapping.backgroundColor] =
-            backgroundHexColor.toUpperCase(Locale.getDefault())
+            backgroundColor.toUpperCase(Locale.getDefault())
         transformationList.add(
             String.format(
                 "%s-%s",
                 TranformationMapping.backgroundColor,
-                backgroundHexColor.toUpperCase(Locale.getDefault())
-            )
-        )
-        return this
-    }
-
-    /**
-     * Method used to specify the background color as an RGBA code (e.g. FFAABB50) to be used for the image.
-     * @param backgroundRGBAColor If you specify an 8-character background, the last two characters should be numbers from
-     * 00 to 99 which indicate the opacity level of the background. 00 corresponds to an opacity of 0.00,
-     * 01 corresponds to an opacity of 0.01 and so on.
-     * Default value - Black 000000
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun backgroundRGBAColor(backgroundRGBAColor: String): ImagekitUrlConstructor {
-        if (!Pattern.matches("[A-Fa-f0-9]{6}[0-9]{2}+", backgroundRGBAColor))
-            logError(context.getString(R.string.error_transform_value_invalid))
-
-        transformationMap[TranformationMapping.backgroundColor] =
-            backgroundRGBAColor.toUpperCase(Locale.getDefault())
-        transformationList.add(
-            String.format(
-                "%s-%s",
-                TranformationMapping.backgroundColor,
-                backgroundRGBAColor.toUpperCase(Locale.getDefault())
+                backgroundColor.toUpperCase(Locale.getDefault())
             )
         )
         return this
@@ -727,7 +671,7 @@ class ImagekitUrlConstructor constructor(
      * @param flag
      * @return the current ImagekitUrlConstructor object.
      */
-    fun stretchContrast(flag: Boolean): ImagekitUrlConstructor {
+    fun effectContrast(flag: Boolean): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.contrastStretch] = flag
 
         if (flag)
@@ -744,7 +688,7 @@ class ImagekitUrlConstructor constructor(
      * @param value
      * @return the current ImagekitUrlConstructor object.
      */
-    fun sharpen(value: Int = 0): ImagekitUrlConstructor {
+    fun effectSharpen(value: Int = 0): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.sharpen] = value
         transformationList.add(String.format("%s-%d", TranformationMapping.sharpen, value))
         return this
@@ -761,7 +705,7 @@ class ImagekitUrlConstructor constructor(
      * @param threshold Possible values include positive floating point values.
      * @return the current ImagekitUrlConstructor object.
      */
-    fun applyUnsharpMask(
+    fun effectUSM(
         radius: Float,
         sigma: Float,
         amount: Float,
