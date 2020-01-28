@@ -57,7 +57,7 @@ class MyTests {
                 .width(300f)
                 .height(200f)
                 .cropMode(CropMode.PAD_RESIZE)
-                .backgroundHexColor("F3F3F3")
+                .background("F3F3F3")
                 .create()
 
         assertEquals(expectedTransformation, actualTransformation)
@@ -90,8 +90,8 @@ class MyTests {
                     transformationPosition = TransformationPosition.PATH
                 )
                 .overlayImage("logo-white_SJwqB4Nfe.png")
-                .overlayPosX(10)
-                .overlayPosY(20)
+                .overlayX(10)
+                .overlayY(20)
                 .create()
 
         assertEquals(expectedTransformation, actualTransformation)
@@ -119,9 +119,9 @@ class MyTests {
                 .addCustomTransformation("w", "400")
                 .overlayText("Hand with a green plant")
                 .overlayTextColor("264120")
-                .overlayTextSize(30)
-                .overlayPosX(10)
-                .overlayPosY(10)
+                .overlayTextFontSize(30)
+                .overlayX(10)
+                .overlayY(10)
                 .create()
 
         assertEquals(expectedTransformation, actualTransformation)
@@ -137,7 +137,7 @@ class MyTests {
                 .width(400f)
                 .height(300f)
                 .chainTransformation()
-                .rotate(Rotation.VALUE_90)
+                .rotation(Rotation.VALUE_90)
                 .create()
 
         assertEquals(expectedTransformation, actualTransformation)

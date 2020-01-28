@@ -32,7 +32,7 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                         .width(300f)
                         .height(200f)
                         .cropMode(CropMode.PAD_RESIZE)
-                        .backgroundHexColor("F3F3F3")
+                        .background("F3F3F3")
                         .create()
                 }
                 R.id.btTran2 -> {
@@ -53,8 +53,8 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                             transformationPosition = TransformationPosition.PATH
                         )
                         .overlayImage("logo-white_SJwqB4Nfe.png")
-                        .overlayPosX(10)
-                        .overlayPosY(20)
+                        .overlayX(10)
+                        .overlayY(20)
                         .create()
 
                 }
@@ -71,9 +71,9 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                         .addCustomTransformation("w", "400")
                         .overlayText("Hand with a green plant")
                         .overlayTextColor("264120")
-                        .overlayTextSize(30)
-                        .overlayPosX(10)
-                        .overlayPosY(10)
+                        .overlayTextFontSize(30)
+                        .overlayX(10)
+                        .overlayY(10)
                         .create()
                 }
                 R.id.btTran6 -> {
@@ -83,7 +83,7 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                         .width(400f)
                         .height(300f)
                         .chainTransformation()
-                        .rotate(Rotation.VALUE_90)
+                        .rotation(Rotation.VALUE_90)
                         .create()
                 }
                 else ->

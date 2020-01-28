@@ -353,7 +353,7 @@ class ImagekitUrlConstructor constructor(
         val s = if(overlayX < 0)
             String.format("%s-N%s", TranformationMapping.overlayX, abs(overlayX))
         else
-            String.format("%s-%d", TranformationMapping.overlayY, overlayX)
+            String.format("%s-%d", TranformationMapping.overlayX, overlayX)
 
         transformationMap[TranformationMapping.overlayX] = s
         transformationList.add(s)
