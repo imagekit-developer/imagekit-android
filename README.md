@@ -140,7 +140,6 @@ The complete list of transformations supported and their usage in ImageKit can b
 | overlayAlpha                  | oa                      |
 | overlayTextTypography         | ott                     |
 | overlayBackground             | obg                     |
-| overlayImageTrim              | oit                     |
 | progressive                   | pr                      |
 | lossless                      | lo                      |
 | trim                          | t                       |
@@ -152,7 +151,6 @@ The complete list of transformations supported and their usage in ImageKit can b
 | effectUSM                     | e-usm                   |
 | effectContrast                | e-contrast              |
 | effectGray                    | e-grayscale             |
-| original                      | orig                    |
 
 ### File Upload
 The SDK provides a simple interface using the `ImageKit.getInstance().uploader().upload` method to upload files to the ImageKit Media Library. It accepts all the parameters supported by the [ImageKit Upload API](https://docs.imagekit.io/api-reference/upload-file-api/client-side-file-upload#request-structure-multipart-form-data).
