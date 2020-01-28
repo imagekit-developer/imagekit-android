@@ -494,7 +494,6 @@ class ImagekitUrlConstructor constructor(
      * Method used to specify the font family for the overlaid text.
      * @param overlayTextFont
      * @return the current ImagekitUrlConstructor object.
-     * @see <a href="https://docs.imagekit.io/#server-side-image-upload">Supported fonts</a>.
      * @see OverlayTextFont
      */
     fun overlayTextFont(overlayTextFont: OverlayTextFont): ImagekitUrlConstructor {
@@ -531,7 +530,6 @@ class ImagekitUrlConstructor constructor(
      * Note Bold & Italics are not supported for all provided fonts.
      * @param overlayTextTypography
      * @return the current ImagekitUrlConstructor object
-     * @see <a href="https://docs.imagekit.io/#server-side-image-upload">Supported fonts</a>.
      * @see OverlayTextTypography
      */
     fun overlayTextTypography(overlayTextTypography: OverlayTextTypography): ImagekitUrlConstructor {
@@ -785,7 +783,6 @@ class ImagekitUrlConstructor constructor(
     /**
      * Some transformations are dependent on the sequence in which they are carried out.
      * Method used to add sequence dependent steps in a transform chain to obtain predictable results.
-     * @see <a href="https://docs.imagekit.io/#chained-transformations">Chained Transformations</a>.
      * @return the current ImagekitUrlConstructor object.
      */
     fun chainTransformation(): ImagekitUrlConstructor {
