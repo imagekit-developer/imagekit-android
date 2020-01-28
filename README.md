@@ -70,41 +70,42 @@ This project has a sample application under `sample` folder. The sample applicat
 #### Using image path
 ```kotlin
 // https://ik.imagekit.io/your_imagekit_id/default-image.jpg?tr=h-400.00,ar-3-2
-ImageKit.getInstance().url(
-                        path = "default-image.jpg",
-                        transformationPosition = TransformationPosition.QUERY
-                    )
-                        .height(400f)
-                        .aspectRatio(3, 2)
-                        .create()
+ImageKit.getInstance()
+        .url(
+            path = "default-image.jpg",
+            transformationPosition = TransformationPosition.QUERY
+        )
+        .height(400f)
+        .aspectRatio(3, 2)
+        .create()
 ```
 
 #### Using full image URL
 ```kotlin
 // https://ik.imagekit.io/your_imagekit_id/medium_cafe_B1iTdD0C.jpg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20
 ImageKit.getInstance()
-                        .url(
-                            src = https://ik.imagekit.io/your_imagekit_id/medium_cafe_B1iTdD0C.jpg",
-                            transformationPosition = TransformationPosition.PATH
-                        )
-                        .overlayImage("logo-white_SJwqB4Nfe.png")
-                        .overlayPosX(10)
-                        .overlayPosY(20)
-                        .create()
+        .url(
+            src = https://ik.imagekit.io/your_imagekit_id/medium_cafe_B1iTdD0C.jpg",
+            transformationPosition = TransformationPosition.PATH
+        )
+        .overlayImage("logo-white_SJwqB4Nfe.png")
+        .overlayPosX(10)
+        .overlayPosY(20)
+        .create()
 ```
 
 #### Using a custom parameter
 ```kotlin
 // https://ik.imagekit.io/your_imagekit_id/plant.jpeg?tr=w-400,ot-Hand with a green plant,otc-264120,ots-30,ox-10,oy-10
 ImageKit.getInstance()
-    .url(src = "https://ik.imagekit.io/your_imagekit_id/plant.jpeg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20")
-    .addCustomTransformation("w", "400")
-    .overlayText("Hand with a green plant")
-    .overlayTextColor("264120")
-    .overlayTextSize(30)
-    .overlayPosX(10)
-    .overlayPosY(10)
-    .create()
+        .url(src = "https://ik.imagekit.io/your_imagekit_id/plant.jpeg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20")
+        .addCustomTransformation("w", "400")
+        .overlayText("Hand with a green plant")
+        .overlayTextColor("264120")
+        .overlayTextSize(30)
+        .overlayPosX(10)
+        .overlayPosY(10)
+        .create()
 ```
 
 ### List of supported transformations
