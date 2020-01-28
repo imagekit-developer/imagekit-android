@@ -8,10 +8,6 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
-/**
- * Created by Jaison on 01/03/16.
- */
 public class NetworkManager {
 
     private static final String TAG = "Application Handler";
@@ -29,6 +25,7 @@ public class NetworkManager {
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(logging)
+                .addInterceptor(new BuildVersionQueryInterceptor())
                 .build();
 
 

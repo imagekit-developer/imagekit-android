@@ -494,7 +494,6 @@ class ImagekitUrlConstructor constructor(
      * Method used to specify the font family for the overlaid text.
      * @param overlayTextFont
      * @return the current ImagekitUrlConstructor object.
-     * @see <a href="https://docs.imagekit.io/#server-side-image-upload">Supported fonts</a>.
      * @see OverlayTextFont
      */
     fun overlayTextFont(overlayTextFont: OverlayTextFont): ImagekitUrlConstructor {
@@ -531,7 +530,6 @@ class ImagekitUrlConstructor constructor(
      * Note Bold & Italics are not supported for all provided fonts.
      * @param overlayTextTypography
      * @return the current ImagekitUrlConstructor object
-     * @see <a href="https://docs.imagekit.io/#server-side-image-upload">Supported fonts</a>.
      * @see OverlayTextTypography
      */
     fun overlayTextTypography(overlayTextTypography: OverlayTextTypography): ImagekitUrlConstructor {
@@ -785,7 +783,6 @@ class ImagekitUrlConstructor constructor(
     /**
      * Some transformations are dependent on the sequence in which they are carried out.
      * Method used to add sequence dependent steps in a transform chain to obtain predictable results.
-     * @see <a href="https://docs.imagekit.io/#chained-transformations">Chained Transformations</a>.
      * @return the current ImagekitUrlConstructor object.
      */
     fun chainTransformation(): ImagekitUrlConstructor {
@@ -829,7 +826,7 @@ class ImagekitUrlConstructor constructor(
                 }
             } else if (transformationList.isNotEmpty()) {
                 url = when (transformationPosition) {
-                    TransformationPosition.PATH -> String.format("%s/%s?sdk=android-${BuildConfig.API_VERSION}", addPathParams(url), path)
+                    TransformationPosition.PATH -> String.format("%s/%s?sdk-version=android-${BuildConfig.API_VERSION}", addPathParams(url), path)
                     TransformationPosition.QUERY -> addQueryParams(
                         String.format(
                             "%s/%s",
@@ -866,7 +863,7 @@ class ImagekitUrlConstructor constructor(
     }
 
     private fun addQueryParams(endpoint: String): String {
-        var url = String.format("%s?sdk=android-${BuildConfig.API_VERSION}&tr=", endpoint)
+        var url = String.format("%s?sdk-version=android-${BuildConfig.API_VERSION}&tr=", endpoint)
         for (t in 0 until transformationList.size) {
             url = when {
                 transformationList[t].contentEquals(":") -> String.format(

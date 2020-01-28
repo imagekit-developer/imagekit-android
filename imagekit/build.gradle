@@ -21,7 +21,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String", "API_VERSION", "\"1.0\""
+        buildConfigField "String", "API_VERSION", "\"1.0.0\""
     }
 
     buildTypes {
