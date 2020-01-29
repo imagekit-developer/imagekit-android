@@ -30,7 +30,7 @@ data class UploadResponse(
         if (size != other.size) return false
         if (fileType != other.fileType) return false
         if (filePath != other.filePath) return false
-        if (!tags.contentEquals(other.tags)) return false
+        if (!tags.equals(other.tags)) return false
         if (isPrivateFile != other.isPrivateFile) return false
         if (customCoordinates != other.customCoordinates) return false
         if (metadata != other.metadata) return false
@@ -48,7 +48,7 @@ data class UploadResponse(
         result = 31 * result + size
         result = 31 * result + fileType.hashCode()
         result = 31 * result + filePath.hashCode()
-        result = 31 * result + tags.contentHashCode()
+        result = 31 * result + tags.hashCode()
         result = 31 * result + isPrivateFile.hashCode()
         result = 31 * result + customCoordinates.hashCode()
         result = 31 * result + metadata.hashCode()
