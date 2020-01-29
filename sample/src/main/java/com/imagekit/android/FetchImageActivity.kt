@@ -28,7 +28,7 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
             when (v!!.id) {
                 R.id.btTran1 -> {
                     //https://ik.imagekit.io/demo/img/tr:w-300.00,h-200.00,cm-pad_resize,bg-F3F3F3/plant.jpeg
-                    ImageKit.getInstance().url("https://ik.imagekit.io/demo/img", "plant.jpeg")
+                    ImageKit.getInstance().url("plant.jpeg", "https://ik.imagekit.io/demo/img")
                         .width(300f)
                         .height(200f)
                         .cropMode(CropMode.PAD_RESIZE)
@@ -87,7 +87,7 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                         .create()
                 }
                 else ->
-                    ImageKit.getInstance().url("https://ik.imagekit.io/demo/img", "plant.jpeg")
+                    ImageKit.getInstance().url("plant.jpeg", "https://ik.imagekit.io/demo/img" )
                         .create()
             }
         )

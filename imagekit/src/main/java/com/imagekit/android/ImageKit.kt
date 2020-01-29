@@ -48,6 +48,9 @@ class ImageKit private constructor(
         @SuppressLint("StaticFieldLeak")
         private var imageKit: ImageKit? = null
 
+        const val IK_VERSION_KEY = "ik-sdk-version"
+
+        @JvmOverloads
         fun init(
             context: Context,
             publicKey: String,
@@ -79,9 +82,9 @@ class ImageKit private constructor(
         private lateinit var appComponent: UtilComponent
     }
 
-    fun url(
-        urlEndpoint: String = mSharedPrefUtil.getImageKitUrlEndpoint(),
+    @JvmOverloads fun url(
         path: String,
+        urlEndpoint: String = mSharedPrefUtil.getImageKitUrlEndpoint(),
         transformationPosition: TransformationPosition = mSharedPrefUtil.getTransformationPosition()
     ) =
         ImagekitUrlConstructor(context, urlEndpoint, path, transformationPosition)
