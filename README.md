@@ -196,7 +196,9 @@ The complete list of transformations supported and their usage in ImageKit can b
 ### File Upload
 The SDK provides a simple interface using the `ImageKit.getInstance().uploader().upload` method to upload files to the ImageKit Media Library. It accepts all the parameters supported by the [ImageKit Upload API](https://docs.imagekit.io/api-reference/upload-file-api/client-side-file-upload#request-structure-multipart-form-data).
 
-The SDK invokes the endpoint speicified by `authenticationEndpoint` parameter at time of SDK initialization to get `token`, `expiry` and `signature`. You can implement this endpoint on your server-side using the utility function provided in all [server-side SDKs](https://docs.imagekit.io/api-reference/api-introduction/sdk#server-side-sdks).
+Make sure that you have specified `authenticationEndpoint` during SDK initialization. The SDK makes an HTTP GET request to this endpoint and expects a JSON response with three fields i.e. `signature`, `token` and `expire`.  
+
+[Learn how to implement authenticationEndpoint](https://docs.imagekit.io/api-reference/upload-file-api/client-side-file-upload#how-to-implement-authenticationendpoint-endpoint) on your server.
 
 #### Upload file from bitmap
 ``` kotlin
