@@ -1,9 +1,9 @@
 # ImageKit.io Android SDK
 
-[![Release](https://jitpack.io/v/User/Repo.svg)]
-(https://jitpack.io/#User/Repo)
+[![Release](https://jitpack.io/v/imagekit-developer/imagekit-android.svg)]
+(https://jitpack.io/#imagekit-developer/imagekit-android)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Twitter Follow](https://img.shields.io/twitter/follow/imagekitio?label=Follow&style=social)](https://twitter.com/ApacheAirflow)
+[![Twitter Follow](https://img.shields.io/twitter/follow/imagekitio?label=Follow&style=social)](https://twitter.com/imagekitio)
 
 Android SDK for [ImageKit.io](https://imagekit.io) which implements client-side upload and URL generation for use inside an Android application.
 
@@ -44,7 +44,7 @@ ImageKit.init(
             context = applicationContext,
             publicKey = "your_public_api_key",
             urlEndpoint = "https://ik.imagekit.io/your_imagekit_id",
-            transformationPosition = "path",
+            transformationPosition = TransformationPosition.PATH,
             authenticationEndpoint = "http://www.yourserver.com/auth"
         )
 ```
@@ -56,8 +56,8 @@ import com.imagekit.android.ImageKit;
 ImageKit.Companion.init(
         getApplicationContext(),
         "your_public_api_key",
-        "path",
         "https://ik.imagekit.io/your_imagekit_id",
+        TransformationPosition.PATH,
         "http://www.yourserver.com/auth"
     );
 ```
@@ -69,6 +69,7 @@ This project has a sample application under `sample` folder. The sample applicat
 ### URL construction
 #### Using image path
 ```kotlin
+// Kotlin
 // https://ik.imagekit.io/your_imagekit_id/default-image.jpg?tr=h-400.00,ar-3-2
 ImageKit.getInstance()
         .url(
@@ -79,6 +80,20 @@ ImageKit.getInstance()
         .aspectRatio(3, 2)
         .create()
 ```
+
+```java
+// Java
+// https://ik.imagekit.io/your_imagekit_id/default-image.jpg?tr=h-400.00,ar-3-2
+ImageKit.Companion.getInstance()
+        .url(
+            "default-image.jpg",
+            TransformationPosition.QUERY
+        )
+        .height(400f)
+        .aspectRatio(3, 2)
+        .create()
+```
+
 
 #### Using full image URL
 ```kotlin
@@ -94,11 +109,38 @@ ImageKit.getInstance()
         .create()
 ```
 
+```java
+// https://ik.imagekit.io/your_imagekit_id/medium_cafe_B1iTdD0C.jpg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20
+ImageKit.Companion.getInstance()
+        .url(
+            "https://ik.imagekit.io/your_imagekit_id/medium_cafe_B1iTdD0C.jpg",
+            TransformationPosition.PATH
+        )
+        .overlayImage("logo-white_SJwqB4Nfe.png")
+        .overlayPosX(10)
+        .overlayPosY(20)
+        .create()
+```
+
 #### Using a custom parameter
 ```kotlin
 // https://ik.imagekit.io/your_imagekit_id/plant.jpeg?tr=w-400,ot-Hand with a green plant,otc-264120,ots-30,ox-10,oy-10
 ImageKit.getInstance()
         .url(src = "https://ik.imagekit.io/your_imagekit_id/plant.jpeg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20")
+        .addCustomTransformation("w", "400")
+        .overlayText("Hand with a green plant")
+        .overlayTextColor("264120")
+        .overlayTextSize(30)
+        .overlayPosX(10)
+        .overlayPosY(10)
+        .create()
+```
+
+```java
+// Java
+// https://ik.imagekit.io/your_imagekit_id/plant.jpeg?tr=w-400,ot-Hand with a green plant,otc-264120,ots-30,ox-10,oy-10
+ImageKit.Companion.getInstance()
+        .url("https://ik.imagekit.io/your_imagekit_id/plant.jpeg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20")
         .addCustomTransformation("w", "400")
         .overlayText("Hand with a green plant")
         .overlayTextColor("264120")
@@ -159,9 +201,8 @@ The SDK invokes the endpoint speicified by `authenticationEndpoint` parameter at
 
 #### Upload file from bitmap
 ``` kotlin
-val filename = "file-name.jpg"
-val timestamp = System.currentTimeMillis()
-ImageKit.getInstance().uploadImage(
+// Kotlin
+ImageKit.getInstance().uploader().uploadImage(
     file = bitmap!!
     , fileName = filename
     , useUniqueFilename = false
@@ -171,10 +212,21 @@ ImageKit.getInstance().uploadImage(
 )
 ```
 
+``` kotlin
+// Java
+ImageKit.Companion.getInstance().uploader().uploadImage(
+    bitmap,
+    filename,
+    false, // useUniqueFilename
+    new String[]{"nice", "copy", "books"}, // tags, 
+    "/dummy/folder/", 
+    imageKitCallback
+)
+```
+
 #### Upload file from a remote URL
 ``` kotlin
-val filename = "file-name.jpg"
-val timestamp = System.currentTimeMillis()
+// Kotlin
 ImageKit.getInstance().uploader().upload(
     file = "https://ik.imagekit.io/demo/img/default-image.jpg"
     , fileName = filename
@@ -185,8 +237,23 @@ ImageKit.getInstance().uploader().upload(
 )
 ```
 
+``` java
+// Java
+ImageKit.Companion.getInstance().uploader().upload(
+    "https://ik.imagekit.io/demo/img/default-image.jpg", 
+    filename, 
+    false, // useUniqueFilename
+    new String[]{"nice", "copy", "books"}, // tags, 
+    "/dummy/folder/", 
+    imageKitCallback
+)
+```
+
+
+
 #### Upload file using binary
 ```kotlin
+// Kotlin
 ImageKit.getInstance().uploader().upload(
     file = file!!
     , fileName = file!!.name
@@ -194,6 +261,18 @@ ImageKit.getInstance().uploader().upload(
     , tags = arrayOf("nice", "copy", "books")
     , folder = "/dummy/folder/"
     , imageKitCallback = this
+)
+```
+
+```java
+// Java
+ImageKit.Companion.getInstance().uploader().upload(
+    file,
+    filename, 
+    false, // useUniqueFilename
+    new String[]{"nice", "copy", "books"}, // tags, 
+    "/dummy/folder/", 
+    imageKitCallback
 )
 ```
 
