@@ -1,10 +1,12 @@
-package com.imagekit.android
+package com.imagekit.android.sample
 
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.imagekit.android.ImageKit
+import com.imagekit.android.ImageKitCallback
 import com.imagekit.android.entity.UploadError
 import com.imagekit.android.entity.UploadResponse
 import kotlinx.android.synthetic.main.activity_upload_image.*

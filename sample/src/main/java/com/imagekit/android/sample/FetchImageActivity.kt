@@ -1,8 +1,9 @@
-package com.imagekit.android
+package com.imagekit.android.sample
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.imagekit.android.ImageKit
 import com.imagekit.android.entity.CropMode
 import com.imagekit.android.entity.Rotation
 import com.imagekit.android.entity.TransformationPosition
