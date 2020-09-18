@@ -15,7 +15,7 @@ import javax.inject.Inject
 @Suppress("unused")
 class ImageKit private constructor(
     val context: Context,
-    clientPublicKey: String,
+    clientPublicKey: String = "",
     imageKitEndpoint: String,
     transformationPosition: TransformationPosition,
     authenticationEndpoint: String? = null
@@ -53,14 +53,14 @@ class ImageKit private constructor(
         @JvmOverloads
         fun init(
             context: Context,
-            publicKey: String,
+            publicKey: String = "",
             urlEndpoint: String,
             transformationPosition: TransformationPosition = TransformationPosition.PATH,
             authenticationEndpoint: String? = null
         ) {
             if (context !is Application)
                 throw ApplicationContextExpectedException()
-            else check(!(publicKey.isBlank() || urlEndpoint.isBlank())) { "Missing publicKey/urlEndpoint during initialization" }
+            else check(!(urlEndpoint.isBlank())) { "Missing urlEndpoint during initialization" }
 
             imageKit = ImageKit(
                 context,
