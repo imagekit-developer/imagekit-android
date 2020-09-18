@@ -13,9 +13,8 @@ import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 import kotlin.test.assertEquals
 
-
 @RunWith(MockitoJUnitRunner::class)
-class MyTests {
+class Tests {
 
     private val clientPublicKey: String = "Dummy public key"
     private val urlEndpoint = "https://ik.imagekit.io/demo"
@@ -53,7 +52,7 @@ class MyTests {
         val expectedTransformation =
             "https://ik.imagekit.io/demo/img/tr:w-300.00,h-200.00,cm-pad_resize,bg-F3F3F3/plant.jpeg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
         val actualTransformation =
-            ImageKit.getInstance().url("plant.jpeg", "https://ik.imagekit.io/demo/img" )
+            ImageKit.getInstance().url("plant.jpeg", "https://ik.imagekit.io/demo/img")
                 .width(300f)
                 .height(200f)
                 .cropMode(CropMode.PAD_RESIZE)
@@ -138,6 +137,21 @@ class MyTests {
                 .height(300f)
                 .chainTransformation()
                 .rotation(Rotation.VALUE_90)
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
+    fun urlConstructionOverridingUrlendpointParameter() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/modified_imagekitid/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    path="medium_cafe_B1iTdD0C.jpg",
+                    urlEndpoint = "https://ik.imagekit.io/modified_imagekitid"
+                )
                 .create()
 
         assertEquals(expectedTransformation, actualTransformation)

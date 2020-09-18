@@ -1,6 +1,7 @@
 package com.imagekit.android
 
 import android.content.Context
+import android.util.Log
 import com.imagekit.android.ImageKit.Companion.IK_VERSION_KEY
 import com.imagekit.android.entity.*
 import com.imagekit.android.injection.component.DaggerUtilComponent
@@ -755,8 +756,8 @@ class ImagekitUrlConstructor constructor(
         try {
             var url = source
 
-            if (isSource) {
-                if (transformationList.isNotEmpty()) {
+            if (transformationList.isNotEmpty()) {
+                if (isSource){
                     transformationPosition = TransformationPosition.QUERY
                     if (url.contains("?tr=")) {
                         url = url.substring(0, url.indexOf("?tr="))
@@ -768,16 +769,24 @@ class ImagekitUrlConstructor constructor(
                     }
 
                     url = addQueryParams(url)
-                }
-            } else if (transformationList.isNotEmpty()) {
-                url = when (transformationPosition) {
-                    TransformationPosition.PATH -> String.format("%s/%s?$IK_VERSION_KEY=android-${BuildConfig.API_VERSION}", addPathParams(url), path)
-                    TransformationPosition.QUERY -> addQueryParams(
-                        String.format(
-                            "%s/%s",
-                            url,
-                            path
+                } else {
+                    url = when (transformationPosition) {
+                        TransformationPosition.PATH -> String.format("%s/%s?$IK_VERSION_KEY=android-${BuildConfig.API_VERSION}", addPathParams(url), path)
+                        TransformationPosition.QUERY -> addQueryParams(
+                            String.format(
+                                "%s/%s",
+                                url,
+                                path
+                            )
                         )
+                    }
+                }
+            } else {
+                if (!isSource){
+                    url = String.format(
+                        "%s/%s?$IK_VERSION_KEY=android-${BuildConfig.API_VERSION}",
+                        url,
+                        path
                     )
                 }
             }
