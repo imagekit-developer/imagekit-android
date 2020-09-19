@@ -156,4 +156,166 @@ class Tests {
 
         assertEquals(expectedTransformation, actualTransformation)
     }
+
+    @Test
+    fun urlConstructionRemovalOfDoubleSlashesInUrlendpoint() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    path="medium_cafe_B1iTdD0C.jpg",
+                    urlEndpoint = "https://ik.imagekit.io/demo/"
+                )
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
+    fun urlConstructionRemovalOfDoubleSlashesInPath() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    path="/medium_cafe_B1iTdD0C.jpg",
+                    urlEndpoint = "https://ik.imagekit.io/demo"
+                )
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+
+    @Test
+    fun urlConstructionNewTransformationParameter() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/tr:test-test/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    path="medium_cafe_B1iTdD0C.jpg",
+                    urlEndpoint = "https://ik.imagekit.io/demo"
+                )
+                .addCustomTransformation("test", "test")
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
+    fun urlConstructionSdkVersionAsQueryParameter() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    path="medium_cafe_B1iTdD0C.jpg",
+                    urlEndpoint = "https://ik.imagekit.io/demo"
+                )
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
+    fun urlConstructionQueryTransformations() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=w-300,h-300"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    path="medium_cafe_B1iTdD0C.jpg",
+                    transformationPosition = TransformationPosition.QUERY
+                )
+                .width(300f)
+                .height(300f)
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
+    fun urlConstructionChainedTransformation() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/tr:h-300:rt-90/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    path="medium_cafe_B1iTdD0C.jpg"
+                )
+                .height(300f)
+                .chainTransformation()
+                .rotation(Rotation.VALUE_90)
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
+    fun urlConstructionSourceUrl() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    src="https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg"
+                )
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+//    @Test
+//    fun urlConstructionCustomQueryParameter() {
+//        val expectedTransformation =
+//            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+//        val actualTransformation =
+//            ImageKit.getInstance()
+//                .url(
+//                    src="https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg"
+//                )
+//                .addCustomTransformation("x-test-header", "Test")
+//                .create()
+//
+//        assertEquals(expectedTransformation, actualTransformation)
+//    }
+
+    @Test
+    fun urlConstructionSourceUrlWithPathTransforms() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=h-300,w-300:rt-90"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    src="https://ik.imagekit.io/demo/tr:h-300.00,w-300.00:rt-90/medium_cafe_B1iTdD0C.jpg"
+                )
+                .height(300f)
+                .width(300f)
+                .chainTransformation()
+                .rotation(Rotation.VALUE_90)
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+//    @Test
+//    fun urlConstructionCustomQueryParameterWithTransforms() {
+//        val expectedTransformation =
+//            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=h-300,w-300:rt-90"
+//        val actualTransformation =
+//            ImageKit.getInstance()
+//                .url(
+//                    src="https://ik.imagekit.io/demo/tr:h-300.00,w-300.00:rt-90/medium_cafe_B1iTdD0C.jpg"
+//                )
+//                .height(300f)
+//                .width(300f)
+//                .chainTransformation()
+//                .rotation(Rotation.VALUE_90)
+//                .addCustomTransformation("x-test-header", "Test")
+//                .create()
+//
+//        assertEquals(expectedTransformation, actualTransformation)
+//    }
 }
