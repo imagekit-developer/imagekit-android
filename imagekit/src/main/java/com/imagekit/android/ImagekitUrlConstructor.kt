@@ -754,7 +754,8 @@ class ImagekitUrlConstructor constructor(
      */
     fun create(): String {
         try {
-            var url = source
+            var url = source.trim('/')
+            path = path?.trim('/')
 
             if (transformationList.isNotEmpty()) {
                 if (isSource){
