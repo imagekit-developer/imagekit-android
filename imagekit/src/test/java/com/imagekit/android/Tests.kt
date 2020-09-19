@@ -50,7 +50,7 @@ class Tests {
     @Test
     fun urlConstructionTransformation1() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/img/tr:w-300.00,h-200.00,cm-pad_resize,bg-F3F3F3/plant.jpeg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/img/tr:w-300,h-200,cm-pad_resize,bg-F3F3F3/plant.jpeg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
         val actualTransformation =
             ImageKit.getInstance().url("plant.jpeg", "https://ik.imagekit.io/demo/img")
                 .width(300f)
@@ -65,7 +65,7 @@ class Tests {
     @Test
     fun urlConstructionTransformation2() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/default-image.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=h-400.00,ar-3-2"
+            "https://ik.imagekit.io/demo/default-image.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=h-400,ar-3-2"
         val actualTransformation =
             ImageKit.getInstance().url(
                 path = "default-image.jpg",
@@ -129,7 +129,7 @@ class Tests {
     @Test
     fun urlConstructionTransformation6() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/img/default-image.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=w-400.00,h-300.00:rt-90"
+            "https://ik.imagekit.io/demo/img/default-image.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=w-400,h-300:rt-90"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(src = "https://ik.imagekit.io/demo/img/tr:ot-Hand%20with%20a%20green%20plant,otc-264120,ots-30,ox-10,oy-10/default-image.jpg")
@@ -289,7 +289,7 @@ class Tests {
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
-                    src="https://ik.imagekit.io/demo/tr:h-300.00,w-300.00:rt-90/medium_cafe_B1iTdD0C.jpg"
+                    src="https://ik.imagekit.io/demo/tr:h-300,w-300:rt-90/medium_cafe_B1iTdD0C.jpg"
                 )
                 .height(300f)
                 .width(300f)
@@ -307,7 +307,7 @@ class Tests {
 //        val actualTransformation =
 //            ImageKit.getInstance()
 //                .url(
-//                    src="https://ik.imagekit.io/demo/tr:h-300.00,w-300.00:rt-90/medium_cafe_B1iTdD0C.jpg"
+//                    src="https://ik.imagekit.io/demo/tr:h-300,w-300:rt-90/medium_cafe_B1iTdD0C.jpg"
 //                )
 //                .height(300f)
 //                .width(300f)
