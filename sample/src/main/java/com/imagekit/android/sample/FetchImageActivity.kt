@@ -30,8 +30,8 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                 R.id.btTran1 -> {
                     //https://ik.imagekit.io/demo/img/tr:w-300.00,h-200.00,cm-pad_resize,bg-F3F3F3/plant.jpeg
                     ImageKit.getInstance().url("plant.jpeg", "https://ik.imagekit.io/demo/img")
-                        .width(300f)
-                        .height(200f)
+                        .width(300)
+                        .height(200)
                         .cropMode(CropMode.PAD_RESIZE)
                         .background("F3F3F3")
                         .create()
@@ -42,7 +42,7 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                         path = "default-image.jpg",
                         transformationPosition = TransformationPosition.QUERY
                     )
-                        .height(400f)
+                        .height(400)
                         .aspectRatio(3, 2)
                         .create()
                 }
@@ -81,8 +81,8 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                     //https://ik.imagekit.io/demo/img/default-image.jpg?tr=w-400.00,h-300.00:rt-90
                     ImageKit.getInstance()
                         .url(src = "https://ik.imagekit.io/demo/img/tr:ot-Hand%20with%20a%20green%20plant,otc-264120,ots-30,ox-10,oy-10/default-image.jpg")
-                        .width(400f)
-                        .height(300f)
+                        .width(400)
+                        .height(300)
                         .chainTransformation()
                         .rotation(Rotation.VALUE_90)
                         .create()

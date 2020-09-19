@@ -50,9 +50,9 @@ class ImagekitUrlConstructor constructor(
      * For eg, 0.1 means 10% of the original width, 0.2 means 20% of the original width.
      * @return the current ImagekitUrlConstructor object.
      */
-    fun width(width: Float): ImagekitUrlConstructor {
+    fun width(width: Int): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.width] = width
-        transformationList.add(String.format("%s-%.2f", TranformationMapping.width, width))
+        transformationList.add(String.format("%s-%d", TranformationMapping.width, width))
         return this
     }
 
@@ -62,9 +62,9 @@ class ImagekitUrlConstructor constructor(
      * For eg, 0.1 means 10% of the original height, 0.2 means 20% of the original height.
      * @return the current ImagekitUrlConstructor object.
      */
-    fun height(height: Float): ImagekitUrlConstructor {
+    fun height(height: Int): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.height] = height
-        transformationList.add(String.format("%s-%.2f", TranformationMapping.height, height))
+        transformationList.add(String.format("%s-%d", TranformationMapping.height, height))
         return this
     }
 

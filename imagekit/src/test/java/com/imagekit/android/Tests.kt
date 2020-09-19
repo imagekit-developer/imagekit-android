@@ -53,8 +53,8 @@ class Tests {
             "https://ik.imagekit.io/demo/img/tr:w-300,h-200,cm-pad_resize,bg-F3F3F3/plant.jpeg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
         val actualTransformation =
             ImageKit.getInstance().url("plant.jpeg", "https://ik.imagekit.io/demo/img")
-                .width(300f)
-                .height(200f)
+                .width(300)
+                .height(200)
                 .cropMode(CropMode.PAD_RESIZE)
                 .background("F3F3F3")
                 .create()
@@ -71,7 +71,7 @@ class Tests {
                 path = "default-image.jpg",
                 transformationPosition = TransformationPosition.QUERY
             )
-                .height(400f)
+                .height(400)
                 .aspectRatio(3, 2)
                 .create()
 
@@ -133,8 +133,8 @@ class Tests {
         val actualTransformation =
             ImageKit.getInstance()
                 .url(src = "https://ik.imagekit.io/demo/img/tr:ot-Hand%20with%20a%20green%20plant,otc-264120,ots-30,ox-10,oy-10/default-image.jpg")
-                .width(400f)
-                .height(300f)
+                .width(400)
+                .height(300)
                 .chainTransformation()
                 .rotation(Rotation.VALUE_90)
                 .create()
@@ -229,8 +229,8 @@ class Tests {
                     path="medium_cafe_B1iTdD0C.jpg",
                     transformationPosition = TransformationPosition.QUERY
                 )
-                .width(300f)
-                .height(300f)
+                .width(300)
+                .height(300)
                 .create()
 
         assertEquals(expectedTransformation, actualTransformation)
@@ -245,7 +245,7 @@ class Tests {
                 .url(
                     path="medium_cafe_B1iTdD0C.jpg"
                 )
-                .height(300f)
+                .height(300)
                 .chainTransformation()
                 .rotation(Rotation.VALUE_90)
                 .create()
@@ -291,8 +291,8 @@ class Tests {
                 .url(
                     src="https://ik.imagekit.io/demo/tr:h-300,w-300:rt-90/medium_cafe_B1iTdD0C.jpg"
                 )
-                .height(300f)
-                .width(300f)
+                .height(300)
+                .width(300)
                 .chainTransformation()
                 .rotation(Rotation.VALUE_90)
                 .create()
@@ -309,8 +309,8 @@ class Tests {
 //                .url(
 //                    src="https://ik.imagekit.io/demo/tr:h-300,w-300:rt-90/medium_cafe_B1iTdD0C.jpg"
 //                )
-//                .height(300f)
-//                .width(300f)
+//                .height(300)
+//                .width(300)
 //                .chainTransformation()
 //                .rotation(Rotation.VALUE_90)
 //                .addCustomTransformation("x-test-header", "Test")
