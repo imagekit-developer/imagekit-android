@@ -10,8 +10,11 @@ import com.imagekit.android.util.LogUtil.logError
 import com.imagekit.android.util.TranformationMapping
 import com.imagekit.android.util.TranformationMapping.overlayTransparency
 import java.lang.Math.abs
+import java.net.URI
 import java.util.*
 import java.util.regex.Pattern
+import java.net.URLEncoder
+
 
 @Suppress("unused")
 class ImagekitUrlConstructor constructor(
@@ -23,6 +26,7 @@ class ImagekitUrlConstructor constructor(
     private val transformationMap = HashMap<String, Any>()
     private var path: String? = null
     private var isSource: Boolean = true
+    private var queryParams: HashMap<String, String> = hashMapOf(IK_VERSION_KEY to "android-${BuildConfig.API_VERSION}")
 
     constructor(
         context: Context,
@@ -749,6 +753,24 @@ class ImagekitUrlConstructor constructor(
     }
 
     /**
+     * Method allows adding custom Query Parameter to the image.
+     * @return the current ImagekitUrlConstructor object.
+     */
+    fun addCustomQueryParameter(key: String, value: String): ImagekitUrlConstructor {
+        queryParams[key] = value
+        return this
+    }
+
+    /**
+     * Method allows adding custom Query Parameters to the image.
+     * @return the current ImagekitUrlConstructor object.
+     */
+    fun addCustomQueryParameter(params: HashMap<String, String>): ImagekitUrlConstructor {
+        params.forEach{ (key, value) -> queryParams[key] = value }
+        return this
+    }
+
+    /**
      * Used to create the url using the transformations specified before invoking this method.
      * @return the Url used to fetch an image after applying the specified transformations.
      */
@@ -758,6 +780,7 @@ class ImagekitUrlConstructor constructor(
             path = path?.trim('/')
 
             if (transformationList.isNotEmpty()) {
+                var transforms = transformationList.map{ transformation -> transformation }.joinToString(",").replace(",:,", ":")
                 if (isSource){
                     transformationPosition = TransformationPosition.QUERY
                     if (url.contains("?tr=")) {
@@ -768,31 +791,33 @@ class ImagekitUrlConstructor constructor(
                             ""
                         )
                     }
-
-                    url = addQueryParams(url)
+                    queryParams["tr"] = transforms
                 } else {
-                    url = when (transformationPosition) {
-                        TransformationPosition.PATH -> String.format("%s/%s?$IK_VERSION_KEY=android-${BuildConfig.API_VERSION}", addPathParams(url), path)
-                        TransformationPosition.QUERY -> addQueryParams(
-                            String.format(
-                                "%s/%s",
-                                url,
-                                path
-                            )
-                        )
+                    when (transformationPosition){
+                        TransformationPosition.PATH -> {
+                            url = String.format("%s/%s", addPathParams(url), path)
+                        }
+                        TransformationPosition.QUERY -> {
+                            url = String.format("%s/%s", url, path);
+                            queryParams["tr"] = transforms
+                        }
                     }
                 }
             } else {
                 if (!isSource){
-                    url = String.format(
-                        "%s/%s?$IK_VERSION_KEY=android-${BuildConfig.API_VERSION}",
-                        url,
-                        path
-                    )
+                    url = String.format( "%s/%s", url, path )
                 }
             }
 
-            return url
+            var u = URI(url);
+            val sb = StringBuilder(if (u.getQuery() == null) "" else u.getQuery())
+
+            if (sb.isNotEmpty()) sb.append('&')
+
+            sb.append(queryParams.map{ (key, value) -> String.format("%s=%s", key, value) }.joinToString("&"))
+
+            return URI(u.getScheme(), u.getAuthority(), u.getPath(),  sb.toString(), u.getFragment()).toString()
+
         } catch (e: Exception) {
             e.printStackTrace()
             return context.getString(R.string.error_url_construction_error)
@@ -818,20 +843,9 @@ class ImagekitUrlConstructor constructor(
     }
 
     private fun addQueryParams(endpoint: String): String {
-        var url = String.format("%s?$IK_VERSION_KEY=android-${BuildConfig.API_VERSION}&tr=", endpoint)
-        for (t in 0 until transformationList.size) {
-            url = when {
-                transformationList[t].contentEquals(":") -> String.format(
-                    "%s%s",
-                    url,
-                    transformationList[t]
-                )
-                url.endsWith(":") -> String.format("%s%s", url, transformationList[t])
-                url.endsWith("=") -> String.format("%s%s", url, transformationList[t])
-                else -> String.format("%s,%s", url, transformationList[t])
-            }
-        }
-
+        queryParams["tr"] = transformationList.map{ transformation -> URLEncoder.encode(transformation, "UTF-8") }.joinToString(",").replace(",:,", ":");
+        var url = String.format("%s?tr=", endpoint)
+        url = String.format("%s%s", url, transformationList.map{ transformation -> URLEncoder.encode(transformation, "UTF-8") }.joinToString(",").replace(",:,", ":"))
         return url
     }
 }
