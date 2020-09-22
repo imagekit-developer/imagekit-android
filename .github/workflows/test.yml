@@ -17,7 +17,7 @@ jobs:
         run: ./gradlew jacocoTestReleaseUnitTestReport
         
       - name: Rewrite Base Path in coverage
-        run: sed 's/com\/imagekit\/android/imagekit\/src\/main\/java\/com\/imagekit\/android/g' imagekit/build/reports/jacoco/jacocoTestReleaseUnitTestReport/jacocoTestReleaseUnitTestReport.xml > imagekit/build/reports/jacoco/jacocoTestReleaseUnitTestReport/jacocoTestReleaseUnitTestReport.xml
+        run: sed -i 's/com\/imagekit\/android/imagekit\/src\/main\/java\/com\/imagekit\/android/g' imagekit/build/reports/jacoco/jacocoTestReleaseUnitTestReport/jacocoTestReleaseUnitTestReport.xml
         
       - name: Upload Coverage file as artifact
         uses: actions/upload-artifact@v2
