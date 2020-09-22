@@ -57,3 +57,4 @@ dependencies {
 }
 
 apply plugin: 'org.jetbrains.dokka'
+apply plugin: 'jacoco-android'
