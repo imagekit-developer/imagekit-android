@@ -17,7 +17,9 @@ jobs:
         run: ./gradlew cleanBuildCache
 
       - name: Run tests and Generate Code Coverage
-        run: ./gradlew jacocoTestReleaseUnitTestReport
+        run: |
+          ./gradlew jacocoTestReport
+          ./gradlew connectedCheck
         
       - name: Upload Coverage file as artifact
         uses: actions/upload-artifact@v2
