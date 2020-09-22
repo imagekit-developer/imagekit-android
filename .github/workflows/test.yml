@@ -16,5 +16,11 @@ jobs:
       - name: Run tests and Generate Code Coverage
         run: ./gradlew jacocoTestReleaseUnitTestReport
         
+      - name: Upload Coverage file as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: imagekit/build/reports/jacoco/jacocoTestReleaseUnitTestReport/jacocoTestReleaseUnitTestReport.xml
+        
       - name: Publish Code Coverage to codecov
         run: bash <(curl -s https://codecov.io/bash)
