@@ -5,5 +5,5 @@ enum class Format constructor(val value: String) {
     WEBP("webp"),
     JPG("jpg"),
     JPEG("jpeg"),
-    PNT("pnt")
+    PNG("png")
 }

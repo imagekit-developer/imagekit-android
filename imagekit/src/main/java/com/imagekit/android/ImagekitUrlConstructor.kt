@@ -6,7 +6,6 @@ import com.imagekit.android.ImageKit.Companion.IK_VERSION_KEY
 import com.imagekit.android.entity.*
 import com.imagekit.android.injection.component.DaggerUtilComponent
 import com.imagekit.android.injection.module.ContextModule
-import com.imagekit.android.util.LogUtil.logError
 import com.imagekit.android.util.TranformationMapping
 import com.imagekit.android.util.TranformationMapping.overlayTransparency
 import java.lang.Math.abs
@@ -142,9 +141,6 @@ class ImagekitUrlConstructor constructor(
      * @return the current ImagekitUrlConstructor object.
      */
     fun quality(quality: Int): ImagekitUrlConstructor {
-        if (quality < 1 || quality > 100)
-            logError(context.getString(R.string.error_transform_value_out_of_range))
-
         transformationMap[TranformationMapping.quality] = quality
         transformationList.add(String.format("%s-%d", TranformationMapping.quality, quality))
         return this
@@ -173,9 +169,6 @@ class ImagekitUrlConstructor constructor(
      * @return the current ImagekitUrlConstructor object.
      */
     fun blur(blur: Int): ImagekitUrlConstructor {
-        if (blur < 1 || blur > 100)
-            logError(context.getString(R.string.error_transform_value_out_of_range))
-
         transformationMap[TranformationMapping.blur] = blur
         transformationList.add(String.format("%s-%d", TranformationMapping.blur, blur))
         return this
@@ -205,11 +198,8 @@ class ImagekitUrlConstructor constructor(
      * @return the current ImagekitUrlConstructor object.
      */
     fun dpr(dpr: Float): ImagekitUrlConstructor {
-        if (dpr < 0.1 || dpr > 5)
-            logError(context.getString(R.string.error_transform_value_out_of_range))
-
         transformationMap[TranformationMapping.dpr] = dpr
-        transformationList.add(String.format("%s-%f", TranformationMapping.dpr, dpr))
+        transformationList.add(String.format("%s-%.2f", TranformationMapping.dpr, dpr))
         return this
     }
 
@@ -299,9 +289,6 @@ class ImagekitUrlConstructor constructor(
      * @see trim
      */
     fun trim(value: Int): ImagekitUrlConstructor {
-        if (value < 1 || value > 99)
-            logError(context.getString(R.string.error_transform_value_out_of_range))
-
         transformationMap[TranformationMapping.trimEdges] = value
         transformationList.add(String.format("%s-%d", TranformationMapping.trimEdges, value))
         return this
@@ -392,11 +379,11 @@ class ImagekitUrlConstructor constructor(
      * @param overlayWidth
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayWidth(overlayWidth: Float): ImagekitUrlConstructor {
+    fun overlayWidth(overlayWidth: Int): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.overlayWidth] = overlayWidth
         transformationList.add(
             String.format(
-                "%s-%f",
+                "%s-%d",
                 TranformationMapping.overlayWidth,
                 overlayWidth
             )
@@ -409,11 +396,11 @@ class ImagekitUrlConstructor constructor(
      * @param overlayHeight
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayHeight(overlayHeight: Float): ImagekitUrlConstructor {
+    fun overlayHeight(overlayHeight: Int): ImagekitUrlConstructor {
         transformationMap[TranformationMapping.overlayHeight] = overlayHeight
         transformationList.add(
             String.format(
-                "%s-%f",
+                "%s-%d",
                 TranformationMapping.overlayHeight,
                 overlayHeight
             )
@@ -427,16 +414,12 @@ class ImagekitUrlConstructor constructor(
      * @return the current ImagekitUrlConstructor object.
      */
     fun overlayText(overlayText: String): ImagekitUrlConstructor {
-        val regex = Regex("[\\w\\s-]+")
-        if (!regex.matches(overlayText))
-            logError(context.getString(R.string.error_transform_value_invalid))
-
-        transformationMap[TranformationMapping.overlayText] = overlayText
+        transformationMap[TranformationMapping.overlayText] = URLEncoder.encode(overlayText, "UTF-8")
         transformationList.add(
             String.format(
                 "%s-%s",
                 TranformationMapping.overlayText,
-                overlayText
+                URLEncoder.encode(overlayText, "UTF-8")
             )
         )
         return this
@@ -448,9 +431,6 @@ class ImagekitUrlConstructor constructor(
      * @return the current ImagekitUrlConstructor object.
      */
     fun overlayTextColor(overlayTextColor: String): ImagekitUrlConstructor {
-        if (!Pattern.matches("[A-Fa-f0-9]+", overlayTextColor))
-            logError(context.getString(R.string.error_transform_value_invalid))
-
         transformationMap[TranformationMapping.overlayTextColor] =
             overlayTextColor.toUpperCase(Locale.getDefault())
         transformationList.add(
@@ -474,7 +454,7 @@ class ImagekitUrlConstructor constructor(
         transformationList.add(
             String.format(
                 "%s-%s",
-                TranformationMapping.overlayFocus,
+                TranformationMapping.overlayTextFont,
                 overlayTextFontFamily.value
             )
         )
@@ -523,9 +503,6 @@ class ImagekitUrlConstructor constructor(
      * @return the current ImagekitUrlConstructor object.
      */
     fun overlayBackground(overlayBackground: String): ImagekitUrlConstructor {
-        if (!Pattern.matches("[A-Fa-f0-9]+", overlayBackground))
-            logError(context.getString(R.string.error_transform_value_invalid))
-
         transformationMap[TranformationMapping.overlayBackground] =
             overlayBackground.toUpperCase(Locale.getDefault())
         transformationList.add(
@@ -545,9 +522,6 @@ class ImagekitUrlConstructor constructor(
      * @return the current ImagekitUrlConstructor object.
      */
     fun overlayAlpha(overlayAlpha: Int): ImagekitUrlConstructor {
-        if (overlayAlpha !in 1..9)
-            logError(context.getString(R.string.error_transform_value_out_of_range))
-
         transformationMap[overlayTransparency] = overlayAlpha
         transformationList.add(
             String.format(
@@ -632,9 +606,6 @@ class ImagekitUrlConstructor constructor(
      * @return the current ImagekitUrlConstructor object.
      */
     fun background(backgroundColor: String): ImagekitUrlConstructor {
-        if (!Pattern.matches("[A-Fa-f0-9]+", backgroundColor) && !Pattern.matches("[A-Fa-f0-9]{6}[0-9]{2}+", backgroundColor))
-            logError(context.getString(R.string.error_transform_value_invalid))
-
         transformationMap[TranformationMapping.backgroundColor] =
             backgroundColor.toUpperCase(Locale.getDefault())
         transformationList.add(
@@ -656,8 +627,6 @@ class ImagekitUrlConstructor constructor(
      * @return the current ImagekitUrlConstructor object.
      */
     fun border(borderWidth: Int, borderColor: String): ImagekitUrlConstructor {
-        if (!Pattern.matches("[A-Fa-f0-9]+", borderColor))
-            logError(context.getString(R.string.error_transform_value_invalid))
 
         val s = String.format(
             "%s-%d_%s",
@@ -718,7 +687,7 @@ class ImagekitUrlConstructor constructor(
         threshold: Float
     ): ImagekitUrlConstructor {
         val s = String.format(
-            "%s-%f-%f-%f-%f",
+            "%s-%.2f-%.2f-%.2f-%.2f",
             TranformationMapping.unsharpMask,
             radius,
             sigma,
