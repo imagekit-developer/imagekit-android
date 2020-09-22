@@ -13,11 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Clean Gradle
+        run: ./gradlew cleanBuildCache
+
       - name: Run tests and Generate Code Coverage
         run: ./gradlew jacocoTestReleaseUnitTestReport
-        
-      - name: Rewrite Base Path in coverage
-        run: sed -i 's/com\/imagekit\/android/imagekit\/src\/main\/java\/com\/imagekit\/android/g' imagekit/build/reports/jacoco/jacocoTestReleaseUnitTestReport/jacocoTestReleaseUnitTestReport.xml
         
       - name: Upload Coverage file as artifact
         uses: actions/upload-artifact@v2
