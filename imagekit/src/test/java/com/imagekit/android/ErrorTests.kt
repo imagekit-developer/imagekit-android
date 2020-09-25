@@ -13,15 +13,15 @@ import kotlin.test.assertEquals
 @RunWith(MockitoJUnitRunner::class)
 class ErrorTests {
 
-    @Test
-    fun notInitialized(){
-        try{
-            ImageKit.getInstance()
-            Assert.fail("Should have thrown IllegalStateException");
-        } catch( e: IllegalStateException){
-            assertEquals("Must Initialize ImageKit before using getInstance()", e.message)
-        }
-    }
+//    @Test
+//    fun notInitialized(){
+//        try{
+//            ImageKit.getInstance()
+//            Assert.fail("Should have thrown IllegalStateException");
+//        } catch( e: IllegalStateException){
+//            assertEquals("Must Initialize ImageKit before using getInstance()", e.message)
+//        }
+//    }
 
     @Test
     fun invalidContext(){
