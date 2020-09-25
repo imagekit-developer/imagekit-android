@@ -13,8 +13,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Clean Gradle
+        run: ./gradlew cleanBuildCache
+
       - name: Run tests and Generate Code Coverage
-        run: ./gradlew jacocoTestReleaseUnitTestReport
-        
+        run: |
+          ./gradlew jacocoTestReport
+          ./gradlew connectedCheck
+          
       - name: Publish Code Coverage to codecov
-        run: bash <(curl -s https://codecov.io/bash)
+        run: bash <(curl -s https://codecov.io/bash) -X fix

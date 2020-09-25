@@ -18,6 +18,3 @@ comment:
   layout: "reach,diff,flags,tree"
   behavior: default
   require_changes: no
-
-fixes:
-  - "::imagekit/src/main/java/"
