@@ -12,7 +12,6 @@ class ContextModule (val context: Context){
 
     /**
      * Provides the Application Context
-     * @param context Context in which the application is running
      * @return the Application Context to be provided
      */
     @Provides

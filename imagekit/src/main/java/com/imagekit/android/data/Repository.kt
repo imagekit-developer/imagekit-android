@@ -38,99 +38,43 @@ class Repository @Inject constructor(
     fun upload(
         image: Bitmap,
         fileName: String,
-        useUniqueFilename: Boolean = true,
+        useUniqueFilename: Boolean,
         tags: Array<String>?,
         folder: String?,
-        isPrivateFile: Boolean? = null,
-        customCoordinates: String? = null,
-        responseFields: String? = null,
-        signatureHeaders: Map<String, String>? = null,
+        isPrivateFile: Boolean?,
+        customCoordinates: String?,
+        responseFields: String?,
+        signatureHeaders: Map<String, String>?,
         imageKitCallback: ImageKitCallback
-    ) {
-
-        val expire = ((System.currentTimeMillis() / 1000) + TimeUnit.MINUTES.toSeconds(
-            DURATION_EXPIRY_MINUTES
-        )).toString()
-        val signatureObservable =
-            signatureApi.getSignature(signatureHeaders, expire)?.toObservable()
-        if (signatureObservable != null) {
-            Observable.zip(
-                signatureObservable,
-                Single.just(
-                    bitmapToFile(
-                        context,
-                        fileName,
-                        image
-                    )
-                ).toObservable(),
-                BiFunction<SignatureResponse, File, Observable<ResponseBody>> { result: SignatureResponse, file: File ->
-                    uploadApi.getFileUploadCall(
-                        result,
-                        file,
-                        fileName,
-                        useUniqueFilename,
-                        tags,
-                        folder,
-                        isPrivateFile,
-                        customCoordinates,
-                        responseFields,
-                        expire
-                    ).toObservable()
-                })
-                ?.subscribeOn(Schedulers.io())
-                ?.flatMap { result -> result }
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe({ result ->
-                    imageKitCallback.onSuccess(
-                        Gson().fromJson(
-                            result.string(),
-                            UploadResponse::class.java
-                        )
-                    )
-                }, { e ->
-                    if (e is HttpException) {
-                        e.response()?.let {
-                            try {
-                                imageKitCallback.onError(
-                                    Gson().fromJson(
-                                        it.errorBody()!!.string(),
-                                        UploadError::class.java
-                                    )
-                                )
-                            } catch (exception: IllegalStateException) {
-                                imageKitCallback.onError(
-                                    UploadError(
-                                        exception = true,
-                                        statusNumber = e.code(),
-                                        message = e.message()
-                                    )
-                                )
-                            }
-                        }
-                    } else
-                        imageKitCallback.onError(UploadError(true))
-                })
-        } else
-            imageKitCallback.onError(
-                UploadError(
-                    exception = true,
-                    message = context.getString(R.string.error_signature_generation_failed)
-                )
-            )
-    }
+    ) = upload(
+            bitmapToFile(
+                context,
+                fileName,
+                image
+            ),
+            fileName,
+            useUniqueFilename,
+            tags,
+            folder,
+            isPrivateFile,
+            customCoordinates,
+            responseFields,
+            signatureHeaders,
+            imageKitCallback
+        )
 
     //Takes file
     @SuppressLint("CheckResult")
     fun upload(
         file: File,
         fileName: String,
-        useUniqueFilename: Boolean = true,
+        useUniqueFilename: Boolean,
         tags: Array<String>?,
         folder: String?,
-        isPrivateFile: Boolean? = null,
-        customCoordinates: String? = null,
-        responseFields: String? = null,
-        signatureHeaders: Map<String, String>? = null,
+        isPrivateFile: Boolean?,
+        customCoordinates: String?,
+        responseFields: String?,
+        signatureHeaders: Map<String, String>?,
         imageKitCallback: ImageKitCallback
     ) {
         if (!file.exists()) {
@@ -150,8 +94,7 @@ class Repository @Inject constructor(
 
         if (signatureSingle != null) {
             signatureSingle
-                .subscribeOn(Schedulers.io())
-                .flatMap { result ->
+                .subscribe({ result ->
                     uploadApi.getFileUploadCall(
                         result,
                         file,
@@ -163,42 +106,49 @@ class Repository @Inject constructor(
                         customCoordinates,
                         responseFields,
                         expire
-                    )
-                }.observeOn(AndroidSchedulers.mainThread())?.subscribe({ result ->
-                    imageKitCallback.onSuccess(
-                        Gson().fromJson(
-                            result.string(),
-                            UploadResponse::class.java
+                    ).subscribe({ result ->
+                        imageKitCallback.onSuccess(
+                            Gson().fromJson(
+                                result.string(),
+                                UploadResponse::class.java
+                            )
+                        )
+                    }, { e ->
+                        if (e is HttpException) {
+                            e.response()?.let {
+                                try {
+                                    imageKitCallback.onError(
+                                        Gson().fromJson(
+                                            it.errorBody()!!.string(),
+                                            UploadError::class.java
+                                        )
+                                    )
+                                } catch (exception: IllegalStateException) {
+                                    imageKitCallback.onError(
+                                        UploadError(
+                                            exception = true,
+                                            statusNumber = e.code(),
+                                            message = e.message()
+                                        )
+                                    )
+                                }
+                            }
+                        } else
+                            imageKitCallback.onError(UploadError(true))
+                    })
+                }, {
+                    imageKitCallback.onError(
+                        UploadError(
+                            exception = true,
+                            message = context.getString(R.string.error_signature_generation_failed)
                         )
                     )
-                }, { e ->
-                    if (e is HttpException) {
-                        e.response()?.let {
-                            try {
-                                imageKitCallback.onError(
-                                    Gson().fromJson(
-                                        it.errorBody()!!.string(),
-                                        UploadError::class.java
-                                    )
-                                )
-                            } catch (exception: IllegalStateException) {
-                                imageKitCallback.onError(
-                                    UploadError(
-                                        exception = true,
-                                        statusNumber = e.code(),
-                                        message = e.message()
-                                    )
-                                )
-                            }
-                        }
-                    } else
-                        imageKitCallback.onError(UploadError(true))
                 })
         } else
             imageKitCallback.onError(
                 UploadError(
                     exception = true,
-                    message = context.getString(R.string.error_signature_generation_failed)
+                    message = context.getString(R.string.error_authentication_endpoint_is_missing)
                 )
             )
     }
@@ -208,13 +158,13 @@ class Repository @Inject constructor(
     fun upload(
         fileUrl: String,
         fileName: String,
-        useUniqueFilename: Boolean = true,
+        useUniqueFilename: Boolean,
         tags: Array<String>?,
         folder: String?,
-        isPrivateFile: Boolean = false,
-        customCoordinates: String? = null,
-        responseFields: String? = null,
-        signatureHeaders: Map<String, String>? = null,
+        isPrivateFile: Boolean,
+        customCoordinates: String?,
+        responseFields: String?,
+        signatureHeaders: Map<String, String>?,
         imageKitCallback: ImageKitCallback
     ) {
         val expire = ((System.currentTimeMillis() / 1000) + TimeUnit.MINUTES.toSeconds(
@@ -223,8 +173,7 @@ class Repository @Inject constructor(
         val signatureSingle = signatureApi.getSignature(signatureHeaders, expire)
         if (signatureSingle != null) {
             signatureSingle
-                .subscribeOn(Schedulers.io())
-                .flatMap { result ->
+                .subscribe({ result ->
                     uploadApi.getFileUploadCall(
                         result,
                         fileUrl,
@@ -236,45 +185,51 @@ class Repository @Inject constructor(
                         customCoordinates,
                         responseFields,
                         expire
-                    )
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result ->
-                    imageKitCallback.onSuccess(
-                        Gson().fromJson(
-                            result.string(),
-                            UploadResponse::class.java
+                    ).subscribe({ response ->
+                        imageKitCallback.onSuccess(
+                            Gson().fromJson(
+                                response.string(),
+                                UploadResponse::class.java
+                            )
+                        )
+                    }, { e ->
+                        if (e is HttpException) {
+                            e.response()?.let {
+                                try {
+                                    imageKitCallback.onError(
+                                        Gson().fromJson(
+                                            it.errorBody()!!.string(),
+                                            UploadError::class.java
+                                        )
+                                    )
+                                } catch (exception: IllegalStateException) {
+                                    imageKitCallback.onError(
+                                        UploadError(
+                                            exception = true,
+                                            statusNumber = e.code(),
+                                            message = e.message()
+                                        )
+                                    )
+                                }
+                            }
+                        } else
+                            imageKitCallback.onError(UploadError(true))
+                    })
+                }, {
+                    imageKitCallback.onError(
+                        UploadError(
+                            exception = true,
+                            message = context.getString(R.string.error_signature_generation_failed)
                         )
                     )
-                }, { e ->
-                    if (e is HttpException) {
-                        e.response()?.let {
-                            try {
-                                imageKitCallback.onError(
-                                    Gson().fromJson(
-                                        it.errorBody()!!.string(),
-                                        UploadError::class.java
-                                    )
-                                )
-                            } catch (exception: IllegalStateException) {
-                                imageKitCallback.onError(
-                                    UploadError(
-                                        exception = true,
-                                        statusNumber = e.code(),
-                                        message = e.message()
-                                    )
-                                )
-                            }
-                        }
-                    } else
-                        imageKitCallback.onError(UploadError(true))
                 })
-        } else
+        } else {
             imageKitCallback.onError(
                 UploadError(
                     exception = true,
-                    message = context.getString(R.string.error_signature_generation_failed)
+                    message = context.getString(R.string.error_authentication_endpoint_is_missing)
                 )
             )
+        }
     }
 }

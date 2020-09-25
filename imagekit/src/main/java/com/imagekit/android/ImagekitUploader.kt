@@ -9,7 +9,7 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
 
     /**
      * Method to upload an image to ImageKit.
-     * @param image The image bitmap that is to be uploaded
+     * @param file The image bitmap that is to be uploaded
      * @param fileName The name with which the file has to be uploaded
      * @param useUniqueFilename “true” or “false”. If set to true, ImageKit will add a unique code to the filename parameter
      * to get a unique filename. If false, the image is uploaded with the filename parameter as name. If an image exists
@@ -34,8 +34,8 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
         file: Bitmap,
         fileName: String,
         useUniqueFilename: Boolean = true,
-        tags: Array<String>?,
-        folder: String?,
+        tags: Array<String>? = null,
+        folder: String? = null,
         isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
         responseFields: String? = null,
@@ -81,8 +81,8 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
         file: File,
         fileName: String,
         useUniqueFilename: Boolean = true,
-        tags: Array<String>?,
-        folder: String?,
+        tags: Array<String>? = null,
+        folder: String? = null,
         isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
         responseFields: String? = null,
@@ -103,7 +103,7 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
 
     /**
      * Method to upload a file from a url to ImageKit. Permitted types: JPG, PNG, WebP, GIF, PDF, JS, CSS and TXT
-     * @param fileUrl The fileUrl from which to download the file that is to be uploaded
+     * @param file The fileUrl from which to download the file that is to be uploaded
      * @param fileName The name with which the file has to be uploaded
      * @param useUniqueFilename “true” or “false”. If set to true, ImageKit will add a unique code to the filename parameter
      * to get a unique filename. If false, the image is uploaded with the filename parameter as name. If an image exists
@@ -128,8 +128,8 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
         file: String,
         fileName: String,
         useUniqueFilename: Boolean = true,
-        tags: Array<String>?,
-        folder: String?,
+        tags: Array<String>? = null,
+        folder: String? = null,
         isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
         responseFields: String? = null,

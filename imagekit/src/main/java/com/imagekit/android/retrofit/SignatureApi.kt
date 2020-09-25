@@ -21,7 +21,7 @@ class SignatureApi @Inject constructor(
     ): Single<SignatureResponse>? {
         val endPoint = sharedPrefUtil.getClientAuthenticationEndpoint()
         if (endPoint.isBlank()) {
-            LogUtil.logError(context.getString(R.string.error_authentication_endpoint_is_missing))
+            LogUtil.logError("Upload failed! Authentication endpoint is missing!")
             return null
         }
 

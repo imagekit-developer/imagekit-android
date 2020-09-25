@@ -1,6 +1,5 @@
 package com.imagekit.android.retrofit;
 
-
 import com.imagekit.android.entity.SignatureResponse;
 
 import java.util.Map;
@@ -18,7 +17,7 @@ import retrofit2.http.Url;
 
 public interface ApiInterface {
     @Multipart
-    @POST("https://api.imagekit.io/v1/files/upload")
+    @POST("/v1/files/upload")
     Single<ResponseBody> uploadImage(
             @Part MultipartBody.Part file
             , @Part MultipartBody.Part publicKey

@@ -21,12 +21,12 @@ class UploadApi @Inject constructor(
         signatureResponse: SignatureResponse,
         file: Any,
         fileName: String,
-        useUniqueFilename: Boolean = true,
+        useUniqueFilename: Boolean,
         tags: Array<String>?,
         folder: String?,
-        isPrivateFile: Boolean? = null,
-        customCoordinates: String? = null,
-        responseFields: String? = null,
+        isPrivateFile: Boolean?,
+        customCoordinates: String?,
+        responseFields: String?,
         expire: String
     ): Single<ResponseBody> {
 

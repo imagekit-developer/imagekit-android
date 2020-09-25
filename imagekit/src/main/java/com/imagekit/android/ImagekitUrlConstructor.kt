@@ -1,7 +1,6 @@
 package com.imagekit.android
 
 import android.content.Context
-import android.util.Log
 import com.imagekit.android.ImageKit.Companion.IK_VERSION_KEY
 import com.imagekit.android.entity.*
 import com.imagekit.android.injection.component.DaggerUtilComponent
@@ -11,7 +10,6 @@ import com.imagekit.android.util.TranformationMapping.overlayTransparency
 import java.lang.Math.abs
 import java.net.URI
 import java.util.*
-import java.util.regex.Pattern
 import java.net.URLEncoder
 
 
@@ -762,7 +760,8 @@ class ImagekitUrlConstructor constructor(
                     transformationPosition = TransformationPosition.QUERY
                     if (url.contains("?tr=")) {
                         url = url.substring(0, url.indexOf("?tr="))
-                    } else if (url.contains("/tr:")) {
+                    }
+                    if (url.contains("/tr:")) {
                         url = url.replace(
                             url.substring(url.indexOf("/tr:"), url.lastIndexOf("/")),
                             ""
@@ -775,7 +774,7 @@ class ImagekitUrlConstructor constructor(
                             url = String.format("%s/%s", addPathParams(url), path)
                         }
                         TransformationPosition.QUERY -> {
-                            url = String.format("%s/%s", url, path);
+                            url = String.format("%s/%s", url, path)
                             queryParams["tr"] = transforms
                         }
                     }
@@ -786,14 +785,20 @@ class ImagekitUrlConstructor constructor(
                 }
             }
 
-            var u = URI(url);
-            val sb = StringBuilder(if (u.getQuery() == null) "" else u.getQuery())
+            var u = URI(url)
+            val sb = StringBuilder(
+                if (u.query == null)
+                    ""
+                else
+                    u.query
+            )
 
-            if (sb.isNotEmpty()) sb.append('&')
+            if (sb.isNotEmpty())
+                sb.append('&')
 
             sb.append(queryParams.map{ (key, value) -> String.format("%s=%s", key, value) }.joinToString("&"))
 
-            return URI(u.getScheme(), u.getAuthority(), u.getPath(),  sb.toString(), u.getFragment()).toString()
+            return URI(u.scheme, u.authority, u.path,  sb.toString(), u.fragment).toString()
 
     }
 

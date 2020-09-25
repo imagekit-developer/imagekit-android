@@ -38,10 +38,7 @@ class UnitTests {
 
         ImageKit.init(
             context = mockContext,
-            publicKey = clientPublicKey,
-            urlEndpoint = urlEndpoint,
-            transformationPosition = TransformationPosition.PATH,
-            authenticationEndpoint = "https://imagekit.io/temp/client-side-upload-signature"
+            urlEndpoint = urlEndpoint
         )
     }
 
@@ -1605,6 +1602,21 @@ class UnitTests {
     }
 
     @Test
+    fun transformationSourceWithPathTransform() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=h-200"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    src = "https://ik.imagekit.io/demo/tr:h-300/medium_cafe_B1iTdD0C.jpg"
+                )
+                .height(200)
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
     fun invalidURL() {
         val expectedTransformation = ""
         val actualTransformation =
@@ -1618,4 +1630,6 @@ class UnitTests {
 
         assertEquals(expectedTransformation, actualTransformation)
     }
+
+
 }

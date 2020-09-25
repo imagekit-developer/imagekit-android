@@ -188,6 +188,21 @@ class URLGenerationTests {
     }
 
     @Test
+    fun urlConstructionCustomQueryParameterWithExisting() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?x-test=Test&${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&x-test-header=Test"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    src="https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?x-test=Test"
+                )
+                .addCustomQueryParameter("x-test-header", "Test")
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
     fun urlConstructionSourceUrlWithPathTransforms() {
         val expectedTransformation =
             "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=h-300,w-300:rt-90"

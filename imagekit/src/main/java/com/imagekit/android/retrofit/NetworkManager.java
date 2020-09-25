@@ -39,8 +39,8 @@ public class NetworkManager {
         apiInterface = retrofit.create(ApiInterface.class);
     }
 
-    private static String getBaseURL() {
-        return "https://api.imagekit.io/v1/files/upload/";
+    public static String getBaseURL() {
+        return "https://api.imagekit.io/";
     }
 
     public static ApiInterface getApiInterface()

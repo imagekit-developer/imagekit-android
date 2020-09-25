@@ -18,7 +18,7 @@ class ImageKit private constructor(
     clientPublicKey: String = "",
     imageKitEndpoint: String,
     transformationPosition: TransformationPosition,
-    authenticationEndpoint: String? = null
+    authenticationEndpoint: String = ""
 ) {
 
     @Inject
@@ -56,7 +56,7 @@ class ImageKit private constructor(
             publicKey: String = "",
             urlEndpoint: String,
             transformationPosition: TransformationPosition = TransformationPosition.PATH,
-            authenticationEndpoint: String? = null
+            authenticationEndpoint: String = ""
         ) {
             if (context !is Application)
                 throw ApplicationContextExpectedException()
