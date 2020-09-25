@@ -525,6 +525,21 @@ class UnitTests {
     }
 
     @Test
+    fun transfomationsGrayscaleFalse() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    path="medium_cafe_B1iTdD0C.jpg"
+                )
+                .effectGray(false)
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
     fun transfomationsDpr25() {
         val expectedTransformation =
             "https://ik.imagekit.io/demo/tr:dpr-2.50/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
@@ -804,6 +819,36 @@ class UnitTests {
                     path="medium_cafe_B1iTdD0C.jpg"
                 )
                 .overlayImage("logo-white_SJwqB4Nfe.png").overlayY(50)
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
+    fun transfomationsOverlayXNeg50() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,ox-N50/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    path="medium_cafe_B1iTdD0C.jpg"
+                )
+                .overlayImage("logo-white_SJwqB4Nfe.png").overlayX(-50)
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
+    fun transfomationsOverlayYNeg50() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,oy-N50/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    path="medium_cafe_B1iTdD0C.jpg"
+                )
+                .overlayImage("logo-white_SJwqB4Nfe.png").overlayY(-50)
                 .create()
 
         assertEquals(expectedTransformation, actualTransformation)
@@ -1440,6 +1485,21 @@ class UnitTests {
     }
 
     @Test
+    fun transfomationsContrastFalse() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    path="medium_cafe_B1iTdD0C.jpg"
+                )
+                .effectContrast(false)
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
     fun transfomationsSharpen5() {
         val expectedTransformation =
             "https://ik.imagekit.io/demo/tr:e-sharpen-5/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
@@ -1449,6 +1509,21 @@ class UnitTests {
                     path="medium_cafe_B1iTdD0C.jpg"
                 )
                 .effectSharpen(5)
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
+    fun transfomationsSharpen() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/tr:e-sharpen/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    path="medium_cafe_B1iTdD0C.jpg"
+                )
+                .effectSharpen()
                 .create()
 
         assertEquals(expectedTransformation, actualTransformation)
@@ -1499,4 +1574,48 @@ class UnitTests {
         assertEquals(expectedTransformation, actualTransformation)
     }
 
+    @Test
+    fun transformationCustomQueryParameter() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&x-test-header=Test"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    src="https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg"
+                )
+                .addCustomQueryParameter(hashMapOf("x-test-header" to "Test"))
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
+    fun transformationSourceWithQuery() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=h-200"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    src = "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?tr=h-300"
+                )
+                .height(200)
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
+    fun invalidURL() {
+        val expectedTransformation = ""
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    urlEndpoint = "",
+                    path = ""
+                )
+                .height(200)
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
 }

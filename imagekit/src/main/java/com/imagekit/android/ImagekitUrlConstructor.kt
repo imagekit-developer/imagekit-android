@@ -664,8 +664,13 @@ class ImagekitUrlConstructor constructor(
      * @return the current ImagekitUrlConstructor object.
      */
     fun effectSharpen(value: Int = 0): ImagekitUrlConstructor {
-        transformationMap[TranformationMapping.sharpen] = value
-        transformationList.add(String.format("%s-%d", TranformationMapping.sharpen, value))
+        if (value == 0){
+            transformationMap[TranformationMapping.sharpen] = true
+            transformationList.add(String.format("%s", TranformationMapping.sharpen))
+        } else {
+            transformationMap[TranformationMapping.sharpen] = value
+            transformationList.add(String.format("%s-%d", TranformationMapping.sharpen, value))
+        }
         return this
     }
 
@@ -744,9 +749,12 @@ class ImagekitUrlConstructor constructor(
      * @return the Url used to fetch an image after applying the specified transformations.
      */
     fun create(): String {
-        try {
             var url = source.trim('/')
             path = path?.trim('/')
+
+            if (url.isEmpty()) {
+                return ""
+            }
 
             if (transformationList.isNotEmpty()) {
                 var transforms = transformationList.map{ transformation -> transformation }.joinToString(",").replace(",:,", ":")
@@ -787,10 +795,6 @@ class ImagekitUrlConstructor constructor(
 
             return URI(u.getScheme(), u.getAuthority(), u.getPath(),  sb.toString(), u.getFragment()).toString()
 
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return context.getString(R.string.error_url_construction_error)
-        }
     }
 
     private fun addPathParams(endpoint: String): String {
@@ -808,13 +812,6 @@ class ImagekitUrlConstructor constructor(
             }
         }
 
-        return url
-    }
-
-    private fun addQueryParams(endpoint: String): String {
-        queryParams["tr"] = transformationList.map{ transformation -> URLEncoder.encode(transformation, "UTF-8") }.joinToString(",").replace(",:,", ":");
-        var url = String.format("%s?tr=", endpoint)
-        url = String.format("%s%s", url, transformationList.map{ transformation -> URLEncoder.encode(transformation, "UTF-8") }.joinToString(",").replace(",:,", ":"))
         return url
     }
 }
