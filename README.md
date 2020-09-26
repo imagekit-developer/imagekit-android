@@ -2,6 +2,7 @@
 
 [![Release](https://jitpack.io/v/imagekit-developer/imagekit-android.svg)](https://jitpack.io/#imagekit-developer/imagekit-android)
 ![Build](https://github.com/imagekit-developer/imagekit-android/workflows/Gradle%20Tests/badge.svg)
+[![codecov](https://codecov.io/gh/imagekit-developer/imagekit-android/branch/master/graph/badge.svg?token=BeabJwhQoh)]
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Twitter Follow](https://img.shields.io/twitter/follow/imagekitio?label=Follow&style=social)](https://twitter.com/imagekitio)
 
