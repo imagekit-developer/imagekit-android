@@ -15,10 +15,10 @@ import javax.inject.Inject
 @Suppress("unused")
 class ImageKit private constructor(
     val context: Context,
-    clientPublicKey: String = "",
+    clientPublicKey: String,
     imageKitEndpoint: String,
     transformationPosition: TransformationPosition,
-    authenticationEndpoint: String = ""
+    authenticationEndpoint: String
 ) {
 
     @Inject

@@ -4,7 +4,7 @@ data class UploadResponse(
     val fileId: String,
     val name: String,
     val url: String,
-    val thumbnail: Int,
+    val thumbnail: String,
     val height: Int,
     val width: Int,
     val size: Int,
@@ -42,7 +42,7 @@ data class UploadResponse(
         var result = fileId.hashCode()
         result = 31 * result + name.hashCode()
         result = 31 * result + url.hashCode()
-        result = 31 * result + thumbnail
+        result = 31 * result + thumbnail.hashCode()
         result = 31 * result + height
         result = 31 * result + width
         result = 31 * result + size

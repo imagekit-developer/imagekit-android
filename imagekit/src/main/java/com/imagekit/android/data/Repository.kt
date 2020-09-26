@@ -44,7 +44,6 @@ class Repository @Inject constructor(
         isPrivateFile: Boolean?,
         customCoordinates: String?,
         responseFields: String?,
-        signatureHeaders: Map<String, String>?,
         imageKitCallback: ImageKitCallback
     ) = upload(
             bitmapToFile(
@@ -59,7 +58,6 @@ class Repository @Inject constructor(
             isPrivateFile,
             customCoordinates,
             responseFields,
-            signatureHeaders,
             imageKitCallback
         )
 
@@ -74,7 +72,6 @@ class Repository @Inject constructor(
         isPrivateFile: Boolean?,
         customCoordinates: String?,
         responseFields: String?,
-        signatureHeaders: Map<String, String>?,
         imageKitCallback: ImageKitCallback
     ) {
         if (!file.exists()) {
@@ -90,7 +87,7 @@ class Repository @Inject constructor(
         val expire = ((System.currentTimeMillis() / 1000) + TimeUnit.MINUTES.toSeconds(
             DURATION_EXPIRY_MINUTES
         )).toString()
-        val signatureSingle = signatureApi.getSignature(signatureHeaders, expire)
+        val signatureSingle = signatureApi.getSignature(expire)
 
         if (signatureSingle != null) {
             signatureSingle
@@ -106,10 +103,10 @@ class Repository @Inject constructor(
                         customCoordinates,
                         responseFields,
                         expire
-                    ).subscribe({ result ->
+                    ).subscribe({ response ->
                         imageKitCallback.onSuccess(
                             Gson().fromJson(
-                                result.string(),
+                                response.string(),
                                 UploadResponse::class.java
                             )
                         )
@@ -164,13 +161,12 @@ class Repository @Inject constructor(
         isPrivateFile: Boolean,
         customCoordinates: String?,
         responseFields: String?,
-        signatureHeaders: Map<String, String>?,
         imageKitCallback: ImageKitCallback
     ) {
         val expire = ((System.currentTimeMillis() / 1000) + TimeUnit.MINUTES.toSeconds(
             DURATION_EXPIRY_MINUTES
         )).toString()
-        val signatureSingle = signatureApi.getSignature(signatureHeaders, expire)
+        val signatureSingle = signatureApi.getSignature(expire)
         if (signatureSingle != null) {
             signatureSingle
                 .subscribe({ result ->

@@ -16,7 +16,6 @@ class SignatureApi @Inject constructor(
 ) {
 
     fun getSignature(
-        headerMap: Map<String, String>? = null,
         expire: String
     ): Single<SignatureResponse>? {
         val endPoint = sharedPrefUtil.getClientAuthenticationEndpoint()
@@ -25,12 +24,7 @@ class SignatureApi @Inject constructor(
             return null
         }
 
-        return if (headerMap != null)
-            NetworkManager
-                .getApiInterface()
-                .getSignature(endPoint, headerMap, expire)
-        else
-            NetworkManager
+        return NetworkManager
                 .getApiInterface()
                 .getSignature(endPoint, expire)
     }

@@ -44,6 +44,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
+import kotlin.test.assertNull
 
 
 @RunWith(PowerMockRunner::class)
@@ -182,6 +183,7 @@ class UploadTests {
                     assertEquals(uploadResponse.size, 83622)
                     assertEquals(uploadResponse.filePath, "/tmp/test/sample_hash.pdf")
                     assertEquals(uploadResponse.isPrivateFile , false)
+                    Assert.assertArrayEquals(uploadResponse.tags, Array(1){"test"})
                     assertEquals(uploadResponse.fileType, "pdf")
                     future.complete("SUCCESS")
                 }
@@ -201,7 +203,7 @@ class UploadTests {
         val mockSignatureResponse = MockResponse().setResponseCode(HttpURLConnection.HTTP_OK)
             .setBody("{\"token\": \"Token\", \"signature\": \"Signature\"}")
         val mockUploadResponse = MockResponse().setResponseCode(HttpURLConnection.HTTP_OK)
-            .setBody("{\"fileId\" : \"fileId\",\"name\": \"sample_hash.pdf\",\"url\": \"https://ik.imagekit.io/your_imagekit_id/tmp/test/sample_hash.pdf\",\"size\" : 83622,\"filePath\": \"/tmp/test/sample_hash.pdf\",\"tags\": [\"test\"],\"isPrivateFile\" : false,\"fileType\": \"pdf\"}")
+            .setBody("{\"fileId\" : \"fileId\",\"name\": \"sample_hash.pdf\",\"url\": \"https://ik.imagekit.io/your_imagekit_id/tmp/test/sample_hash.pdf\",\"size\" : 83622,\"filePath\": \"/tmp/test/sample_hash.pdf\",\"tags\": [],\"isPrivateFile\" : false,\"fileType\": \"pdf\"}")
         mockWebServer.enqueue(mockSignatureResponse)
         mockWebServer.enqueue(mockUploadResponse)
 
@@ -218,6 +220,7 @@ class UploadTests {
                     assertEquals(uploadResponse.url, "https://ik.imagekit.io/your_imagekit_id/tmp/test/sample_hash.pdf")
                     assertEquals(uploadResponse.size, 83622)
                     assertEquals(uploadResponse.filePath, "/tmp/test/sample_hash.pdf")
+                    Assert.assertArrayEquals(uploadResponse.tags, Array(0){})
                     assertEquals(uploadResponse.isPrivateFile , false)
                     assertEquals(uploadResponse.fileType, "pdf")
                     future.complete("SUCCESS")
@@ -272,7 +275,7 @@ class UploadTests {
         val mockSignatureResponse = MockResponse().setResponseCode(HttpURLConnection.HTTP_OK)
             .setBody("{\"token\": \"Token\", \"signature\": \"Signature\"}")
         val mockUploadResponse = MockResponse().setResponseCode(HttpURLConnection.HTTP_OK)
-            .setBody("{\"fileId\" : \"fileId\",\"name\": \"default-image-test_hash.jpg\", \"height\": 1000, \"width\": 1000,\"url\": \"https://ik.imagekit.io/your_imagekit_id/tmp/test/default-image-test_hash.jpg\",\"size\" : 83622,\"filePath\": \"/tmp/test/default-image-test_hash.jpg\",\"tags\": [\"test\"],\"isPrivateFile\" : false,\"fileType\": \"jpg\"}")
+            .setBody("{\"fileId\" : \"fileId\",\"name\": \"default-image-test_hash.jpg\", \"height\": 1000, \"width\": 1000,\"url\": \"https://ik.imagekit.io/your_imagekit_id/tmp/test/default-image-test_hash.jpg\",\"thumbnail\": \"https://ik.imagekit.io/your_imagekit_id/tmp/test/default-image-test_hash.jpg\",\"size\" : 83622,\"filePath\": \"/tmp/test/default-image-test_hash.jpg\",\"isPrivateFile\" : false,\"fileType\": \"jpg\", \"tags\": [\"test\"], \"customCoordinates\":\"0,0,200,200\"}")
         mockWebServer.enqueue(mockSignatureResponse)
         mockWebServer.enqueue(mockUploadResponse)
 
@@ -282,6 +285,8 @@ class UploadTests {
             useUniqueFilename = true,
             tags = arrayOf("test"),
             folder = "/tmp/test",
+            customCoordinates = "0,0,200,200",
+            responseFields = "fileId,name,url,height,width,size,filePath,isPrivateFile,fileType",
             imageKitCallback = object : ImageKitCallback {
 
                 override fun onSuccess(uploadResponse: UploadResponse) {
@@ -291,9 +296,13 @@ class UploadTests {
                     assertEquals(uploadResponse.height, 1000)
                     assertEquals(uploadResponse.width, 1000)
                     assertEquals(uploadResponse.size, 83622)
+                    Assert.assertArrayEquals(uploadResponse.tags, Array(1){"test"})
                     assertEquals(uploadResponse.filePath, "/tmp/test/default-image-test_hash.jpg")
                     assertEquals(uploadResponse.isPrivateFile , false)
                     assertEquals(uploadResponse.fileType, "jpg")
+                    assertEquals(uploadResponse.customCoordinates, "0,0,200,200")
+                    assertEquals(uploadResponse.thumbnail, "https://ik.imagekit.io/your_imagekit_id/tmp/test/default-image-test_hash.jpg")
+                    assertNull(uploadResponse.metadata)
                     future.complete("SUCCESS")
                 }
 
@@ -312,7 +321,7 @@ class UploadTests {
         val mockSignatureResponse = MockResponse().setResponseCode(HttpURLConnection.HTTP_OK)
             .setBody("{\"token\": \"Token\", \"signature\": \"Signature\"}")
         val mockUploadResponse = MockResponse().setResponseCode(HttpURLConnection.HTTP_OK)
-            .setBody("{\"fileId\" : \"fileId\",\"name\": \"default-image-test_hash.jpg\", \"height\": 1000, \"width\": 1000,\"url\": \"https://ik.imagekit.io/your_imagekit_id/tmp/test/default-image-test_hash.jpg\",\"size\" : 83622,\"filePath\": \"/tmp/test/default-image-test_hash.jpg\",\"tags\": [\"test\"],\"isPrivateFile\" : false,\"fileType\": \"jpg\"}")
+            .setBody("{\"fileId\" : \"fileId\",\"name\": \"default-image-test_hash.jpg\", \"height\": 1000, \"width\": 1000,\"url\": \"https://ik.imagekit.io/your_imagekit_id/tmp/test/default-image-test_hash.jpg\",\"size\" : 83622,\"filePath\": \"/tmp/test/default-image-test_hash.jpg\",\"tags\": [],\"isPrivateFile\" : false,\"fileType\": \"jpg\"}")
         mockWebServer.enqueue(mockSignatureResponse)
         mockWebServer.enqueue(mockUploadResponse)
 
@@ -328,6 +337,7 @@ class UploadTests {
                     assertEquals(uploadResponse.height, 1000)
                     assertEquals(uploadResponse.width, 1000)
                     assertEquals(uploadResponse.size, 83622)
+                    Assert.assertArrayEquals(uploadResponse.tags, Array(0){})
                     assertEquals(uploadResponse.filePath, "/tmp/test/default-image-test_hash.jpg")
                     assertEquals(uploadResponse.isPrivateFile , false)
                     assertEquals(uploadResponse.fileType, "jpg")
@@ -406,6 +416,7 @@ class UploadTests {
                     assertEquals(uploadResponse.size, 83622)
                     assertEquals(uploadResponse.filePath, "/tmp/test/default-image-test_hash.jpg")
                     assertEquals(uploadResponse.isPrivateFile , false)
+                    Assert.assertArrayEquals(uploadResponse.tags, Array(1){"test"})
                     assertEquals(uploadResponse.fileType, "jpg")
                     future.complete("SUCCESS")
                 }
@@ -425,7 +436,7 @@ class UploadTests {
         val mockSignatureResponse = MockResponse().setResponseCode(HttpURLConnection.HTTP_OK)
             .setBody("{\"token\": \"Token\", \"signature\": \"Signature\"}")
         val mockUploadResponse = MockResponse().setResponseCode(HttpURLConnection.HTTP_OK)
-            .setBody("{\"fileId\" : \"fileId\",\"name\": \"default-image-test_hash.jpg\", \"height\": 1000, \"width\": 1000,\"url\": \"https://ik.imagekit.io/your_imagekit_id/tmp/test/default-image-test_hash.jpg\",\"size\" : 83622,\"filePath\": \"/tmp/test/default-image-test_hash.jpg\",\"tags\": [\"test\"],\"isPrivateFile\" : false,\"fileType\": \"jpg\"}")
+            .setBody("{\"fileId\" : \"fileId\",\"name\": \"default-image-test_hash.jpg\", \"height\": 1000, \"width\": 1000,\"url\": \"https://ik.imagekit.io/your_imagekit_id/tmp/test/default-image-test_hash.jpg\",\"size\" : 83622,\"filePath\": \"/tmp/test/default-image-test_hash.jpg\",\"tags\": [],\"isPrivateFile\" : false,\"fileType\": \"jpg\"}")
         mockWebServer.enqueue(mockSignatureResponse)
         mockWebServer.enqueue(mockUploadResponse)
 
@@ -444,6 +455,7 @@ class UploadTests {
                     assertEquals(uploadResponse.width, 1000)
                     assertEquals(uploadResponse.size, 83622)
                     assertEquals(uploadResponse.filePath, "/tmp/test/default-image-test_hash.jpg")
+                    Assert.assertArrayEquals(uploadResponse.tags, Array(0){})
                     assertEquals(uploadResponse.isPrivateFile , false)
                     assertEquals(uploadResponse.fileType, "jpg")
                     future.complete("SUCCESS")

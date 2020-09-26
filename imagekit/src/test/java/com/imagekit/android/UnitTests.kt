@@ -3,6 +3,7 @@ package com.imagekit.android
 import android.app.Application
 import android.content.SharedPreferences
 import com.imagekit.android.entity.*
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -1631,5 +1632,11 @@ class UnitTests {
         assertEquals(expectedTransformation, actualTransformation)
     }
 
-
+//    @Test
+//    fun justForCoverage(){
+//        SignatureResponse("Token", "Signature")
+//        UploadResponse("fileId", "Name", "URL", "Thumbnail", 300, 300, 123, "FileType", "FilePath", Array(1) {"tag"}, false, "0,0,20,20", "meta")
+//
+//        Assert.assertTrue(true)
+//    }
 }

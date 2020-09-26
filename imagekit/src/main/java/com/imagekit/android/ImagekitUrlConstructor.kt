@@ -769,14 +769,12 @@ class ImagekitUrlConstructor constructor(
                     }
                     queryParams["tr"] = transforms
                 } else {
-                    when (transformationPosition){
-                        TransformationPosition.PATH -> {
-                            url = String.format("%s/%s", addPathParams(url), path)
-                        }
-                        TransformationPosition.QUERY -> {
-                            url = String.format("%s/%s", url, path)
-                            queryParams["tr"] = transforms
-                        }
+                    if (transformationPosition == TransformationPosition.PATH) {
+                        url = String.format("%s/%s", addPathParams(url), path)
+                    }
+                    if (transformationPosition == TransformationPosition.QUERY) {
+                        url = String.format("%s/%s", url, path)
+                        queryParams["tr"] = transforms
                     }
                 }
             } else {

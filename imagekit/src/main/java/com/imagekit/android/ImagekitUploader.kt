@@ -39,7 +39,6 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
         isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
         responseFields: String? = null,
-        signatureHeaders: Map<String, String>? = null,
         imageKitCallback: ImageKitCallback
     ) = mRepository.upload(
         file,
@@ -50,7 +49,6 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
         isPrivateFile,
         customCoordinates,
         responseFields,
-        signatureHeaders,
         imageKitCallback
     )
 
@@ -86,7 +84,6 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
         isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
         responseFields: String? = null,
-        signatureHeaders: Map<String, String>? = null,
         imageKitCallback: ImageKitCallback
     ) = mRepository.upload(
         file,
@@ -97,7 +94,6 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
         isPrivateFile,
         customCoordinates,
         responseFields,
-        signatureHeaders,
         imageKitCallback
     )
 
@@ -133,7 +129,6 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
         isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
         responseFields: String? = null,
-        signatureHeaders: Map<String, String>? = null,
         imageKitCallback: ImageKitCallback
     ) = mRepository.upload(
         file,
@@ -144,7 +139,6 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
         isPrivateFile,
         customCoordinates,
         responseFields,
-        signatureHeaders,
         imageKitCallback
     )
 }

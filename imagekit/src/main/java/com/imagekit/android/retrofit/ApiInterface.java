@@ -36,13 +36,6 @@ public interface ApiInterface {
     @GET()
     Single<SignatureResponse> getSignature(
             @Url String url,
-            @HeaderMap Map<String, String> headerMap,
-            @Query("expire") String expire
-    );
-
-    @GET()
-    Single<SignatureResponse> getSignature(
-            @Url String url,
             @Query("expire") String expire
     );
 }
