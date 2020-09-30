@@ -8,7 +8,7 @@ import dagger.Provides
 @Module
 // Safe here as we are dealing with a Dagger 2 module
 @Suppress("unused")
-class ContextModule (val context: Context){
+class ContextModule(val context: Context) {
 
     /**
      * Provides the Application Context
@@ -24,5 +24,5 @@ class ContextModule (val context: Context){
      * @return the Context to be provided
      */
     @Provides
-    fun provideContext(): Context  = context
+    fun provideContext(): Context = context
 }

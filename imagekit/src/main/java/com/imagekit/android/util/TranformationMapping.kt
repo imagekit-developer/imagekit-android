@@ -19,7 +19,7 @@ internal object TranformationMapping {
     const val trimEdges = "t"
     const val overlayImage = "oi"
     const val overlayFocus = "ofo"
-    const val overlayX  = "ox"
+    const val overlayX = "ox"
     const val overlayY = "oy"
     const val overlayWidth = "ow"
     const val overlayHeight = "oh"

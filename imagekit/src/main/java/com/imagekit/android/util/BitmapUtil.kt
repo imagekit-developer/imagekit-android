@@ -7,7 +7,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
-object BitmapUtil{
+object BitmapUtil {
     @Throws(IOException::class)
     fun bitmapToFile(context: Context, filename: String, bitmap: Bitmap): File {
         val f = File(context.cacheDir, filename)

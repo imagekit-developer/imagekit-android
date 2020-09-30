@@ -9,8 +9,8 @@ import com.imagekit.android.util.TranformationMapping
 import com.imagekit.android.util.TranformationMapping.overlayTransparency
 import java.lang.Math.abs
 import java.net.URI
-import java.util.*
 import java.net.URLEncoder
+import java.util.*
 
 
 @Suppress("unused")
@@ -23,7 +23,8 @@ class ImagekitUrlConstructor constructor(
     private val transformationMap = HashMap<String, Any>()
     private var path: String? = null
     private var isSource: Boolean = true
-    private var queryParams: HashMap<String, String> = hashMapOf(IK_VERSION_KEY to "android-${BuildConfig.API_VERSION}")
+    private var queryParams: HashMap<String, String> =
+        hashMapOf(IK_VERSION_KEY to "android-${BuildConfig.API_VERSION}")
 
     constructor(
         context: Context,
@@ -341,7 +342,7 @@ class ImagekitUrlConstructor constructor(
      * or the overlay focus has already been applied
      */
     fun overlayX(overlayX: Int): ImagekitUrlConstructor {
-        val s = if(overlayX < 0)
+        val s = if (overlayX < 0)
             String.format("%s-N%s", TranformationMapping.overlayX, abs(overlayX))
         else
             String.format("%s-%d", TranformationMapping.overlayX, overlayX)
@@ -362,7 +363,7 @@ class ImagekitUrlConstructor constructor(
      * or the overlay focus has already been applied
      */
     fun overlayY(overlayY: Int): ImagekitUrlConstructor {
-        val s = if(overlayY < 0)
+        val s = if (overlayY < 0)
             String.format("%s-N%s", TranformationMapping.overlayY, abs(overlayY))
         else
             String.format("%s-%d", TranformationMapping.overlayY, overlayY)
@@ -412,7 +413,8 @@ class ImagekitUrlConstructor constructor(
      * @return the current ImagekitUrlConstructor object.
      */
     fun overlayText(overlayText: String): ImagekitUrlConstructor {
-        transformationMap[TranformationMapping.overlayText] = URLEncoder.encode(overlayText, "UTF-8")
+        transformationMap[TranformationMapping.overlayText] =
+            URLEncoder.encode(overlayText, "UTF-8")
         transformationList.add(
             String.format(
                 "%s-%s",
@@ -662,7 +664,7 @@ class ImagekitUrlConstructor constructor(
      * @return the current ImagekitUrlConstructor object.
      */
     fun effectSharpen(value: Int = 0): ImagekitUrlConstructor {
-        if (value == 0){
+        if (value == 0) {
             transformationMap[TranformationMapping.sharpen] = true
             transformationList.add(String.format("%s", TranformationMapping.sharpen))
         } else {
@@ -738,7 +740,7 @@ class ImagekitUrlConstructor constructor(
      * @return the current ImagekitUrlConstructor object.
      */
     fun addCustomQueryParameter(params: HashMap<String, String>): ImagekitUrlConstructor {
-        params.forEach{ (key, value) -> queryParams[key] = value }
+        params.forEach { (key, value) -> queryParams[key] = value }
         return this
     }
 
@@ -747,56 +749,64 @@ class ImagekitUrlConstructor constructor(
      * @return the Url used to fetch an image after applying the specified transformations.
      */
     fun create(): String {
-            var url = source.trim('/')
-            path = path?.trim('/')
+        var url = source.trim('/')
+        path = path?.trim('/')
 
-            if (url.isEmpty()) {
-                return ""
-            }
+        if (url.isEmpty()) {
+            return ""
+        }
 
-            if (transformationList.isNotEmpty()) {
-                var transforms = transformationList.map{ transformation -> transformation }.joinToString(",").replace(",:,", ":")
-                if (isSource){
-                    transformationPosition = TransformationPosition.QUERY
-                    if (url.contains("?tr=")) {
-                        url = url.substring(0, url.indexOf("?tr="))
-                    }
-                    if (url.contains("/tr:")) {
-                        url = url.replace(
-                            url.substring(url.indexOf("/tr:"), url.lastIndexOf("/")),
-                            ""
-                        )
-                    }
-                    queryParams["tr"] = transforms
-                } else {
-                    if (transformationPosition == TransformationPosition.PATH) {
-                        url = String.format("%s/%s", addPathParams(url), path)
-                    }
-                    if (transformationPosition == TransformationPosition.QUERY) {
-                        url = String.format("%s/%s", url, path)
-                        queryParams["tr"] = transforms
-                    }
+        if (transformationList.isNotEmpty()) {
+            var transforms =
+                transformationList.map { transformation -> transformation }.joinToString(",")
+                    .replace(",:,", ":")
+            if (isSource) {
+                transformationPosition = TransformationPosition.QUERY
+                if (url.contains("?tr=")) {
+                    url = url.substring(0, url.indexOf("?tr="))
                 }
+                if (url.contains("/tr:")) {
+                    url = url.replace(
+                        url.substring(url.indexOf("/tr:"), url.lastIndexOf("/")),
+                        ""
+                    )
+                }
+                queryParams["tr"] = transforms
             } else {
-                if (!isSource){
-                    url = String.format( "%s/%s", url, path )
+                if (transformationPosition == TransformationPosition.PATH) {
+                    url = String.format("%s/%s", addPathParams(url), path)
+                }
+                if (transformationPosition == TransformationPosition.QUERY) {
+                    url = String.format("%s/%s", url, path)
+                    queryParams["tr"] = transforms
                 }
             }
+        } else {
+            if (!isSource) {
+                url = String.format("%s/%s", url, path)
+            }
+        }
 
-            var u = URI(url)
-            val sb = StringBuilder(
-                if (u.query == null)
-                    ""
-                else
-                    u.query
+        var u = URI(url)
+        val sb = StringBuilder(
+            if (u.query == null)
+                ""
+            else
+                u.query
+        )
+
+        if (sb.isNotEmpty())
+            sb.append('&')
+
+        sb.append(queryParams.map { (key, value) ->
+            String.format(
+                "%s=%s",
+                key,
+                value
             )
+        }.joinToString("&"))
 
-            if (sb.isNotEmpty())
-                sb.append('&')
-
-            sb.append(queryParams.map{ (key, value) -> String.format("%s=%s", key, value) }.joinToString("&"))
-
-            return URI(u.scheme, u.authority, u.path,  sb.toString(), u.fragment).toString()
+        return URI(u.scheme, u.authority, u.path, sb.toString(), u.fragment).toString()
 
     }
 

@@ -82,7 +82,8 @@ class ImageKit private constructor(
         private lateinit var appComponent: UtilComponent
     }
 
-    @JvmOverloads fun url(
+    @JvmOverloads
+    fun url(
         path: String,
         urlEndpoint: String = mSharedPrefUtil.getImageKitUrlEndpoint(),
         transformationPosition: TransformationPosition = mSharedPrefUtil.getTransformationPosition()

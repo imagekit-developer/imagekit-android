@@ -36,7 +36,12 @@ class SharedPrefUtil @Inject constructor(context: Context) {
     fun setTransformationPosition(transformationPosition: TransformationPosition) =
         mPref.edit().putString(KEY_TRANSFORMATION_POSITION_KEY, transformationPosition.name).apply()
 
-    fun getTransformationPosition() = TransformationPosition.valueOf(mPref.getString(KEY_TRANSFORMATION_POSITION_KEY, TransformationPosition.PATH.name)!!)
+    fun getTransformationPosition() = TransformationPosition.valueOf(
+        mPref.getString(
+            KEY_TRANSFORMATION_POSITION_KEY,
+            TransformationPosition.PATH.name
+        )!!
+    )
 
     fun setClientAuthenticationEndpoint(clientAuthenticationEndpoint: String?) =
         mPref.edit().putString(
@@ -44,6 +49,7 @@ class SharedPrefUtil @Inject constructor(context: Context) {
             clientAuthenticationEndpoint
         ).apply()
 
-    fun getClientAuthenticationEndpoint() =  mPref.getString(KEY_CLIENT_AUTHENTICATION_ENDPOINT_KEY, "")!!
+    fun getClientAuthenticationEndpoint() =
+        mPref.getString(KEY_CLIENT_AUTHENTICATION_ENDPOINT_KEY, "")!!
 
 }

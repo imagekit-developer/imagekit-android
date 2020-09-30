@@ -18,8 +18,7 @@ public class NetworkManager {
         createRetrofitObject();
     }
 
-    private static void createRetrofitObject()
-    {
+    private static void createRetrofitObject() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -43,10 +42,8 @@ public class NetworkManager {
         return "https://api.imagekit.io/";
     }
 
-    public static ApiInterface getApiInterface()
-    {
-        if (apiInterface == null)
-        {
+    public static ApiInterface getApiInterface() {
+        if (apiInterface == null) {
             Log.i(TAG, "Api interface is null");
             createRetrofitObject();
         }

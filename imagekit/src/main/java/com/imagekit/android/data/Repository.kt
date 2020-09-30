@@ -6,18 +6,11 @@ import android.graphics.Bitmap
 import com.google.gson.Gson
 import com.imagekit.android.ImageKitCallback
 import com.imagekit.android.R
-import com.imagekit.android.entity.SignatureResponse
 import com.imagekit.android.entity.UploadError
 import com.imagekit.android.entity.UploadResponse
 import com.imagekit.android.retrofit.SignatureApi
 import com.imagekit.android.retrofit.UploadApi
 import com.imagekit.android.util.BitmapUtil.bitmapToFile
-import io.reactivex.Observable
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.BiFunction
-import io.reactivex.schedulers.Schedulers
-import okhttp3.ResponseBody
 import retrofit2.HttpException
 import java.io.File
 import java.util.concurrent.TimeUnit
@@ -46,20 +39,20 @@ class Repository @Inject constructor(
         responseFields: String?,
         imageKitCallback: ImageKitCallback
     ) = upload(
-            bitmapToFile(
-                context,
-                fileName,
-                image
-            ),
+        bitmapToFile(
+            context,
             fileName,
-            useUniqueFilename,
-            tags,
-            folder,
-            isPrivateFile,
-            customCoordinates,
-            responseFields,
-            imageKitCallback
-        )
+            image
+        ),
+        fileName,
+        useUniqueFilename,
+        tags,
+        folder,
+        isPrivateFile,
+        customCoordinates,
+        responseFields,
+        imageKitCallback
+    )
 
     //Takes file
     @SuppressLint("CheckResult")

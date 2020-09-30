@@ -1,7 +1,6 @@
 package com.imagekit.android.retrofit
 
 import android.content.Context
-import com.imagekit.android.R
 import com.imagekit.android.entity.SignatureResponse
 import com.imagekit.android.util.LogUtil
 import com.imagekit.android.util.SharedPrefUtil
@@ -25,7 +24,7 @@ class SignatureApi @Inject constructor(
         }
 
         return NetworkManager
-                .getApiInterface()
-                .getSignature(endPoint, expire)
+            .getApiInterface()
+            .getSignature(endPoint, expire)
     }
 }
