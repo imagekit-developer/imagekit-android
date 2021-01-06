@@ -80,13 +80,13 @@ class Repository @Inject constructor(
         val expire = ((System.currentTimeMillis() / 1000) + TimeUnit.MINUTES.toSeconds(
             DURATION_EXPIRY_MINUTES
         )).toString()
-        val signatureSingle = signatureApi.getSignature(expire)
+        val signature = signatureApi.getSignature(expire)
 
-        if (signatureSingle != null) {
-            signatureSingle
-                .subscribe({ result ->
+        if (signature != null) {
+            signature
+                .subscribe({ signatureResponse ->
                     uploadApi.getFileUploadCall(
-                        result,
+                        signatureResponse,
                         file,
                         fileName,
                         useUniqueFilename,
@@ -126,6 +126,7 @@ class Repository @Inject constructor(
                         } else
                             imageKitCallback.onError(UploadError(true))
                     })
+
                 }, {
                     imageKitCallback.onError(
                         UploadError(
@@ -134,6 +135,7 @@ class Repository @Inject constructor(
                         )
                     )
                 })
+
         } else
             imageKitCallback.onError(
                 UploadError(

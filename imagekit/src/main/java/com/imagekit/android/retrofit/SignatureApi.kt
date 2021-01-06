@@ -4,7 +4,10 @@ import android.content.Context
 import com.imagekit.android.entity.SignatureResponse
 import com.imagekit.android.util.LogUtil
 import com.imagekit.android.util.SharedPrefUtil
+import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,7 +19,7 @@ class SignatureApi @Inject constructor(
 
     fun getSignature(
         expire: String
-    ): Single<SignatureResponse>? {
+    ): Observable<SignatureResponse>? {
         val endPoint = sharedPrefUtil.getClientAuthenticationEndpoint()
         if (endPoint.isBlank()) {
             LogUtil.logError("Upload failed! Authentication endpoint is missing!")
@@ -26,5 +29,8 @@ class SignatureApi @Inject constructor(
         return NetworkManager
             .getApiInterface()
             .getSignature(endPoint, expire)
+            .toObservable()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 }

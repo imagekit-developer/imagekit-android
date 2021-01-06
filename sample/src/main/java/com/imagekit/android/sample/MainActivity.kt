@@ -14,10 +14,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         ImageKit.init(
             context = applicationContext,
-            publicKey = Constants.CLIENT_PUBLIC_KEY,
-            urlEndpoint = "https://ik.imagekit.io/demo",
+            publicKey = "YOUR_PUBLIC_KEY",
+            urlEndpoint = "https://ik.imagekit.io/YOUR_IMAGEKIT_ID",
             transformationPosition = TransformationPosition.PATH,
-            authenticationEndpoint = "https://imagekit.io/temp/client-side-upload-signature"
+            authenticationEndpoint = "YOUR_AUTHENTICATION_ENDPOINT"
         )
 
         btUploadImage.setOnClickListener {

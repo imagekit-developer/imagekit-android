@@ -3,7 +3,10 @@ package com.imagekit.android.retrofit
 import android.content.Context
 import com.imagekit.android.entity.SignatureResponse
 import com.imagekit.android.util.SharedPrefUtil
+import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -28,7 +31,7 @@ class UploadApi @Inject constructor(
         customCoordinates: String?,
         responseFields: String?,
         expire: String
-    ): Single<ResponseBody> {
+    ): Observable<ResponseBody> {
 
         val commaSeparatedTags = getCommaSeparatedTagsFromTags(tags)
 
@@ -82,7 +85,9 @@ class UploadApi @Inject constructor(
                     "responseFields",
                     responseFields
                 ) else null
-            )
+            ).toObservable()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
     private fun getCommaSeparatedTagsFromTags(tags: Array<String>?): String? {
