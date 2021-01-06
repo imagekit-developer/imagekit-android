@@ -2,5 +2,6 @@ package com.imagekit.android.entity
 
 data class SignatureResponse(
     val token: String,
-    val signature: String
+    val signature: String,
+    val expire: Int
 )

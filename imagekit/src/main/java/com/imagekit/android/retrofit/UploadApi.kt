@@ -60,7 +60,7 @@ class UploadApi @Inject constructor(
                 MultipartBody.Part.createFormData("signature", signatureResponse.signature),
                 MultipartBody.Part.createFormData(
                     "expire",
-                    expire
+                    signatureResponse.expire.toString()
                 ),
                 MultipartBody.Part.createFormData("token", signatureResponse.token),
                 MultipartBody.Part.createFormData("fileName", fileName),
