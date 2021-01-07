@@ -12,10 +12,6 @@ import com.imagekit.android.retrofit.SignatureApi
 import com.imagekit.android.util.SharedPrefUtil
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.After
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
@@ -35,6 +31,7 @@ import com.imagekit.android.retrofit.NetworkManager
 import com.imagekit.android.util.BitmapUtil
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.junit.*
 import org.mockito.MockitoAnnotations
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PowerMockIgnore
@@ -50,6 +47,7 @@ import kotlin.test.assertNull
 @RunWith(PowerMockRunner::class)
 @PowerMockIgnore("javax.net.ssl.*")
 @PrepareForTest(NetworkManager::class)
+@Ignore
 class UploadTests {
 
     private val clientPublicKey: String = "Dummy public key"
