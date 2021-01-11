@@ -405,9 +405,15 @@ class ImagekitUrlConstructor constructor(
      * @param overlayImage
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayImageTrim(overlayImageTrim: Boolean) : ImagekitUrlConstructor {
+    fun overlayImageTrim(overlayImageTrim: Boolean): ImagekitUrlConstructor {
         transformationMap[TransformationMapping.overlayImageTrim] = overlayImageTrim.toString()
-        transformationList.add(String.format("%s-%s", TransformationMapping.overlayImageTrim, overlayImageTrim.toString()))
+        transformationList.add(
+            String.format(
+                "%s-%s",
+                TransformationMapping.overlayImageTrim,
+                overlayImageTrim.toString()
+            )
+        )
         return this
     }
 
@@ -418,8 +424,9 @@ class ImagekitUrlConstructor constructor(
      * @param height Accepts integer value greater than equal to 1
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayImageAspectRatio(width: Int, height: Int) : ImagekitUrlConstructor {
-        val s = String.format("%s-%d-%d", TransformationMapping.overlayImageAspectRatio, width, height)
+    fun overlayImageAspectRatio(width: Int, height: Int): ImagekitUrlConstructor {
+        val s =
+            String.format("%s-%d-%d", TransformationMapping.overlayImageAspectRatio, width, height)
         transformationMap[TransformationMapping.overlayImageAspectRatio] = s
         transformationList.add(s)
         return this
@@ -430,9 +437,16 @@ class ImagekitUrlConstructor constructor(
      * @param overlayBackground
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayImageBackground(overlayImageBackground: String) : ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayImageBackground] = overlayImageBackground.toUpperCase(Locale.getDefault())
-        transformationList.add(String.format("%s-%s", TransformationMapping.overlayImageBackground, overlayImageBackground.toUpperCase(Locale.getDefault())))
+    fun overlayImageBackground(overlayImageBackground: String): ImagekitUrlConstructor {
+        transformationMap[TransformationMapping.overlayImageBackground] =
+            overlayImageBackground.toUpperCase(Locale.getDefault())
+        transformationList.add(
+            String.format(
+                "%s-%s",
+                TransformationMapping.overlayImageBackground,
+                overlayImageBackground.toUpperCase(Locale.getDefault())
+            )
+        )
         return this
     }
 
@@ -444,8 +458,13 @@ class ImagekitUrlConstructor constructor(
      * @param borderColor color of the border as RGB hex code
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayImageBorder(borderWidth: Int, borderColor: String) : ImagekitUrlConstructor {
-        val s = String.format("%s-%d_%s", TransformationMapping.overlayImageBorder, borderWidth, borderColor.toUpperCase(Locale.getDefault()))
+    fun overlayImageBorder(borderWidth: Int, borderColor: String): ImagekitUrlConstructor {
+        val s = String.format(
+            "%s-%d_%s",
+            TransformationMapping.overlayImageBorder,
+            borderWidth,
+            borderColor.toUpperCase(Locale.getDefault())
+        )
         transformationMap[TransformationMapping.border] = s
         transformationList.add(s)
         return this
@@ -460,7 +479,7 @@ class ImagekitUrlConstructor constructor(
      * @param dpr Possible values: 0.1 to 5.0
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayImageDPR(dpr: Float) : ImagekitUrlConstructor {
+    fun overlayImageDPR(dpr: Float): ImagekitUrlConstructor {
         transformationMap[TransformationMapping.overlayImageDPR] = dpr
         transformationList.add(String.format("%s-%.2f", TransformationMapping.overlayImageDPR, dpr))
         return this
@@ -473,9 +492,15 @@ class ImagekitUrlConstructor constructor(
      * Default value is picked from the dashboard settings. It is set to 80.
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayImageQuality(quality: Int) : ImagekitUrlConstructor {
+    fun overlayImageQuality(quality: Int): ImagekitUrlConstructor {
         transformationMap[TransformationMapping.overlayImageQuality] = quality
-        transformationList.add(String.format("%s-%d", TransformationMapping.overlayImageQuality, quality))
+        transformationList.add(
+            String.format(
+                "%s-%d",
+                TransformationMapping.overlayImageQuality,
+                quality
+            )
+        )
         return this
     }
 
@@ -487,9 +512,15 @@ class ImagekitUrlConstructor constructor(
      * @see CropMode
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayImageCropping(cropMode: CropMode) : ImagekitUrlConstructor {
+    fun overlayImageCropping(cropMode: CropMode): ImagekitUrlConstructor {
         transformationMap[TransformationMapping.overlayImageCropping] = cropMode
-        transformationList.add(String.format("%s-%s", TransformationMapping.overlayImageCropping, cropMode.value))
+        transformationList.add(
+            String.format(
+                "%s-%s",
+                TransformationMapping.overlayImageCropping,
+                cropMode.value
+            )
+        )
         return this
     }
 
@@ -571,7 +602,7 @@ class ImagekitUrlConstructor constructor(
      * @param overlayAlpha Possible values include integer from 1 to 9.
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayTextTransparency(overlayTextTransparency: Int) : ImagekitUrlConstructor {
+    fun overlayTextTransparency(overlayTextTransparency: Int): ImagekitUrlConstructor {
         return this.overlayAlpha(overlayTextTransparency)
     }
 
@@ -635,9 +666,16 @@ class ImagekitUrlConstructor constructor(
      * @param overlayTextEncoded
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayTextEncoded(overlayTextEncoded: String) : ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayTextEncoded] = overlayTextEncoded.replace("=", "%3D")
-        transformationList.add(String.format("%s-%s", TransformationMapping.overlayTextEncoded, overlayTextEncoded.replace("=", "%3D")))
+    fun overlayTextEncoded(overlayTextEncoded: String): ImagekitUrlConstructor {
+        transformationMap[TransformationMapping.overlayTextEncoded] =
+            overlayTextEncoded.replace("=", "%3D")
+        transformationList.add(
+            String.format(
+                "%s-%s",
+                TransformationMapping.overlayTextEncoded,
+                overlayTextEncoded.replace("=", "%3D")
+            )
+        )
         return this
     }
 
@@ -646,9 +684,15 @@ class ImagekitUrlConstructor constructor(
      * @param width Accepts integer value greater than 1.
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayTextWidth(width: Int) : ImagekitUrlConstructor {
+    fun overlayTextWidth(width: Int): ImagekitUrlConstructor {
         transformationMap[TransformationMapping.overlayTextWidth] = width
-        transformationList.add(String.format("%s-%d", TransformationMapping.overlayTextWidth, width))
+        transformationList.add(
+            String.format(
+                "%s-%d",
+                TransformationMapping.overlayTextWidth,
+                width
+            )
+        )
         return this
     }
 
@@ -657,9 +701,16 @@ class ImagekitUrlConstructor constructor(
      * @param overlayTextColor
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayTextBackground(overlayTextColor: String) : ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayTextBackground] = overlayTextColor.toUpperCase(Locale.getDefault())
-        transformationList.add(String.format("%s-%s", TransformationMapping.overlayTextBackground, overlayTextColor.toUpperCase(Locale.getDefault())))
+    fun overlayTextBackground(overlayTextColor: String): ImagekitUrlConstructor {
+        transformationMap[TransformationMapping.overlayTextBackground] =
+            overlayTextColor.toUpperCase(Locale.getDefault())
+        transformationList.add(
+            String.format(
+                "%s-%s",
+                TransformationMapping.overlayTextBackground,
+                overlayTextColor.toUpperCase(Locale.getDefault())
+            )
+        )
         return this
     }
 
@@ -668,9 +719,15 @@ class ImagekitUrlConstructor constructor(
      * @param overlayTextPadding
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayTextPadding(overlayTextPadding: String) : ImagekitUrlConstructor {
+    fun overlayTextPadding(overlayTextPadding: String): ImagekitUrlConstructor {
         transformationMap[TransformationMapping.overlayTextPadding] = overlayTextPadding
-        transformationList.add(String.format("%s-%s", TransformationMapping.overlayTextPadding, overlayTextPadding))
+        transformationList.add(
+            String.format(
+                "%s-%s",
+                TransformationMapping.overlayTextPadding,
+                overlayTextPadding
+            )
+        )
         return this
     }
 
@@ -679,7 +736,7 @@ class ImagekitUrlConstructor constructor(
      * @param overlayTextPadding
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayTextPadding(overlayTextPadding: Int) : ImagekitUrlConstructor {
+    fun overlayTextPadding(overlayTextPadding: Int): ImagekitUrlConstructor {
         return this.overlayTextPadding(String.format("%d", overlayTextPadding))
     }
 
@@ -689,7 +746,7 @@ class ImagekitUrlConstructor constructor(
      * @param horizontalPadding
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayTextPadding(verticalPadding: Int, horizontalPadding: Int) : ImagekitUrlConstructor {
+    fun overlayTextPadding(verticalPadding: Int, horizontalPadding: Int): ImagekitUrlConstructor {
         return this.overlayTextPadding(String.format("%d_%d", verticalPadding, horizontalPadding))
     }
 
@@ -700,8 +757,19 @@ class ImagekitUrlConstructor constructor(
      * @param bottomPadding
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayTextPadding(topPadding: Int, horizontalPadding: Int, bottomPadding: Int) : ImagekitUrlConstructor {
-        return this.overlayTextPadding(String.format("%d_%d_%d", topPadding, horizontalPadding, bottomPadding))
+    fun overlayTextPadding(
+        topPadding: Int,
+        horizontalPadding: Int,
+        bottomPadding: Int
+    ): ImagekitUrlConstructor {
+        return this.overlayTextPadding(
+            String.format(
+                "%d_%d_%d",
+                topPadding,
+                horizontalPadding,
+                bottomPadding
+            )
+        )
     }
 
     /**
@@ -712,8 +780,21 @@ class ImagekitUrlConstructor constructor(
      * @param leftPadding
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayTextPadding(topPadding: Int, rightPadding: Int, bottomPadding: Int, leftPadding: Int) : ImagekitUrlConstructor {
-        return this.overlayTextPadding(String.format("%d_%d_%d_%d", topPadding, rightPadding, bottomPadding, leftPadding))
+    fun overlayTextPadding(
+        topPadding: Int,
+        rightPadding: Int,
+        bottomPadding: Int,
+        leftPadding: Int
+    ): ImagekitUrlConstructor {
+        return this.overlayTextPadding(
+            String.format(
+                "%d_%d_%d_%d",
+                topPadding,
+                rightPadding,
+                bottomPadding,
+                leftPadding
+            )
+        )
     }
 
     /**
@@ -721,9 +802,16 @@ class ImagekitUrlConstructor constructor(
      * @param overlayTextInnerAlignment
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayTextInnerAlignment(overlayTextInnerAlignment: OverlayTextInnerAlignment) : ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayTextInnerAlignment] = overlayTextInnerAlignment.value
-        transformationList.add(String.format("%s-%s", TransformationMapping.overlayTextInnerAlignment, overlayTextInnerAlignment.value))
+    fun overlayTextInnerAlignment(overlayTextInnerAlignment: OverlayTextInnerAlignment): ImagekitUrlConstructor {
+        transformationMap[TransformationMapping.overlayTextInnerAlignment] =
+            overlayTextInnerAlignment.value
+        transformationList.add(
+            String.format(
+                "%s-%s",
+                TransformationMapping.overlayTextInnerAlignment,
+                overlayTextInnerAlignment.value
+            )
+        )
         return this
     }
 
@@ -732,7 +820,7 @@ class ImagekitUrlConstructor constructor(
      * @param radius Possible values include positive integer.
      * @return the current ImagekitUrlConstructor object.
      */
-    fun overlayRadius(radius: Int) : ImagekitUrlConstructor {
+    fun overlayRadius(radius: Int): ImagekitUrlConstructor {
         transformationMap[TransformationMapping.overlayRadius] = radius
         transformationList.add(String.format("%s-%d", TransformationMapping.overlayRadius, radius))
         return this

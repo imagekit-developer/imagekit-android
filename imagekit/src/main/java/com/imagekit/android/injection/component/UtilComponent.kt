@@ -6,7 +6,6 @@ import com.imagekit.android.injection.module.ContextModule
 import dagger.Component
 import javax.inject.Singleton
 
-
 @Component(modules = [(ContextModule::class)])
 @Singleton
 interface UtilComponent {

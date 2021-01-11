@@ -1,26 +1,63 @@
 package com.imagekit.android.retrofit
 
-import android.content.Context
+import android.util.Log
 import com.imagekit.android.entity.SignatureResponse
-import com.imagekit.android.util.SharedPrefUtil
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
+import okhttp3.*
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class UploadApi @Inject constructor(
-    private val context: Context,
-    private val sharedPrefUtil: SharedPrefUtil
-) {
+object NetworkManager {
+    private const val TAG = "Application Handler"
+    private var apiInterface: ApiInterface? = null
+    fun initialize() {
+        createRetrofitObject()
+    }
+
+    private fun createRetrofitObject() {
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .addInterceptor(BuildVersionQueryInterceptor())
+            .build()
+        val retrofit = Retrofit.Builder()
+            .baseUrl(baseURL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
+        apiInterface = retrofit.create(ApiInterface::class.java)
+    }
+
+    val baseURL: String
+        get() = "https://api.imagekit.io/"
+
+    fun getApiInterface(): ApiInterface {
+        if (apiInterface == null) {
+            Log.i(TAG, "Api interface is null")
+            createRetrofitObject()
+        }
+        return apiInterface!!
+    }
+
+    fun getSignature(
+        endPoint: String,
+        expire: String
+    ): Single<SignatureResponse> {
+        return getApiInterface()
+            .getSignature(endPoint, expire)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     fun getFileUploadCall(
+        publicKey: String,
         signatureResponse: SignatureResponse,
         file: Any,
         fileName: String,
@@ -29,10 +66,8 @@ class UploadApi @Inject constructor(
         folder: String?,
         isPrivateFile: Boolean?,
         customCoordinates: String?,
-        responseFields: String?,
-        expire: String
-    ): Observable<ResponseBody> {
-
+        responseFields: String?
+    ): Single<ResponseBody> {
         val commaSeparatedTags = getCommaSeparatedTagsFromTags(tags)
 
         val profileImagePart: MultipartBody.Part
@@ -49,13 +84,12 @@ class UploadApi @Inject constructor(
             MultipartBody.Part.createFormData("file", file as String)
         }
 
-        return NetworkManager
-            .getApiInterface()
+        return getApiInterface()
             .uploadImage(
                 profileImagePart,
                 MultipartBody.Part.createFormData(
                     "publicKey",
-                    sharedPrefUtil.getClientPublicKey()
+                    publicKey
                 ),
                 MultipartBody.Part.createFormData("signature", signatureResponse.signature),
                 MultipartBody.Part.createFormData(
@@ -85,9 +119,10 @@ class UploadApi @Inject constructor(
                     "responseFields",
                     responseFields
                 ) else null
-            ).toObservable()
+            )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+
     }
 
     private fun getCommaSeparatedTagsFromTags(tags: Array<String>?): String? {

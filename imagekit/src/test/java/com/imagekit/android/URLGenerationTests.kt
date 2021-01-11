@@ -2,7 +2,6 @@ package com.imagekit.android
 
 import android.app.Application
 import android.content.SharedPreferences
-import com.imagekit.android.entity.CropMode
 import com.imagekit.android.entity.Rotation
 import com.imagekit.android.entity.TransformationPosition
 import org.junit.Before
@@ -54,7 +53,7 @@ class URLGenerationTests {
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
-                    path="medium_cafe_B1iTdD0C.jpg",
+                    path = "medium_cafe_B1iTdD0C.jpg",
                     urlEndpoint = "https://ik.imagekit.io/modified_imagekitid"
                 )
                 .create()
@@ -69,7 +68,7 @@ class URLGenerationTests {
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
-                    path="medium_cafe_B1iTdD0C.jpg",
+                    path = "medium_cafe_B1iTdD0C.jpg",
                     urlEndpoint = "https://ik.imagekit.io/demo/"
                 )
                 .create()
@@ -84,7 +83,7 @@ class URLGenerationTests {
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
-                    path="/medium_cafe_B1iTdD0C.jpg",
+                    path = "/medium_cafe_B1iTdD0C.jpg",
                     urlEndpoint = "https://ik.imagekit.io/demo"
                 )
                 .create()
@@ -100,7 +99,7 @@ class URLGenerationTests {
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
-                    path="medium_cafe_B1iTdD0C.jpg",
+                    path = "medium_cafe_B1iTdD0C.jpg",
                     urlEndpoint = "https://ik.imagekit.io/demo"
                 )
                 .addCustomTransformation("test", "test")
@@ -116,7 +115,7 @@ class URLGenerationTests {
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
-                    path="medium_cafe_B1iTdD0C.jpg",
+                    path = "medium_cafe_B1iTdD0C.jpg",
                     urlEndpoint = "https://ik.imagekit.io/demo"
                 )
                 .create()
@@ -131,7 +130,7 @@ class URLGenerationTests {
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
-                    path="medium_cafe_B1iTdD0C.jpg",
+                    path = "medium_cafe_B1iTdD0C.jpg",
                     transformationPosition = TransformationPosition.QUERY
                 )
                 .width(300)
@@ -148,7 +147,7 @@ class URLGenerationTests {
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
-                    path="medium_cafe_B1iTdD0C.jpg"
+                    path = "medium_cafe_B1iTdD0C.jpg"
                 )
                 .height(300)
                 .chainTransformation()
@@ -165,7 +164,7 @@ class URLGenerationTests {
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
-                    src="https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg"
+                    src = "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg"
                 )
                 .create()
 
@@ -179,7 +178,7 @@ class URLGenerationTests {
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
-                    src="https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg"
+                    src = "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg"
                 )
                 .addCustomQueryParameter("x-test-header", "Test")
                 .create()
@@ -194,7 +193,7 @@ class URLGenerationTests {
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
-                    src="https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?x-test=Test"
+                    src = "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?x-test=Test"
                 )
                 .addCustomQueryParameter("x-test-header", "Test")
                 .create()
@@ -209,7 +208,7 @@ class URLGenerationTests {
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
-                    src="https://ik.imagekit.io/demo/tr:h-300,w-300:rt-90/medium_cafe_B1iTdD0C.jpg"
+                    src = "https://ik.imagekit.io/demo/tr:h-300,w-300:rt-90/medium_cafe_B1iTdD0C.jpg"
                 )
                 .height(300)
                 .width(300)
@@ -227,7 +226,7 @@ class URLGenerationTests {
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
-                    src="https://ik.imagekit.io/demo/tr:h-300,w-300:rt-90/medium_cafe_B1iTdD0C.jpg"
+                    src = "https://ik.imagekit.io/demo/tr:h-300,w-300:rt-90/medium_cafe_B1iTdD0C.jpg"
                 )
                 .height(300)
                 .width(300)

@@ -1,11 +1,17 @@
 package com.imagekit.android
 
+import android.content.Context
 import android.graphics.Bitmap
 import com.imagekit.android.data.Repository
+import com.imagekit.android.entity.UploadError
+import com.imagekit.android.util.BitmapUtil.bitmapToFile
 import java.io.File
 import javax.inject.Inject
 
-class ImagekitUploader @Inject constructor(private val mRepository: Repository) {
+class ImagekitUploader @Inject constructor(
+    private val mRepository: Repository,
+    private val context: Context
+) {
 
     /**
      * Method to upload an image to ImageKit.
@@ -40,17 +46,23 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
         customCoordinates: String? = null,
         responseFields: String? = null,
         imageKitCallback: ImageKitCallback
-    ) = mRepository.upload(
-        file,
-        fileName,
-        useUniqueFilename,
-        tags,
-        folder,
-        isPrivateFile,
-        customCoordinates,
-        responseFields,
-        imageKitCallback
-    )
+    ) {
+        return mRepository.upload(
+            bitmapToFile(
+                context,
+                fileName,
+                file
+            ),
+            fileName,
+            useUniqueFilename,
+            tags,
+            folder,
+            isPrivateFile,
+            customCoordinates,
+            responseFields,
+            imageKitCallback
+        )
+    }
 
     /**
      * Method to upload a file to ImageKit. Permitted types: JPG, PNG, WebP, GIF, PDF, JS, CSS and TXT
@@ -85,17 +97,28 @@ class ImagekitUploader @Inject constructor(private val mRepository: Repository) 
         customCoordinates: String? = null,
         responseFields: String? = null,
         imageKitCallback: ImageKitCallback
-    ) = mRepository.upload(
-        file,
-        fileName,
-        useUniqueFilename,
-        tags,
-        folder,
-        isPrivateFile,
-        customCoordinates,
-        responseFields,
-        imageKitCallback
-    )
+    ) {
+        if (!file.exists()) {
+            imageKitCallback.onError(
+                UploadError(
+                    exception = true,
+                    message = context.getString(R.string.error_file_not_found)
+                )
+            )
+            return
+        }
+        return mRepository.upload(
+            file,
+            fileName,
+            useUniqueFilename,
+            tags,
+            folder,
+            isPrivateFile,
+            customCoordinates,
+            responseFields,
+            imageKitCallback
+        )
+    }
 
     /**
      * Method to upload a file from a url to ImageKit. Permitted types: JPG, PNG, WebP, GIF, PDF, JS, CSS and TXT

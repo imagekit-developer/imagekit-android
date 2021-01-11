@@ -26,7 +26,7 @@ class SharedPrefUtil @Inject constructor(context: Context) {
     fun setClientPublicKey(clientPublicKey: String) =
         mPref.edit().putString(KEY_CLIENT_PUBLIC_KEY, clientPublicKey).apply()
 
-    fun getClientPublicKey() = mPref.getString(KEY_CLIENT_PUBLIC_KEY, "")
+    fun getClientPublicKey() = mPref.getString(KEY_CLIENT_PUBLIC_KEY, "")!!
 
     fun setImageKitUrlEndpoint(imageKitEndpoint: String) =
         mPref.edit().putString(KEY_IMAGEKIT_URL_ENDPOINT_KEY, imageKitEndpoint).apply()

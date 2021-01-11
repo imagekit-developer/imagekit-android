@@ -10,5 +10,6 @@
     <!--<string name="error_required_transform_value_not_specified">Prerequisite transforms should be applied first</string>-->
     <string name="error_transform_value_invalid">Invalid transform value specified! </string>
     <string name="error_authentication_endpoint_is_missing">Upload failed! Authentication endpoint is missing.</string>
+    <string name="error_public_key_is_missing">Upload failed! Public Key is missing.</string>
     <string name="error_signature_generation_failed">Signature generation failed.</string>
 </resources>

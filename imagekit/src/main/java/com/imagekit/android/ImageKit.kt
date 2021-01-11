@@ -4,12 +4,12 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import com.imagekit.android.entity.TransformationPosition
-import com.imagekit.android.exception.ApplicationContextExpectedException
 import com.imagekit.android.injection.component.DaggerUtilComponent
 import com.imagekit.android.injection.component.UtilComponent
 import com.imagekit.android.injection.module.ContextModule
 import com.imagekit.android.retrofit.NetworkManager
 import com.imagekit.android.util.SharedPrefUtil
+import java.lang.Exception
 import javax.inject.Inject
 
 @Suppress("unused")
@@ -59,7 +59,7 @@ class ImageKit private constructor(
             authenticationEndpoint: String = ""
         ) {
             if (context !is Application)
-                throw ApplicationContextExpectedException()
+                throw Exception("Application Context Expected!!")
             else check(!(urlEndpoint.isBlank())) { "Missing urlEndpoint during initialization" }
 
             imageKit = ImageKit(

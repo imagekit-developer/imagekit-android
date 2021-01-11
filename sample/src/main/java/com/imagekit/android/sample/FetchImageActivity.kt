@@ -88,7 +88,7 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                         .create()
                 }
                 else ->
-                    ImageKit.getInstance().url("plant.jpeg", "https://ik.imagekit.io/demo/img" )
+                    ImageKit.getInstance().url("plant.jpeg", "https://ik.imagekit.io/demo/img")
                         .create()
             }
         )

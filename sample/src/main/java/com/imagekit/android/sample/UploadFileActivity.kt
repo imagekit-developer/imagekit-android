@@ -39,12 +39,12 @@ class UploadFileActivity : AppCompatActivity(), ImageKitCallback, View.OnClickLi
                 .show()
 
             ImageKit.getInstance().uploader().upload(
-                file = file!!
-                , fileName = file!!.name
-                , useUniqueFilename = true
-                , tags = arrayOf("nice", "copy", "books")
-                , folder = "/dummy/folder/"
-                , imageKitCallback = this
+                file = file!!,
+                fileName = file!!.name,
+                useUniqueFilename = true,
+                tags = arrayOf("nice", "copy", "books"),
+                folder = "/dummy/folder/",
+                imageKitCallback = this
             )
         }
     }

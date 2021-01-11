@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.github.dcendents.android-maven'
 
-group='com.github.imagekit-developer'
+group = 'com.github.imagekit-developer'
 
 def dagger_version = '2.16'
 
@@ -30,7 +30,7 @@ android {
     }
 
     testOptions {
-        unitTests{
+        unitTests {
             returnDefaultValues = true
             includeAndroidResources = true
         }
@@ -41,7 +41,7 @@ dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
 
     api 'androidx.appcompat:appcompat:1.1.0'
-    api"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     testImplementation 'org.jetbrains.kotlin:kotlin-test-junit:1.0.6'
     testImplementation 'junit:junit:4.12'
@@ -71,7 +71,7 @@ tasks.withType(Test) {
     jacoco.includeNoLocationClasses = true
 }
 
-jacocoAndroidUnitTestReport{
+jacocoAndroidUnitTestReport {
     csv.enabled false
     html.enabled true
     xml.enabled true

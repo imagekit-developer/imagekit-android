@@ -2,36 +2,21 @@ package com.imagekit.android
 
 import android.app.Application
 import android.content.SharedPreferences
-import android.graphics.BitmapFactory
-import android.media.Image
-import com.imagekit.android.entity.SignatureResponse
+import android.graphics.Bitmap
 import com.imagekit.android.entity.TransformationPosition
 import com.imagekit.android.entity.UploadError
 import com.imagekit.android.entity.UploadResponse
-import com.imagekit.android.retrofit.SignatureApi
-import com.imagekit.android.util.SharedPrefUtil
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
-import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
-import org.mockito.Mockito
-import org.mockito.junit.MockitoJUnitRunner
-import java.io.File
-import java.io.FileInputStream
-import java.lang.reflect.Field
-import java.lang.reflect.Modifier
-import java.net.HttpURLConnection
-import java.util.concurrent.CompletableFuture
-import java.util.concurrent.TimeUnit
-import kotlin.test.assertEquals
-import android.graphics.Bitmap
 import com.imagekit.android.retrofit.ApiInterface
 import com.imagekit.android.retrofit.BuildVersionQueryInterceptor
 import com.imagekit.android.retrofit.NetworkManager
-import com.imagekit.android.util.BitmapUtil
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
 import org.junit.*
+import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PowerMockIgnore
@@ -40,7 +25,10 @@ import org.powermock.modules.junit4.PowerMockRunner
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.*
+import java.io.File
+import java.net.HttpURLConnection
+import java.util.concurrent.CompletableFuture
+import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 
@@ -53,7 +41,6 @@ class UploadTests {
     private val clientPublicKey: String = "Dummy public key"
     private val urlEndpoint = "https://ik.imagekit.io/demo"
     private var mockWebServer = MockWebServer()
-    private var signatureApi: SignatureApi? = null
     private var mockPrefs: SharedPreferences? = null
 
     @Before
@@ -63,59 +50,73 @@ class UploadTests {
         mockPrefs = PowerMockito.mock(SharedPreferences::class.java)
         val mockContext = PowerMockito.mock(Application::class.java)
         val mockEditor = PowerMockito.mock(SharedPreferences.Editor::class.java)
+        val mockNetworkManager = PowerMockito.mock(NetworkManager::class.java)
 
         MockitoAnnotations.initMocks(this);
-        Mockito.`when`(mockContext.getSharedPreferences(
-            ArgumentMatchers.anyString(),
-            ArgumentMatchers.anyInt()
-        )).thenReturn(mockPrefs)
+        Mockito.`when`(
+            mockContext.getSharedPreferences(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.anyInt()
+            )
+        ).thenReturn(mockPrefs)
 
-        Mockito.`when`<String>(mockPrefs!!.getString(
-            ArgumentMatchers.eq("Client Authentication Endpoint"),
-            ArgumentMatchers.anyString()
-        )).thenReturn(mockWebServer.url("/temp/client-side-upload-signature").toString())
+        Mockito.`when`<String>(
+            mockPrefs!!.getString(
+                ArgumentMatchers.eq("Client Authentication Endpoint"),
+                ArgumentMatchers.anyString()
+            )
+        ).thenReturn(mockWebServer.url("/temp/client-side-upload-signature").toString())
 
-        Mockito.`when`<String>(mockPrefs!!.getString(
-            ArgumentMatchers.eq("Client Public Key"),
-            ArgumentMatchers.anyString()
-        )).thenReturn(clientPublicKey)
+        Mockito.`when`<String>(
+            mockPrefs!!.getString(
+                ArgumentMatchers.eq("Client Public Key"),
+                ArgumentMatchers.anyString()
+            )
+        ).thenReturn(clientPublicKey)
 
         Mockito.`when`<SharedPreferences.Editor>(mockPrefs!!.edit()).thenReturn(mockEditor)
 
-        Mockito.`when`<SharedPreferences.Editor>(mockEditor.putString(
-            ArgumentMatchers.anyString(),
-            ArgumentMatchers.anyString()
-        )).thenReturn(mockEditor)
+        Mockito.`when`<SharedPreferences.Editor>(
+            mockEditor.putString(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.anyString()
+            )
+        ).thenReturn(mockEditor)
 
-        Mockito.`when`<String>(mockContext.getString(
-            ArgumentMatchers.eq(R.string.error_signature_generation_failed)
-        )).thenReturn("Signature generation failed.")
+        Mockito.`when`<String>(
+            mockContext.getString(
+                ArgumentMatchers.eq(R.string.error_signature_generation_failed)
+            )
+        ).thenReturn("Signature generation failed.")
 
-        Mockito.`when`<String>(mockContext.getString(
-            ArgumentMatchers.eq(R.string.error_authentication_endpoint_is_missing)
-        )).thenReturn("Upload failed! Authentication endpoint is missing!")
+        Mockito.`when`<String>(
+            mockContext.getString(
+                ArgumentMatchers.eq(R.string.error_authentication_endpoint_is_missing)
+            )
+        ).thenReturn("Upload failed! Authentication endpoint is missing!")
 
-        Mockito.`when`<String>(mockContext.getString(
-            ArgumentMatchers.eq(R.string.error_file_not_found)
-        )).thenReturn("The file you are trying to upload was not found.")
+        Mockito.`when`<String>(
+            mockContext.getString(
+                ArgumentMatchers.eq(R.string.error_file_not_found)
+            )
+        ).thenReturn("The file you are trying to upload was not found.")
 
-        PowerMockito.mockStatic(NetworkManager::class.java)
-        Mockito.`when`<ApiInterface>(NetworkManager.getApiInterface()).thenReturn(mockRetrofit())
-
-        val mockSharedPrefUtil = SharedPrefUtil(mockContext)
-        signatureApi = SignatureApi(mockContext, mockSharedPrefUtil)
+        Mockito.`when`<ApiInterface>(mockNetworkManager.getApiInterface()).thenReturn(mockRetrofit())
 
         ImageKit.init(
             context = mockContext,
             publicKey = clientPublicKey,
             urlEndpoint = urlEndpoint,
             transformationPosition = TransformationPosition.PATH,
-            authenticationEndpoint = mockWebServer.url("/temp/client-side-upload-signature").toString()
+            authenticationEndpoint = mockWebServer.url("/temp/client-side-upload-signature")
+                .toString()
         )
     }
 
     @After
-    fun teardown() { mockWebServer.shutdown() }
+    fun teardown() {
+        mockWebServer.shutdown()
+    }
 
 
     @Test
@@ -126,10 +127,12 @@ class UploadTests {
             .setBody("{\"token\": \"Token\", \"signature\": \"Signature\"}")
         mockWebServer.enqueue(mockSignatureResponse)
 
-        Mockito.`when`<String>(mockPrefs!!.getString(
-            ArgumentMatchers.eq("Client Authentication Endpoint"),
-            ArgumentMatchers.anyString()
-        )).thenReturn("")
+        Mockito.`when`<String>(
+            mockPrefs!!.getString(
+                ArgumentMatchers.eq("Client Authentication Endpoint"),
+                ArgumentMatchers.anyString()
+            )
+        ).thenReturn("")
 
         ImageKit.getInstance().uploader().upload(
             file = "http://ik.imagekit.io/demo/img/default-image.jpg",
@@ -141,7 +144,10 @@ class UploadTests {
                 }
 
                 override fun onError(uploadError: UploadError) {
-                    assertEquals(uploadError.message, "Upload failed! Authentication endpoint is missing!")
+                    assertEquals(
+                        uploadError.message,
+                        "Upload failed! Authentication endpoint is missing!"
+                    )
                     assertEquals(uploadError.exception, true)
                     assertEquals(uploadError.statusCode, "SERVER_ERROR")
                     assertEquals(uploadError.statusNumber, 1500)
@@ -177,11 +183,14 @@ class UploadTests {
                 override fun onSuccess(uploadResponse: UploadResponse) {
                     assertEquals(uploadResponse.fileId, "fileId")
                     assertEquals(uploadResponse.name, "sample_hash.pdf")
-                    assertEquals(uploadResponse.url, "https://ik.imagekit.io/your_imagekit_id/tmp/test/sample_hash.pdf")
+                    assertEquals(
+                        uploadResponse.url,
+                        "https://ik.imagekit.io/your_imagekit_id/tmp/test/sample_hash.pdf"
+                    )
                     assertEquals(uploadResponse.size, 83622)
                     assertEquals(uploadResponse.filePath, "/tmp/test/sample_hash.pdf")
-                    assertEquals(uploadResponse.isPrivateFile , false)
-                    Assert.assertArrayEquals(uploadResponse.tags, Array(1){"test"})
+                    assertEquals(uploadResponse.isPrivateFile, false)
+                    Assert.assertArrayEquals(uploadResponse.tags, Array(1) { "test" })
                     assertEquals(uploadResponse.fileType, "pdf")
                     future.complete("SUCCESS")
                 }
@@ -215,11 +224,14 @@ class UploadTests {
                 override fun onSuccess(uploadResponse: UploadResponse) {
                     assertEquals(uploadResponse.fileId, "fileId")
                     assertEquals(uploadResponse.name, "sample_hash.pdf")
-                    assertEquals(uploadResponse.url, "https://ik.imagekit.io/your_imagekit_id/tmp/test/sample_hash.pdf")
+                    assertEquals(
+                        uploadResponse.url,
+                        "https://ik.imagekit.io/your_imagekit_id/tmp/test/sample_hash.pdf"
+                    )
                     assertEquals(uploadResponse.size, 83622)
                     assertEquals(uploadResponse.filePath, "/tmp/test/sample_hash.pdf")
-                    Assert.assertArrayEquals(uploadResponse.tags, Array(0){})
-                    assertEquals(uploadResponse.isPrivateFile , false)
+                    Assert.assertArrayEquals(uploadResponse.tags, Array(0) {})
+                    assertEquals(uploadResponse.isPrivateFile, false)
                     assertEquals(uploadResponse.fileType, "pdf")
                     future.complete("SUCCESS")
                 }
@@ -255,7 +267,10 @@ class UploadTests {
                 }
 
                 override fun onError(uploadError: UploadError) {
-                    assertEquals(uploadError.message, "The file you are trying to upload was not found.")
+                    assertEquals(
+                        uploadError.message,
+                        "The file you are trying to upload was not found."
+                    )
                     assertEquals(uploadError.exception, true)
                     assertEquals(uploadError.statusCode, "SERVER_ERROR")
                     assertEquals(uploadError.statusNumber, 1500)
@@ -290,16 +305,22 @@ class UploadTests {
                 override fun onSuccess(uploadResponse: UploadResponse) {
                     assertEquals(uploadResponse.fileId, "fileId")
                     assertEquals(uploadResponse.name, "default-image-test_hash.jpg")
-                    assertEquals(uploadResponse.url, "https://ik.imagekit.io/your_imagekit_id/tmp/test/default-image-test_hash.jpg")
+                    assertEquals(
+                        uploadResponse.url,
+                        "https://ik.imagekit.io/your_imagekit_id/tmp/test/default-image-test_hash.jpg"
+                    )
                     assertEquals(uploadResponse.height, 1000)
                     assertEquals(uploadResponse.width, 1000)
                     assertEquals(uploadResponse.size, 83622)
-                    Assert.assertArrayEquals(uploadResponse.tags, Array(1){"test"})
+                    Assert.assertArrayEquals(uploadResponse.tags, Array(1) { "test" })
                     assertEquals(uploadResponse.filePath, "/tmp/test/default-image-test_hash.jpg")
-                    assertEquals(uploadResponse.isPrivateFile , false)
+                    assertEquals(uploadResponse.isPrivateFile, false)
                     assertEquals(uploadResponse.fileType, "jpg")
                     assertEquals(uploadResponse.customCoordinates, "0,0,200,200")
-                    assertEquals(uploadResponse.thumbnail, "https://ik.imagekit.io/your_imagekit_id/tmp/test/default-image-test_hash.jpg")
+                    assertEquals(
+                        uploadResponse.thumbnail,
+                        "https://ik.imagekit.io/your_imagekit_id/tmp/test/default-image-test_hash.jpg"
+                    )
                     assertNull(uploadResponse.metadata)
                     future.complete("SUCCESS")
                 }
@@ -331,13 +352,16 @@ class UploadTests {
                 override fun onSuccess(uploadResponse: UploadResponse) {
                     assertEquals(uploadResponse.fileId, "fileId")
                     assertEquals(uploadResponse.name, "default-image-test_hash.jpg")
-                    assertEquals(uploadResponse.url, "https://ik.imagekit.io/your_imagekit_id/tmp/test/default-image-test_hash.jpg")
+                    assertEquals(
+                        uploadResponse.url,
+                        "https://ik.imagekit.io/your_imagekit_id/tmp/test/default-image-test_hash.jpg"
+                    )
                     assertEquals(uploadResponse.height, 1000)
                     assertEquals(uploadResponse.width, 1000)
                     assertEquals(uploadResponse.size, 83622)
-                    Assert.assertArrayEquals(uploadResponse.tags, Array(0){})
+                    Assert.assertArrayEquals(uploadResponse.tags, Array(0) {})
                     assertEquals(uploadResponse.filePath, "/tmp/test/default-image-test_hash.jpg")
-                    assertEquals(uploadResponse.isPrivateFile , false)
+                    assertEquals(uploadResponse.isPrivateFile, false)
                     assertEquals(uploadResponse.fileType, "jpg")
                     future.complete("SUCCESS")
                 }
@@ -351,10 +375,11 @@ class UploadTests {
     }
 
     @Test
-    fun uploadFromURLFailedSignature(){
+    fun uploadFromURLFailedSignature() {
         val future = CompletableFuture<String>()
 
-        val mockSignatureResponse = MockResponse().setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
+        val mockSignatureResponse =
+            MockResponse().setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
         val mockUploadResponse = MockResponse().setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
         mockWebServer.enqueue(mockSignatureResponse)
         mockWebServer.enqueue(mockUploadResponse)
@@ -365,13 +390,13 @@ class UploadTests {
             useUniqueFilename = true,
             tags = arrayOf("test"),
             folder = "/tmp/test",
-            imageKitCallback = object: ImageKitCallback{
+            imageKitCallback = object : ImageKitCallback {
 
-                override fun onSuccess(uploadResponse: UploadResponse){
+                override fun onSuccess(uploadResponse: UploadResponse) {
                     Assert.fail("Should not succeed")
                 }
 
-                override fun onError(uploadError: UploadError){
+                override fun onError(uploadError: UploadError) {
                     assertEquals(uploadError.message, "Signature generation failed.")
                     assertEquals(uploadError.exception, true)
                     assertEquals(uploadError.statusCode, "SERVER_ERROR")
@@ -408,13 +433,16 @@ class UploadTests {
                 override fun onSuccess(uploadResponse: UploadResponse) {
                     assertEquals(uploadResponse.fileId, "fileId")
                     assertEquals(uploadResponse.name, "default-image-test_hash.jpg")
-                    assertEquals(uploadResponse.url, "https://ik.imagekit.io/your_imagekit_id/tmp/test/default-image-test_hash.jpg")
+                    assertEquals(
+                        uploadResponse.url,
+                        "https://ik.imagekit.io/your_imagekit_id/tmp/test/default-image-test_hash.jpg"
+                    )
                     assertEquals(uploadResponse.height, 1000)
                     assertEquals(uploadResponse.width, 1000)
                     assertEquals(uploadResponse.size, 83622)
                     assertEquals(uploadResponse.filePath, "/tmp/test/default-image-test_hash.jpg")
-                    assertEquals(uploadResponse.isPrivateFile , false)
-                    Assert.assertArrayEquals(uploadResponse.tags, Array(1){"test"})
+                    assertEquals(uploadResponse.isPrivateFile, false)
+                    Assert.assertArrayEquals(uploadResponse.tags, Array(1) { "test" })
                     assertEquals(uploadResponse.fileType, "jpg")
                     future.complete("SUCCESS")
                 }
@@ -448,13 +476,16 @@ class UploadTests {
                 override fun onSuccess(uploadResponse: UploadResponse) {
                     assertEquals(uploadResponse.fileId, "fileId")
                     assertEquals(uploadResponse.name, "default-image-test_hash.jpg")
-                    assertEquals(uploadResponse.url, "https://ik.imagekit.io/your_imagekit_id/tmp/test/default-image-test_hash.jpg")
+                    assertEquals(
+                        uploadResponse.url,
+                        "https://ik.imagekit.io/your_imagekit_id/tmp/test/default-image-test_hash.jpg"
+                    )
                     assertEquals(uploadResponse.height, 1000)
                     assertEquals(uploadResponse.width, 1000)
                     assertEquals(uploadResponse.size, 83622)
                     assertEquals(uploadResponse.filePath, "/tmp/test/default-image-test_hash.jpg")
-                    Assert.assertArrayEquals(uploadResponse.tags, Array(0){})
-                    assertEquals(uploadResponse.isPrivateFile , false)
+                    Assert.assertArrayEquals(uploadResponse.tags, Array(0) {})
+                    assertEquals(uploadResponse.isPrivateFile, false)
                     assertEquals(uploadResponse.fileType, "jpg")
                     future.complete("SUCCESS")
                 }
@@ -469,7 +500,7 @@ class UploadTests {
     }
 
 
-    fun mockRetrofit() : ApiInterface{
+    fun mockRetrofit(): ApiInterface {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
 
@@ -478,7 +509,7 @@ class UploadTests {
             .addInterceptor(BuildVersionQueryInterceptor())
             .build()
 
-        val url : String = mockWebServer.url("/").toString()
+        val url: String = mockWebServer.url("/").toString()
         val retrofit = Retrofit.Builder()
             .baseUrl(url)
             .client(okHttpClient)

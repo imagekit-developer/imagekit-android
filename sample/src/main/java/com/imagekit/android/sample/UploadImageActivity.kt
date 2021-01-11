@@ -57,12 +57,12 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
 
             val filename = "icLauncher.png"
             ImageKit.getInstance().uploader().upload(
-                file = bitmap!!
-                , fileName = filename
-                , useUniqueFilename = true
-                , tags = arrayOf("nice", "copy", "books")
-                , folder = "/dummy/folder/"
-                , imageKitCallback = this
+                file = bitmap!!,
+                fileName = filename,
+                useUniqueFilename = true,
+                tags = arrayOf("nice", "copy", "books"),
+                folder = "/dummy/folder/",
+                imageKitCallback = this
             )
         }
     }
@@ -75,12 +75,12 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
 
         val filename = "icLauncher.png"
         ImageKit.getInstance().uploader().upload(
-            file = "https://ik.imagekit.io/demo/img/default-image.jpg"
-            , fileName = filename
-            , useUniqueFilename = true
-            , tags = arrayOf("nice", "copy", "books")
-            , folder = "/dummy/folder/"
-            , imageKitCallback = this
+            file = "https://ik.imagekit.io/demo/img/default-image.jpg",
+            fileName = filename,
+            useUniqueFilename = true,
+            tags = arrayOf("nice", "copy", "books"),
+            folder = "/dummy/folder/",
+            imageKitCallback = this
         )
     }
 

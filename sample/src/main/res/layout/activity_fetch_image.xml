@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="match_parent"
-                                                   android:padding="16dp"
-                                                   tools:context=".FetchImageActivity">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        tools:context=".FetchImageActivity">
 
     <Button
             android:id="@+id/btTran1"
@@ -16,7 +16,7 @@
             app:layout_constraintEnd_toStartOf="@+id/btTran2"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
     <Button
             android:id="@+id/btTran2"
@@ -26,7 +26,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/btTran1"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
     <Button
             android:id="@+id/btTran3"
@@ -37,7 +37,7 @@
             app:layout_constraintEnd_toStartOf="@+id/btTran4"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btTran1"/>
+            app:layout_constraintTop_toBottomOf="@id/btTran1" />
 
     <Button
             android:id="@+id/btTran4"
@@ -47,7 +47,7 @@
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/btTran3"
-            app:layout_constraintTop_toBottomOf="@id/btTran1"/>
+            app:layout_constraintTop_toBottomOf="@id/btTran1" />
 
     <Button
             android:id="@+id/btTran5"
@@ -57,7 +57,7 @@
             android:text="Transformation 5"
             app:layout_constraintEnd_toStartOf="@+id/btTran6"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btTran3"/>
+            app:layout_constraintTop_toBottomOf="@id/btTran3" />
 
     <Button
             android:id="@+id/btTran6"
@@ -67,7 +67,7 @@
             android:text="Transformation 6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/btTran5"
-            app:layout_constraintTop_toBottomOf="@id/btTran3"/>
+            app:layout_constraintTop_toBottomOf="@id/btTran3" />
 
     <TextView
             android:id="@+id/tvConstructedUrl"
@@ -80,7 +80,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btTran5"
-            tools:text="https://ik.imagekit.io/demo/img/plant.jpeg?tr=w-300,h-200,cm-pad_resize,bg-F3F3F3"/>
+            tools:text="https://ik.imagekit.io/demo/img/plant.jpeg?tr=w-300,h-200,cm-pad_resize,bg-F3F3F3" />
 
     <ImageView
             android:layout_width="wrap_content"
@@ -90,5 +90,5 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvConstructedUrl"/>
+            app:layout_constraintTop_toBottomOf="@id/tvConstructedUrl" />
 </androidx.constraintlayout.widget.ConstraintLayout>
