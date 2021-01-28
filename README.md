@@ -55,7 +55,7 @@ ImageKit.init(
             publicKey = "your_public_api_key",
             urlEndpoint = "https://ik.imagekit.io/your_imagekit_id",
             transformationPosition = TransformationPosition.PATH,
-            authenticationEndpoint = "http://www.yourserver.com/auth"
+            authenticationEndpoint = "your_authentication_endpoint"
         )
 ```
 
@@ -68,7 +68,7 @@ ImageKit.Companion.init(
         "your_public_api_key",
         "https://ik.imagekit.io/your_imagekit_id",
         TransformationPosition.PATH,
-        "http://www.yourserver.com/auth"
+        "your_authentication_endpoint"
     );
 ```
 
