@@ -12,4 +12,15 @@
     <string name="error_authentication_endpoint_is_missing">Upload failed! Authentication endpoint is missing.</string>
     <string name="error_public_key_is_missing">Upload failed! Public Key is missing.</string>
     <string name="error_signature_generation_failed">Signature generation failed.</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="choose_image">Choose Image</string>
+    <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
+    <string name="menu_item_crop">Crop \u0026 Rotate</string>
+    <string name="menu_item_aspect_ratio_unlocked">Aspect ratio unlocked</string>
+    <string name="menu_item_aspect_ratio_locked">Aspect ratio locked</string>
+    <string name="title_activity_image_preview">ImagePreviewActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

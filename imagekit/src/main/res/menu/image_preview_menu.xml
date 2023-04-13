@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/item_crop_rotate"
+            android:icon="@drawable/ic_baseline_crop_rotate_24"
+            android:title="Crop Rotate" />
+    <item
+            android:id="@+id/item_brightness"
+            android:icon="@drawable/ic_baseline_brightness_low_24"
+            android:title="Brightness" />
+    <item
+            android:id="@+id/item_upload"
+            android:icon="@drawable/ic_baseline_cloud_upload_24"
+            android:title="Upload" />
+</menu>

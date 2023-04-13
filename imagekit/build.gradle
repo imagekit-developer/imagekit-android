@@ -3,19 +3,18 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.github.dcendents.android-maven'
 
 group = 'com.github.imagekit-developer'
 
 def dagger_version = '2.16'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 33
 
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 33
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -43,10 +42,15 @@ dependencies {
     api 'androidx.appcompat:appcompat:1.1.0'
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+    implementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-inline:4.1.0'
+    testImplementation 'org.mockito:mockito-core:5.3.0'
     testImplementation 'org.jetbrains.kotlin:kotlin-test-junit:1.0.6'
     testImplementation 'junit:junit:4.12'
+    testImplementation project(path: ':imagekit')
     androidTestImplementation 'androidx.test:runner:1.2.0'
-    testImplementation 'org.mockito:mockito-core:2.19.0'
+    implementation 'org.mockito:mockito-core:2.19.0'
     testImplementation 'org.powermock:powermock-api-mockito2:2.0.7'
     testImplementation 'org.powermock:powermock-module-junit4:2.0.7'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
@@ -62,13 +66,16 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     testImplementation 'com.squareup.okhttp3:mockwebserver:3.12.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    testImplementation 'junit:junit:4.13.2'
 }
 
 apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'jacoco-android'
 
 tasks.withType(Test) {
-    jacoco.includeNoLocationClasses = true
+    jacoco.includeNoLocationClasses = false
+
 }
 
 jacocoAndroidUnitTestReport {
