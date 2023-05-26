@@ -18,7 +18,8 @@ class ImageKit private constructor(
     clientPublicKey: String,
     imageKitEndpoint: String,
     transformationPosition: TransformationPosition,
-    authenticationEndpoint: String
+    authenticationEndpoint: String,
+    val defaultUploadPolicy: UploadPolicy
 ) {
 
     @Inject
@@ -56,7 +57,8 @@ class ImageKit private constructor(
             publicKey: String = "",
             urlEndpoint: String,
             transformationPosition: TransformationPosition = TransformationPosition.PATH,
-            authenticationEndpoint: String = ""
+            authenticationEndpoint: String = "",
+            defaultUploadPolicy: UploadPolicy = UploadPolicy.defaultPolicy()
         ) {
             if (context !is Application)
                 throw Exception("Application Context Expected!!")
@@ -67,7 +69,8 @@ class ImageKit private constructor(
                 publicKey,
                 urlEndpoint,
                 transformationPosition,
-                authenticationEndpoint
+                authenticationEndpoint,
+                defaultUploadPolicy
             )
         }
 

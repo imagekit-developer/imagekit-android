@@ -2,9 +2,18 @@ package com.imagekit.android.data
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.database.Observable
+import android.net.ConnectivityManager
+import android.os.BatteryManager
+import android.os.Build
+import android.os.PowerManager
+import android.util.Log
 import com.google.gson.Gson
 import com.imagekit.android.ImageKitCallback
 import com.imagekit.android.R
+import com.imagekit.android.UploadPolicy
 import com.imagekit.android.entity.SignatureResponse
 import com.imagekit.android.entity.UploadError
 import com.imagekit.android.entity.UploadResponse
@@ -12,8 +21,11 @@ import com.imagekit.android.retrofit.NetworkManager
 import com.imagekit.android.util.LogUtil
 import com.imagekit.android.util.SharedPrefUtil
 import retrofit2.HttpException
+import java.util.Timer
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.concurrent.schedule
+import kotlin.math.pow
 
 
 class Repository @Inject constructor(
@@ -34,6 +46,7 @@ class Repository @Inject constructor(
         isPrivateFile: Boolean?,
         customCoordinates: String?,
         responseFields: String?,
+        uploadPolicy: UploadPolicy,
         imageKitCallback: ImageKitCallback
     ) {
         val expire = ((System.currentTimeMillis() / 1000) + TimeUnit.MINUTES.toSeconds(
@@ -52,6 +65,17 @@ class Repository @Inject constructor(
             )
         }
 
+        if (!checkUploadPolicy(uploadPolicy)) {
+            LogUtil.logError("Upload failed! Upload Policy Violation!")
+            return imageKitCallback.onError(
+                UploadError(
+                    exception = true,
+                    message = "Upload failed! Upload Policy Violation!"
+                )
+            )
+        }
+
+
         val publicKey = sharedPrefUtil.getClientPublicKey()
         if (publicKey.isBlank()) {
             LogUtil.logError("Upload failed! Public Key is missing!")
@@ -63,6 +87,14 @@ class Repository @Inject constructor(
             )
         }
 
+//        var retryCount = 0
+//        while(retryCount<uploadPolicy.maxErrorRetries){
+//            Timer().schedule(getRetryTimeOut(uploadPolicy, retryCount)) {
+//                Log.d("IKUpload", "Retry ###")
+//
+//            }
+//
+//        }
         NetworkManager.getSignature(endPoint, expire)
             .doOnError { _ ->
                 imageKitCallback.onError(
@@ -123,6 +155,53 @@ class Repository @Inject constructor(
             }, { e ->
                 LogUtil.logError(e)
             })
+
+    }
+
+    private fun checkUploadPolicy(policy: UploadPolicy): Boolean {
+        if (policy.networkType == UploadPolicy.NetworkType.UNMETERED) {
+            val service =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            Log.d("Network Type", "" + service.isActiveNetworkMetered)
+            if (service.isActiveNetworkMetered) {
+                return false
+            }
+        }
+
+        if (policy.requiresCharging) {
+            val batteryStatus: Intent? =
+                IntentFilter(Intent.ACTION_BATTERY_CHANGED).let { ifilter ->
+                    context.registerReceiver(null, ifilter)
+                }
+            val status: Int = batteryStatus?.getIntExtra(BatteryManager.EXTRA_STATUS, -1) ?: -1
+            val isCharging: Boolean = status == BatteryManager.BATTERY_STATUS_CHARGING
+                    || status == BatteryManager.BATTERY_STATUS_FULL
+            Log.d("Charging", isCharging.toString())
+            if (!isCharging) {
+                return false
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && policy.requiresIdle) {
+            val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+            Log.d("Device State", powerManager.toString())
+            if (!powerManager.isDeviceIdleMode) {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    private fun getRetryTimeOut(policy: UploadPolicy, retryCount: Int): Long {
+        var retryTimeOut = policy.backoffMillis
+        if (policy.backoffPolicy == UploadPolicy.BackoffPolicy.LINEAR) {
+            retryTimeOut *= retryCount
+        }
+        if (policy.backoffPolicy == UploadPolicy.BackoffPolicy.EXPONENTIAL) {
+            retryTimeOut *= 2.0.pow(retryCount.toDouble()).toLong()
+        }
+        return retryTimeOut
     }
 
 }

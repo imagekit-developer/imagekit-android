@@ -44,6 +44,7 @@ class ImagekitUploader @Inject constructor(
         folder: String? = null,
         isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
+        uploadPolicy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
         responseFields: String? = null,
         imageKitCallback: ImageKitCallback
     ) {
@@ -60,6 +61,7 @@ class ImagekitUploader @Inject constructor(
             isPrivateFile,
             customCoordinates,
             responseFields,
+            uploadPolicy,
             imageKitCallback
         )
     }
@@ -96,6 +98,7 @@ class ImagekitUploader @Inject constructor(
         isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
         responseFields: String? = null,
+        uploadPolicy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
         imageKitCallback: ImageKitCallback
     ) {
         if (!file.exists()) {
@@ -116,6 +119,7 @@ class ImagekitUploader @Inject constructor(
             isPrivateFile,
             customCoordinates,
             responseFields,
+            uploadPolicy,
             imageKitCallback
         )
     }
@@ -152,6 +156,7 @@ class ImagekitUploader @Inject constructor(
         isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
         responseFields: String? = null,
+        uploadPolicy: UploadPolicy,
         imageKitCallback: ImageKitCallback
     ) = mRepository.upload(
         file,
@@ -162,6 +167,7 @@ class ImagekitUploader @Inject constructor(
         isPrivateFile,
         customCoordinates,
         responseFields,
+        uploadPolicy,
         imageKitCallback
     )
 }
