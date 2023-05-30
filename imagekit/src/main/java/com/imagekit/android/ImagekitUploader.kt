@@ -1,10 +1,17 @@
 package com.imagekit.android
 
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Bitmap
+import android.net.ConnectivityManager
+import android.os.BatteryManager
+import android.os.Build
+import android.os.PowerManager
 import com.imagekit.android.data.Repository
 import com.imagekit.android.entity.UploadError
 import com.imagekit.android.util.BitmapUtil.bitmapToFile
+import com.imagekit.android.util.LogUtil
 import java.io.File
 import javax.inject.Inject
 
@@ -48,22 +55,26 @@ class ImagekitUploader @Inject constructor(
         responseFields: String? = null,
         imageKitCallback: ImageKitCallback
     ) {
-        return mRepository.upload(
-            bitmapToFile(
-                context,
+        if (!checkUploadPolicy(uploadPolicy,imageKitCallback)) {
+            LogUtil.logError("Upload failed! Upload Policy Violation!")
+        }else{
+            mRepository.upload(
+                bitmapToFile(
+                    context,
+                    fileName,
+                    file
+                ),
                 fileName,
-                file
-            ),
-            fileName,
-            useUniqueFilename,
-            tags,
-            folder,
-            isPrivateFile,
-            customCoordinates,
-            responseFields,
-            uploadPolicy,
-            imageKitCallback
-        )
+                useUniqueFilename,
+                tags,
+                folder,
+                isPrivateFile,
+                customCoordinates,
+                responseFields,
+                uploadPolicy,
+                imageKitCallback
+            )
+        }
     }
 
     /**
@@ -101,27 +112,31 @@ class ImagekitUploader @Inject constructor(
         uploadPolicy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
         imageKitCallback: ImageKitCallback
     ) {
-        if (!file.exists()) {
-            imageKitCallback.onError(
-                UploadError(
-                    exception = true,
-                    message = context.getString(R.string.error_file_not_found)
+        if (!checkUploadPolicy(uploadPolicy,imageKitCallback)) {
+            LogUtil.logError("Upload failed! Upload Policy Violation!")
+        }else{
+            if (!file.exists()) {
+                imageKitCallback.onError(
+                    UploadError(
+                        exception = true,
+                        message = context.getString(R.string.error_file_not_found)
+                    )
                 )
+                return
+            }
+            return mRepository.upload(
+                file,
+                fileName,
+                useUniqueFilename,
+                tags,
+                folder,
+                isPrivateFile,
+                customCoordinates,
+                responseFields,
+                uploadPolicy,
+                imageKitCallback
             )
-            return
         }
-        return mRepository.upload(
-            file,
-            fileName,
-            useUniqueFilename,
-            tags,
-            folder,
-            isPrivateFile,
-            customCoordinates,
-            responseFields,
-            uploadPolicy,
-            imageKitCallback
-        )
     }
 
     /**
@@ -170,4 +185,54 @@ class ImagekitUploader @Inject constructor(
         uploadPolicy,
         imageKitCallback
     )
+
+    private fun checkUploadPolicy(policy: UploadPolicy,imageKitCallback: ImageKitCallback): Boolean {
+        if (policy.networkType == UploadPolicy.NetworkType.UNMETERED) {
+            val service =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            if (service.isActiveNetworkMetered) {
+                imageKitCallback.onError(
+                    UploadError(
+                        exception = true,
+                        message = "Upload failed! Network is metered!"
+                    )
+                )
+                return false
+            }
+        }
+
+        if (policy.requiresCharging) {
+            val batteryStatus: Intent? =
+                IntentFilter(Intent.ACTION_BATTERY_CHANGED).let { ifilter ->
+                    context.registerReceiver(null, ifilter)
+                }
+            val status: Int = batteryStatus?.getIntExtra(BatteryManager.EXTRA_STATUS, -1) ?: -1
+            val isCharging: Boolean = status == BatteryManager.BATTERY_STATUS_CHARGING
+                    || status == BatteryManager.BATTERY_STATUS_FULL
+            if (!isCharging) {
+                imageKitCallback.onError(
+                    UploadError(
+                        exception = true,
+                        message = "Upload failed! Device is not Charging!"
+                    )
+                )
+                return false
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && policy.requiresIdle) {
+            val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+            if (!powerManager.isDeviceIdleMode) {
+                imageKitCallback.onError(
+                    UploadError(
+                        exception = true,
+                        message = "Upload failed! Device is not on idle mode!"
+                    )
+                )
+                return false
+            }
+        }
+        return true
+    }
+
 }

@@ -65,17 +65,6 @@ class Repository @Inject constructor(
             )
         }
 
-        if (!checkUploadPolicy(uploadPolicy)) {
-            LogUtil.logError("Upload failed! Upload Policy Violation!")
-            return imageKitCallback.onError(
-                UploadError(
-                    exception = true,
-                    message = "Upload failed! Upload Policy Violation!"
-                )
-            )
-        }
-
-
         val publicKey = sharedPrefUtil.getClientPublicKey()
         if (publicKey.isBlank()) {
             LogUtil.logError("Upload failed! Public Key is missing!")
@@ -156,41 +145,6 @@ class Repository @Inject constructor(
                 LogUtil.logError(e)
             })
 
-    }
-
-    private fun checkUploadPolicy(policy: UploadPolicy): Boolean {
-        if (policy.networkType == UploadPolicy.NetworkType.UNMETERED) {
-            val service =
-                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            Log.d("Network Type", "" + service.isActiveNetworkMetered)
-            if (service.isActiveNetworkMetered) {
-                return false
-            }
-        }
-
-        if (policy.requiresCharging) {
-            val batteryStatus: Intent? =
-                IntentFilter(Intent.ACTION_BATTERY_CHANGED).let { ifilter ->
-                    context.registerReceiver(null, ifilter)
-                }
-            val status: Int = batteryStatus?.getIntExtra(BatteryManager.EXTRA_STATUS, -1) ?: -1
-            val isCharging: Boolean = status == BatteryManager.BATTERY_STATUS_CHARGING
-                    || status == BatteryManager.BATTERY_STATUS_FULL
-            Log.d("Charging", isCharging.toString())
-            if (!isCharging) {
-                return false
-            }
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && policy.requiresIdle) {
-            val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
-            Log.d("Device State", powerManager.toString())
-            if (!powerManager.isDeviceIdleMode) {
-                return false
-            }
-        }
-
-        return true
     }
 
     private fun getRetryTimeOut(policy: UploadPolicy, retryCount: Int): Long {
