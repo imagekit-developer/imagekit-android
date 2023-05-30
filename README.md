@@ -428,17 +428,43 @@ ImageKit.getInstance()
     .create()
 ```
 
-```java
-// Java
-// https://ik.imagekit.io/your_imagekit_id/default-video.mp4?tr=h-400.00,w-400.00
-ImageKit.Companion.getInstance()
-        .url(
-            "default-video.mp4",
-            TransformationPosition.QUERY
+## Adding overlay layers to videos
+The `addVideoOverlay()` method can be used to set the URL parameters for adding overlay layers to a video.
+
+The layers can be created by instances of `OverlayLayer` class, which can be built from `OverlayLayer.Builder()` class with a set of builder methods.
+
+### Basic Examples
+```kotlin
+// Kotlin
+// https://ik.imagekit.io/your_imagekit_id/default-video.mp4?tr=h-400.00,w-400.00,l-image,i-logo.png,lx-16,ly-24,lfo-top_right,lso-22.7,lso-22.7,leo-33.9,ldu-11.1,w-200.00,h-400.00,l-end
+ImageKit.getInstance()
+    .url(
+        path = "default-video.mp4",
+        transformationPosition = TransformationPosition.QUERY
+    )
+    .height(400f)
+    .width(400f)
+    .addVideoOverlay(OverlayLayer.Builder()
+        .type(OverlayType.IMAGE)
+        .source("logo.png")
+        .positionX(16)
+        .positionY(24)
+        .positionRelative(LayerPosition.TOP_RIGHT)
+        .displayStartTime(22.7)
+        .displayEndTime(33.9)
+        .displayDuration(11.1)
+        .transform(ImageOverlayTransform.Builder()
+            .width(200)
+            .height(400)
+            .build()
         )
-        .height(400f)
-        .width(400f)
-        .create();
+        .nestedLayer(OverlayLayer.Builder()
+            ...
+            .build()
+        )
+        .build()
+    )
+    .create()
 ```
 
 ### Responsive image loading
