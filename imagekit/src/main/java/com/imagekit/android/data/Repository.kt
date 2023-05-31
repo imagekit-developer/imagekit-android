@@ -2,13 +2,6 @@ package com.imagekit.android.data
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.database.Observable
-import android.net.ConnectivityManager
-import android.os.BatteryManager
-import android.os.Build
-import android.os.PowerManager
 import android.util.Log
 import com.google.gson.Gson
 import com.imagekit.android.ImageKitCallback
@@ -20,6 +13,7 @@ import com.imagekit.android.entity.UploadResponse
 import com.imagekit.android.retrofit.NetworkManager
 import com.imagekit.android.util.LogUtil
 import com.imagekit.android.util.SharedPrefUtil
+import io.reactivex.Single
 import retrofit2.HttpException
 import java.util.Timer
 import java.util.concurrent.TimeUnit
@@ -47,7 +41,8 @@ class Repository @Inject constructor(
         customCoordinates: String?,
         responseFields: String?,
         uploadPolicy: UploadPolicy,
-        imageKitCallback: ImageKitCallback
+        imageKitCallback: ImageKitCallback,
+        retryCount: Int = 0
     ) {
         val expire = ((System.currentTimeMillis() / 1000) + TimeUnit.MINUTES.toSeconds(
             DURATION_EXPIRY_MINUTES
@@ -76,74 +71,101 @@ class Repository @Inject constructor(
             )
         }
 
-//        var retryCount = 0
-//        while(retryCount<uploadPolicy.maxErrorRetries){
-//            Timer().schedule(getRetryTimeOut(uploadPolicy, retryCount)) {
-//                Log.d("IKUpload", "Retry ###")
-//
-//            }
-//
-//        }
-        NetworkManager.getSignature(endPoint, expire)
-            .doOnError { _ ->
-                imageKitCallback.onError(
-                    UploadError(
-                        true,
-                        message = context.getString(R.string.error_signature_generation_failed)
-                    )
-                )
-            }
-            .flatMap { signatureResponse: SignatureResponse ->
-                NetworkManager.getFileUploadCall(
-                    publicKey,
-                    signatureResponse,
-                    file,
-                    fileName,
-                    useUniqueFilename,
-                    tags,
-                    folder,
-                    isPrivateFile,
-                    customCoordinates,
-                    responseFields
-                ).doOnError { e ->
-                    if (e is HttpException) {
-                        e.response()?.let {
-                            try {
-                                imageKitCallback.onError(
-                                    Gson().fromJson(
-                                        it.errorBody()!!.string(),
-                                        UploadError::class.java
-                                    )
-                                )
-                            } catch (exception: IllegalStateException) {
-                                imageKitCallback.onError(
-                                    UploadError(
-                                        exception = true,
-                                        statusNumber = e.code(),
-                                        message = e.message()
-                                    )
-                                )
-                            }
-                        }
-                    } else {
-                        e.message?.let {
-                            imageKitCallback.onError(UploadError(true, message = it))
-                        } ?: run {
-                            imageKitCallback.onError(UploadError(true))
-                        }
+        Single.timer(getRetryTimeOut(uploadPolicy, retryCount), TimeUnit.MILLISECONDS).subscribe {_, _ ->
+            NetworkManager.getSignature(endPoint, expire)
+                .doOnError { _ ->
+                    if (retryCount==uploadPolicy.maxErrorRetries){
+                        imageKitCallback.onError(
+                            UploadError(
+                                true,
+                                message = context.getString(R.string.error_signature_generation_failed)
+                            )
+                        )
+                    }else{
+                        upload(
+                            file,
+                            fileName,
+                            useUniqueFilename,
+                            tags,
+                            folder,
+                            isPrivateFile,
+                            customCoordinates,
+                            responseFields,
+                            uploadPolicy,
+                            imageKitCallback,
+                            retryCount + 1
+                        )
                     }
                 }
-            }
-            .subscribe({ response ->
-                imageKitCallback.onSuccess(
-                    Gson().fromJson(
-                        response.string(),
-                        UploadResponse::class.java
+                .flatMap { signatureResponse: SignatureResponse ->
+                    NetworkManager.getFileUploadCall(
+                        publicKey,
+                        signatureResponse,
+                        file,
+                        fileName,
+                        useUniqueFilename,
+                        tags,
+                        folder,
+                        isPrivateFile,
+                        customCoordinates,
+                        responseFields
+                    ).doOnError { e ->
+                       if(retryCount==uploadPolicy.maxErrorRetries){
+                           if (e is HttpException) {
+                               e.response()?.let {
+                                   try {
+                                       imageKitCallback.onError(
+                                           Gson().fromJson(
+                                               it.errorBody()!!.string(),
+                                               UploadError::class.java
+                                           )
+                                       )
+                                   } catch (exception: IllegalStateException) {
+                                       imageKitCallback.onError(
+                                           UploadError(
+                                               exception = true,
+                                               statusNumber = e.code(),
+                                               message = e.message()
+                                           )
+                                       )
+                                   }
+                               }
+                           } else {
+                               e.message?.let {
+                                   imageKitCallback.onError(UploadError(true, message = it))
+                               } ?: run {
+                                   imageKitCallback.onError(UploadError(true))
+                               }
+                           }
+                       }else{
+                           upload(
+                               file,
+                               fileName,
+                               useUniqueFilename,
+                               tags,
+                               folder,
+                               isPrivateFile,
+                               customCoordinates,
+                               responseFields,
+                               uploadPolicy,
+                               imageKitCallback,
+                               retryCount + 1
+                           )
+                       }
+                    }
+                }
+                .subscribe({ response ->
+                    imageKitCallback.onSuccess(
+                        Gson().fromJson(
+                            response.string(),
+                            UploadResponse::class.java
+                        )
                     )
-                )
-            }, { e ->
-                LogUtil.logError(e)
-            })
+                }, { e ->
+                    LogUtil.logError(e)
+                })
+        }
+
 
     }
 

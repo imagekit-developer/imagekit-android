@@ -66,8 +66,10 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
                 useUniqueFilename = true,
                 tags = arrayOf("nice", "copy", "books"),
                 folder = "/dummy/folder/",
-                uploadPolicy = UploadPolicy.Builder()
-                    .requiresDeviceIdle(false).build(),
+                uploadPolicy = UploadPolicy.Builder().maxRetries(5).backoffCriteria(
+                    backoffMillis = 100L,
+                    backoffPolicy = UploadPolicy.BackoffPolicy.EXPONENTIAL
+                ).build(),
                 imageKitCallback = this
             )
         }
