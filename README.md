@@ -411,16 +411,19 @@ The complete list of transformations supported and their usage in ImageKit can b
 ### Responsive image loading
 To automatically set the dimensions and pixel ratio of the image , call `ImageKit.getInstance().url(...).setResponsive(...)` with a set of parameters defined below:
 
-| Parameter | Type                                                              | Description                                                                                                                |
-|:----------|:------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------|
-| view      | [View](https://developer.android.com/reference/android/view/View) | Specifies the reference of the view of which the dimensions are to be taken into consideration for image sizing.           |
-| crop      | CropMode                                                          | Optional. Explicitly sets the mode for image cropping. Defaults to the `CropMode.RESIZE`.                                  |
-| focus     | FocusType                                                         | Optional. Specifies the area of the image to be set as the focal point for crop transform. Defaults to `FocusType.CENTER`. |
+| Parameter | Type                                                              | Description                                                                                                                                                                                          |
+|:----------|:------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| view      | [View](https://developer.android.com/reference/android/view/View) | Specifies the reference of the view of which the dimensions are to be taken into consideration for image sizing.                                                                                     |
+| minSize   | Int                                                               | Optional. Explicitly sets the minimum size for image dimensions. Defaults to 0. Passing a negative value will throw an `IllegalArgumentException`.                                                   |
+| maxSize   | Int                                                               | Optional. Explicitly sets the maximum size for image dimensions. Defaults to `Int.MAX_VALUE`. Passing a negative value will throw an `IllegalArgumentException`.                                     |
+| step      | Int                                                               | Optional. Explicitly sets the step in pixels for rounding the dimensions to the nearest next multiple of `step`. Defaults to 100. Passing a negative value will throw an `IllegalArgumentException`. |
+| crop      | CropMode                                                          | Optional. Explicitly sets the mode for image cropping. Defaults to `CropMode.RESIZE`.                                                                                                                |
+| focus     | FocusType                                                         | Optional. Specifies the area of the image to be set as the focal point for crop transform. Defaults to `FocusType.CENTER`.                                                                           |
 
 Code example:
 ```kotlin
 // Kotlin
-// https://ik.imagekit.io/your_imagekit_id/default-image.jpg?tr=h-400.00,w-400.00
+// https://ik.imagekit.io/your_imagekit_id/default-image.jpg?tr=h-400.00,w-400.00,
 ImageKit.getInstance()
     .url(
         path = "default-image.jpg",
@@ -436,7 +439,7 @@ ImageKit.getInstance()
 
 ```java
 // Java
-// https://ik.imagekit.io/your_imagekit_id/default-image.jpg?tr=h-400.00,w-400.00
+// https://ik.imagekit.io/your_imagekit_id/default-image.jpg?tr=h-400.00,w-400.00,
 ImageKit.Companion.getInstance()
         .url(
             "default-image.jpg",
