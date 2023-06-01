@@ -50,19 +50,19 @@ _Note: Do not include your Private Key in any client side code, including this S
 
 ```kotlin
 // In kotlin
-import com.imagekit.android.ImageKit;
+import com.imagekit.android.ImageKit
 
 ImageKit.init(
-            context = applicationContext,
-            publicKey = "your_public_api_key",
-            urlEndpoint = "https://ik.imagekit.io/your_imagekit_id",
-            transformationPosition = TransformationPosition.PATH,
-            authenticationEndpoint = "your_authentication_endpoint",
-            defaultUploadPolicy = UploadPolicy.Builder()
-                .requireNetworkType(UploadPolicy.NetworkType.ANY)
-                .setMaxRetries(3)
-                .build()
-        )
+    context = applicationContext,
+    publicKey = "your_public_api_key",
+    urlEndpoint = "https://ik.imagekit.io/your_imagekit_id",
+    transformationPosition = TransformationPosition.PATH,
+    authenticationEndpoint = "your_authentication_endpoint",
+    defaultUploadPolicy = UploadPolicy.Builder()
+        .requireNetworkType(UploadPolicy.NetworkType.ANY)
+        .setMaxRetries(3)
+        .build()
+)
 ```
 
 ```java
@@ -70,16 +70,16 @@ ImageKit.init(
 import com.imagekit.android.ImageKit;
 
 ImageKit.Companion.init(
-        getApplicationContext(),
-        "your_public_api_key",
-        "https://ik.imagekit.io/your_imagekit_id",
-        TransformationPosition.PATH,
-        "your_authentication_endpoint",
-        UploadPolicy.Builder()
+    getApplicationContext(),
+    "your_public_api_key",
+    "https://ik.imagekit.io/your_imagekit_id",
+    TransformationPosition.PATH,
+    "your_authentication_endpoint",
+    UploadPolicy.Builder()
         .requireNetworkType(UploadPolicy.NetworkType.ANY)
         .setMaxRetries(3)
         .build()
-    );
+);
 ```
 
 ### Quick Examples
@@ -90,26 +90,26 @@ ImageKit.Companion.init(
 // Kotlin
 // https://ik.imagekit.io/your_imagekit_id/default-image.jpg?tr=h-400.00,ar-3-2
 ImageKit.getInstance()
-        .url(
-            path = "default-image.jpg",
-            transformationPosition = TransformationPosition.QUERY
-        )
-        .height(400f)
-        .aspectRatio(3, 2)
-        .create()
+    .url(
+        path = "default-image.jpg",
+        transformationPosition = TransformationPosition.QUERY
+    )
+    .height(400f)
+    .aspectRatio(3, 2)
+    .create()
 ```
 
 ```java
 // Java
 // https://ik.imagekit.io/your_imagekit_id/default-image.jpg?tr=h-400.00,ar-3-2
 ImageKit.Companion.getInstance()
-        .url(
-            "default-image.jpg",
-            TransformationPosition.QUERY
-        )
-        .height(400f)
-        .aspectRatio(3, 2)
-        .create()
+    .url(
+        "default-image.jpg",
+        TransformationPosition.QUERY
+    )
+    .height(400f)
+    .aspectRatio(3, 2)
+    .create()
 ```
 
 
@@ -117,27 +117,27 @@ ImageKit.Companion.getInstance()
 ```kotlin
 // https://ik.imagekit.io/your_imagekit_id/medium_cafe_B1iTdD0C.jpg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20
 ImageKit.getInstance()
-        .url(
-            src = https://ik.imagekit.io/your_imagekit_id/medium_cafe_B1iTdD0C.jpg",
-            transformationPosition = TransformationPosition.PATH
-        )
-        .overlayImage("logo-white_SJwqB4Nfe.png")
-        .overlayPosX(10)
-        .overlayPosY(20)
-        .create()
+    .url(
+        src = https://ik.imagekit.io/your_imagekit_id/medium_cafe_B1iTdD0C.jpg",
+        transformationPosition = TransformationPosition.PATH
+    )
+    .overlayImage("logo-white_SJwqB4Nfe.png")
+    .overlayPosX(10)
+    .overlayPosY(20)
+    .create()
 ```
 
 ```java
 // https://ik.imagekit.io/your_imagekit_id/medium_cafe_B1iTdD0C.jpg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20
 ImageKit.Companion.getInstance()
-        .url(
-            "https://ik.imagekit.io/your_imagekit_id/medium_cafe_B1iTdD0C.jpg",
-            TransformationPosition.PATH
-        )
-        .overlayImage("logo-white_SJwqB4Nfe.png")
-        .overlayPosX(10)
-        .overlayPosY(20)
-        .create()
+    .url(
+        "https://ik.imagekit.io/your_imagekit_id/medium_cafe_B1iTdD0C.jpg",
+        TransformationPosition.PATH
+    )
+    .overlayImage("logo-white_SJwqB4Nfe.png")
+    .overlayPosX(10)
+    .overlayPosY(20)
+    .create()
 ```
 
 #### Using a custom parameter
@@ -172,12 +172,12 @@ ImageKit.Companion.getInstance()
 ``` kotlin
 // Kotlin
 ImageKit.getInstance().uploader().uploadImage(
-    file = bitmap!!
-    , fileName = filename
-    , useUniqueFilename = false
-    , tags = arrayOf("nice", "copy", "books")
-    , folder = "/dummy/folder/"
-    , imageKitCallback = this
+    file = bitmap!!,
+    fileName = filename,
+    useUniqueFilename = false,
+    tags = arrayOf("nice", "copy", "books"),
+    folder = "/dummy/folder/",
+    imageKitCallback = this
 )
 ```
 
@@ -197,12 +197,12 @@ ImageKit.Companion.getInstance().uploader().uploadImage(
 ``` kotlin
 // Kotlin
 ImageKit.getInstance().uploader().upload(
-    file = "https://ik.imagekit.io/demo/img/default-image.jpg"
-    , fileName = filename
-    , useUniqueFilename = false
-    , tags = arrayOf("nice", "copy", "books")
-    , folder = "/dummy/folder/"
-    , imageKitCallback = this
+    file = "https://ik.imagekit.io/demo/img/default-image.jpg",
+    fileName = filename,
+    useUniqueFilename = false,
+    tags = arrayOf("nice", "copy", "books"),
+    folder = "/dummy/folder/",
+    imageKitCallback = this
 )
 ```
 
@@ -222,12 +222,12 @@ ImageKit.Companion.getInstance().uploader().upload(
 ```kotlin
 // Kotlin
 ImageKit.getInstance().uploader().upload(
-    file = file!!
-    , fileName = file!!.name
-    , useUniqueFilename = true
-    , tags = arrayOf("nice", "copy", "books")
-    , folder = "/dummy/folder/"
-    , imageKitCallback = this
+    file = file!!,
+    fileName = file!!.name,
+    useUniqueFilename = true,
+    tags = arrayOf("nice", "copy", "books"),
+    folder = "/dummy/folder/",
+    imageKitCallback = this
 )
 ```
 
@@ -244,8 +244,7 @@ ImageKit.Companion.getInstance().uploader().upload(
 ```
 
 ## Demo application
-* The official step by step iOS quick start guide - https://docs.imagekit.io/getting-started/quickstart-guides/ios
-* You can also run the demo application in [sample](/sample) folder.
+You can run the demo application in [sample](/sample) folder.
 
 ## Components
 
@@ -262,19 +261,19 @@ The library includes 3 Primary Classes:
 In order to use the SDK, you need to provide it with a few configuration parameters. 
 ```kotlin
 // In kotlin
-import com.imagekit.android.ImageKit;
+import com.imagekit.android.ImageKit
 
 ImageKit.init(
-            context = applicationContext,
-            publicKey = "your_public_api_key",
-            urlEndpoint = "https://ik.imagekit.io/your_imagekit_id",
-            transformationPosition = TransformationPosition.PATH,
-            authenticationEndpoint = "http://www.yourserver.com/auth",
-            defaultUploadPolicy = UploadPolicy.Builder()
-                .requireNetworkType(UploadPolicy.NetworkType.ANY)
-                .setMaxRetries(3)
-                .build()
-        )
+    context = applicationContext,
+    publicKey = "your_public_api_key",
+    urlEndpoint = "https://ik.imagekit.io/your_imagekit_id",
+    transformationPosition = TransformationPosition.PATH,
+    authenticationEndpoint = "http://www.yourserver.com/auth",
+    defaultUploadPolicy = UploadPolicy.Builder()
+        .requireNetworkType(UploadPolicy.NetworkType.ANY)
+        .setMaxRetries(3)
+        .build()
+)
 ```
 
 ```java
@@ -282,16 +281,16 @@ ImageKit.init(
 import com.imagekit.android.ImageKit;
 
 ImageKit.Companion.init(
-        getApplicationContext(),
-        "your_public_api_key",
-        "https://ik.imagekit.io/your_imagekit_id",
-        TransformationPosition.PATH,
-        "http://www.yourserver.com/auth",
-        UploadPolicy.Builder()
+    getApplicationContext(),
+    "your_public_api_key",
+    "https://ik.imagekit.io/your_imagekit_id",
+    TransformationPosition.PATH,
+    "http://www.yourserver.com/auth",
+    UploadPolicy.Builder()
         .requireNetworkType(UploadPolicy.NetworkType.ANY)
         .setMaxRetries(3)
         .build()
-    );
+);
 ```
 * `urlEndpoint` is required to use the SDK. You can get URL-endpoint from your ImageKit dashboard - https://imagekit.io/dashboard#url-endpoints.
 * `publicKey` and `authenticationEndpoint` parameters are required if you want to use the SDK for client-side file upload. You can get these parameters from the developer section in your ImageKit dashboard - https://imagekit.io/dashboard#developers.
@@ -305,12 +304,12 @@ The `ImageKitURLConstructor` is used to create a url that can be used for render
 
 `ImageKitURLConstructor` can be initialized by calling `ImageKit.getInstance().url(...)` with a set of parameters defined below.
 
-| Parameter             | Type | Description                    |
-| :----------------| :----|:----------------------------- |
-| urlEndpoint      | String | Optional. The base URL to be appended before the path of the image. If not specified, the URL-endpoint specified in the parent `IKContext` component is used. For example, https://ik.imagekit.io/your_imagekit_id/endpoint/ |
-| path             | String |Conditional. This is the path at which the image exists. For example, `/path/to/image.jpg`. Either the `path` or `src` parameter needs to be specified for URL generation. |
-| src              | String |Conditional. This is the complete URL of an image already mapped to ImageKit. For example, `https://ik.imagekit.io/your_imagekit_id/endpoint/path/to/image.jpg`. Either the `path` or `src` parameter needs to be specified for URL generation. |
-| transformationPosition | [TransformationPosition](/imagekit/src/main/java/com/imagekit/android/ImagekitUrlConstructor.kt) |Optional. The default value is `.PATH` that places the transformation string as a URL path parameter. It can also be specified as `.QUERY`, which adds the transformation string as the URL's query parameter i.e.`tr`. If you use `src` parameter to create the URL, then the transformation string is always added as a query parameter. |
+| Parameter              | Type                                                                                             | Description                                                                                                                                                                                                                                                                                                                                |
+|:-----------------------|:-------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| urlEndpoint            | String                                                                                           | Optional. The base URL to be appended before the path of the image. If not specified, the URL-endpoint specified in the parent `IKContext` component is used. For example, https://ik.imagekit.io/your_imagekit_id/endpoint/                                                                                                               |
+| path                   | String                                                                                           | Conditional. This is the path at which the image exists. For example, `/path/to/image.jpg`. Either the `path` or `src` parameter needs to be specified for URL generation.                                                                                                                                                                 |
+| src                    | String                                                                                           | Conditional. This is the complete URL of an image already mapped to ImageKit. For example, `https://ik.imagekit.io/your_imagekit_id/endpoint/path/to/image.jpg`. Either the `path` or `src` parameter needs to be specified for URL generation.                                                                                            |
+| transformationPosition | [TransformationPosition](/imagekit/src/main/java/com/imagekit/android/ImagekitUrlConstructor.kt) | Optional. The default value is `.PATH` that places the transformation string as a URL path parameter. It can also be specified as `.QUERY`, which adds the transformation string as the URL's query parameter i.e.`tr`. If you use `src` parameter to create the URL, then the transformation string is always added as a query parameter. |
 
 The transformations to be applied to the URL can be chained to `ImageKit.getInstance().url(...)`. See the list of [different tranformations](#list-of-supported-transformations). Different steps of a [chained transformation](https://docs.imagekit.io/features/image-transformations/chained-transformations) can be added by calling the function `chainTransformation`.
 
@@ -409,6 +408,44 @@ The complete list of transformations supported and their usage in ImageKit can b
 
 </details>
 
+### Responsive image loading
+To automatically set the dimensions and pixel ratio of the image , call `ImageKit.getInstance().url(...).setResponsive(...)` with a set of parameters defined below:
+
+| Parameter | Type                                                              | Description                                                                                                                |
+|:----------|:------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------|
+| view      | [View](https://developer.android.com/reference/android/view/View) | Specifies the reference of the view of which the dimensions are to be taken into consideration for image sizing.           |
+| crop      | CropMode                                                          | Optional. Explicitly sets the mode for image cropping. Defaults to the `CropMode.RESIZE`.                                  |
+| focus     | FocusType                                                         | Optional. Specifies the area of the image to be set as the focal point for crop transform. Defaults to `FocusType.CENTER`. |
+
+Code example:
+```kotlin
+// Kotlin
+// https://ik.imagekit.io/your_imagekit_id/default-image.jpg?tr=h-400.00,w-400.00
+ImageKit.getInstance()
+    .url(
+        path = "default-image.jpg",
+        transformationPosition = TransformationPosition.QUERY
+    )
+    .setResponsive(
+        view = displayView,
+        crop = CropMode.EXTRACT,
+        focus = FocusType.TOP_LEFT
+    )
+    .create()
+```
+
+```java
+// Java
+// https://ik.imagekit.io/your_imagekit_id/default-image.jpg?tr=h-400.00,w-400.00
+ImageKit.Companion.getInstance()
+        .url(
+            "default-image.jpg",
+            TransformationPosition.QUERY
+        )
+        .setResponsive(displayView, CropMode.EXTRACT, FocusType.TOP_LEFT)
+        .create();
+```
+
 ## Constructing Video URLs
 The `ImageKitURLConstructor` can also be used to create a url that can be used for streaming videos with real-time transformations. `ImageKitURLConstructor` consists of functions that can be chained together to perform transformations.
 
@@ -467,38 +504,6 @@ ImageKit.getInstance()
     .create()
 ```
 
-### Responsive image loading
-To automatically set the dimensions and pixel ratio of the image , call `ImageKit.getInstance().url(...).setResponsive(...)` with a set of parameters defined below:
-
-| Parameter | Type                                                              | Description                                                                                                      |
-|:----------|:------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------|
-| view      | [View](https://developer.android.com/reference/android/view/View) | Specifies the reference of the view of which the dimensions are to be taken into consideration for image sizing. |
-
-Code example:
-```kotlin
-// Kotlin
-// https://ik.imagekit.io/your_imagekit_id/default-image.jpg?tr=h-400.00,w-400.00
-ImageKit.getInstance()
-    .url(
-        path = "default-image.jpg",
-        transformationPosition = TransformationPosition.QUERY
-    )
-    .setResponsive(view = displayView)
-    .create()
-```
-
-```java
-// Java
-// https://ik.imagekit.io/your_imagekit_id/default-image.jpg?tr=h-400.00,w-400.00
-ImageKit.Companion.getInstance()
-        .url(
-            "default-image.jpg",
-            TransformationPosition.QUERY
-        )
-        .setResponsive(displayView)
-        .create();
-```
-
 ### Adaptive bitrate streaming
 To obtain the video URL with adaptive streaming, call `ImageKit.getInstance().url(...).setAdaptiveStreaming(...)` with a set of parameters defined below.
 
@@ -510,7 +515,7 @@ To obtain the video URL with adaptive streaming, call `ImageKit.getInstance().ur
 Code example:
 ```kotlin
 // Kotlin
-// https://ik.imagekit.io/your_imagekit_id/default-video.mp4?tr=h-400.00,w-400.00
+// https://ik.imagekit.io/your_imagekit_id/default-video.mp4/ik-master.m3u8?tr=sr-240_360_480_720_1080_1440_2160
 ImageKit.getInstance()
     .url(
         path = "default-video.mp4",
@@ -525,19 +530,19 @@ ImageKit.getInstance()
 
 ```java
 // Java
-// https://ik.imagekit.io/your_imagekit_id/default-video.mp4?tr=h-400.00,w-400.00
+// https://ik.imagekit.io/your_imagekit_id/default-video.mp4/ik-master.m3u8?tr=sr-240_360_480_720_1080_1440_2160
 ImageKit.Companion.getInstance()
-        .url(
-            "default-video.mp4",
-            TransformationPosition.QUERY
-        )
-        .setAdaptiveStreaming(StreamingFormat.HLS,
-            Arrays.asList(240, 360, 480, 720, 1080, 1440, 2160)
-        )
-        .create();
+    .url(
+        "default-video.mp4",
+        TransformationPosition.QUERY
+    )
+    .setAdaptiveStreaming(StreamingFormat.HLS,
+        Arrays.asList(240, 360, 480, 720, 1080, 1440, 2160)
+    )
+    .create();
 ```
 
-### File Upload
+## File Upload
 The SDK provides a simple interface using the `ImageKit.getInstance().uploader().upload(...)` method to upload files to the ImageKit Media Library. It accepts all the parameters supported by the [ImageKit Upload API](https://docs.imagekit.io/api-reference/upload-file-api/client-side-file-upload#request-structure-multipart-form-data).
 
 Make sure that you have specified `authenticationEndpoint` during SDK initialization. The SDK makes an HTTP GET request to this endpoint and expects a JSON response with three fields i.e. `signature`, `token`, and `expire`.  
@@ -546,26 +551,26 @@ Make sure that you have specified `authenticationEndpoint` during SDK initializa
 
 The `ImageKit.getInstance().uploader().upload(...)` accepts the following parameters
 
-| Parameter               | Type                                                                                | Description                                                                                                                                                                                                                                                                                                                                                                        |
-|:------------------------|:------------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| file                    | Binary / Bitmap / String                                                            | Required.                                                                                                                                                                                                                                                                                                                                                                          |
-| fileName                | String                                                                              | Required. If not specified, the file system name is picked.                                                                                                                                                                                                                                                                                                                        |
-| useUniqueFileName       | Boolean                                                                             | Optional. Accepts `true` of `false`. The default value is `true`. Specify whether to use a unique filename for this file or not.                                                                                                                                                                                                                                                   |
-| tags                    | Array of string                                                                     | Optional. Set the tags while uploading the file e.g. ["tag1","tag2"]                                                                                                                                                                                                                                                                                                               |
-| folder                  | String                                                                              | Optional. The folder path (e.g. `/images/folder/`) in which the file has to be uploaded. If the folder doesn't exist before, a new folder is created.                                                                                                                                                                                                                              |
-| isPrivateFile           | Boolean                                                                             | Optional. Accepts `true` of `false`. The default value is `false`. Specify whether to mark the file as private or not. This is only relevant for image type files                                                                                                                                                                                                                  |
-| customCoordinates       | String                                                                              | Optional. Define an important area in the image. This is only relevant for image type files. To be passed as a string with the `x` and `y` coordinates of the top-left corner, and `width` and `height` of the area of interest in format `x,y,width,height`. For example - `10,10,100,100`                                                                                        |
-| responseFields          | Array of string                                                                     | Optional. Values of the fields that you want upload API to return in the response. For example, set the value of this field to `["tags", "customCoordinates", "isPrivateFile"]` to get value of `tags`, `customCoordinates`, and `isPrivateFile` in the response.                                                                                                                  |
-| extensions              | List<Map<String, Any>>                                                              | Optional. array of extensions to be processed on the image. For reference about extensions [read here](https://docs.imagekit.io/extensions/overview).                                                                                                                                                                                                                              |
-| webhookUrl              | String                                                                              | Optional. Final status of pending extensions will be sent to this URL. To learn more about how ImageKit uses webhooks, [read here](https://docs.imagekit.io/extensions/overview#webhooks).                                                                                                                                                                                         |
-| overwriteFile           | Boolean                                                                             | Optional. Default is `true`. If `overwriteFile` is set to false and `useUniqueFileName` is also false, and a file already exists at the exact location, upload API will return an error immediately.                                                                                                                                                                               |
-| overwriteAITags         | Boolean                                                                             | Optional. Default is `true`. If set to `true` and a file already exists at the exact location, its AITags will be removed. Set this to `false` to preserve AITags.                                                                                                                                                                                                                 |
-| overwriteTags           | Boolean                                                                             | Optional. Default is `true`. If the request does not have `tags`, `overwriteTags` is set to `true` and if a file already exists at the exact location, exiting `tags` will be removed. In case the request body has `tags`, setting `overwriteTags` to `false` has no effect and request's `tags` are set on the asset.                                                            |
-| overwriteCustomMetadata | Boolean                                                                             | Optional. Default is `true`. If the request does not have `customMetadata`, `overwriteCustomMetadata` is set to `true` and if a file already exists at the exact location, exiting `customMetadata` will be removed. In case the request body has `customMetadata`, setting `overwriteCustomMetadata` to `false` has no effect and request's `customMetadata` is set on the asset. |
-| customMetadata          | Map<String, Any>                                                                    | Optional. Key-value data to be associated with the uploaded file. Check `overwriteCustomMetadata` parameter to understand default behaviour. Before setting any custom metadata on an asset you have to create the field using [custom metadata fields API](https://docs.imagekit.io/api-reference/custom-metadata-fields-api).                                                    |
-| policy                  | UploadPolicy                                                                        | Optional. Set the custom policy to override the default policy for this upload request only. This doesn't modify the default upload policy.                                                                                                                                                                                                                                        |
-| preprocess              | ImagePreprocess/VideoPreprocess                                                     | Optional. Set the set the parameters for preprocessing the image/video before uploads. This doesn't modify the default upload policy.                                                                                                                                                                                                                                              |
-| imageKitCallback        | [ImageKitCallback](imagekit/src/main/java/com/imagekit/android/ImageKitCallback.kt) | Required.                                                                                                                                                                                                                                                                                                                                                                          |
+| Parameter               | Type                                                                                      | Description                                                                                                                                                                                                                                                                                                                                                                        |
+|:------------------------|:------------------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| file                    | Binary / Bitmap / String                                                                  | Required.                                                                                                                                                                                                                                                                                                                                                                          |
+| fileName                | String                                                                                    | Required. If not specified, the file system name is picked.                                                                                                                                                                                                                                                                                                                        |
+| useUniqueFileName       | Boolean                                                                                   | Optional. Accepts `true` of `false`. The default value is `true`. Specify whether to use a unique filename for this file or not.                                                                                                                                                                                                                                                   |
+| tags                    | Array of string                                                                           | Optional. Set the tags while uploading the file e.g. ["tag1","tag2"]                                                                                                                                                                                                                                                                                                               |
+| folder                  | String                                                                                    | Optional. The folder path (e.g. `/images/folder/`) in which the file has to be uploaded. If the folder doesn't exist before, a new folder is created.                                                                                                                                                                                                                              |
+| isPrivateFile           | Boolean                                                                                   | Optional. Accepts `true` of `false`. The default value is `false`. Specify whether to mark the file as private or not. This is only relevant for image type files                                                                                                                                                                                                                  |
+| customCoordinates       | String                                                                                    | Optional. Define an important area in the image. This is only relevant for image type files. To be passed as a string with the `x` and `y` coordinates of the top-left corner, and `width` and `height` of the area of interest in format `x,y,width,height`. For example - `10,10,100,100`                                                                                        |
+| responseFields          | Array of string                                                                           | Optional. Values of the fields that you want upload API to return in the response. For example, set the value of this field to `["tags", "customCoordinates", "isPrivateFile"]` to get value of `tags`, `customCoordinates`, and `isPrivateFile` in the response.                                                                                                                  |
+| extensions              | List<Map<String, Any>>                                                                    | Optional. array of extensions to be processed on the image. For reference about extensions [read here](https://docs.imagekit.io/extensions/overview).                                                                                                                                                                                                                              |
+| webhookUrl              | String                                                                                    | Optional. Final status of pending extensions will be sent to this URL. To learn more about how ImageKit uses webhooks, [read here](https://docs.imagekit.io/extensions/overview#webhooks).                                                                                                                                                                                         |
+| overwriteFile           | Boolean                                                                                   | Optional. Default is `true`. If `overwriteFile` is set to false and `useUniqueFileName` is also false, and a file already exists at the exact location, upload API will return an error immediately.                                                                                                                                                                               |
+| overwriteAITags         | Boolean                                                                                   | Optional. Default is `true`. If set to `true` and a file already exists at the exact location, its AITags will be removed. Set this to `false` to preserve AITags.                                                                                                                                                                                                                 |
+| overwriteTags           | Boolean                                                                                   | Optional. Default is `true`. If the request does not have `tags`, `overwriteTags` is set to `true` and if a file already exists at the exact location, exiting `tags` will be removed. In case the request body has `tags`, setting `overwriteTags` to `false` has no effect and request's `tags` are set on the asset.                                                            |
+| overwriteCustomMetadata | Boolean                                                                                   | Optional. Default is `true`. If the request does not have `customMetadata`, `overwriteCustomMetadata` is set to `true` and if a file already exists at the exact location, exiting `customMetadata` will be removed. In case the request body has `customMetadata`, setting `overwriteCustomMetadata` to `false` has no effect and request's `customMetadata` is set on the asset. |
+| customMetadata          | Map<String, Any>                                                                          | Optional. Key-value data to be associated with the uploaded file. Check `overwriteCustomMetadata` parameter to understand default behaviour. Before setting any custom metadata on an asset you have to create the field using [custom metadata fields API](https://docs.imagekit.io/api-reference/custom-metadata-fields-api).                                                    |
+| policy                  | [UploadPolicy](README.md#UploadPolicy)                                                    | Optional. Set the custom policy to override the default policy for this upload request only. This doesn't modify the default upload policy.                                                                                                                                                                                                                                        |
+| preprocess              | [ImagePreprocess](README.md#ImagePreprocess)/[VideoPreprocess](README.md#VideoPreprocess) | Optional. Set the set the parameters for preprocessing the image/video before uploads. This doesn't modify the default upload policy.                                                                                                                                                                                                                                              |
+| imageKitCallback        | [ImageKitCallback](imagekit/src/main/java/com/imagekit/android/ImageKitCallback.kt)       | Required.                                                                                                                                                                                                                                                                                                                                                                          |
 
 Sample Usage
 ```kotlin
