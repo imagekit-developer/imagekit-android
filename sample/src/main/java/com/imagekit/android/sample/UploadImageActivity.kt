@@ -64,7 +64,7 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
                 useUniqueFilename = true,
                 tags = arrayOf("nice", "copy", "books"),
                 folder = "/dummy/folder/",
-                uploadPolicy = UploadPolicy.Builder().maxRetries(5).backoffCriteria(
+                policy = UploadPolicy.Builder().maxRetries(5).backoffCriteria(
                     backoffMillis = 100L,
                     backoffPolicy = UploadPolicy.BackoffPolicy.EXPONENTIAL
                 ).build(),
@@ -85,7 +85,7 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
             fileName = filename,
             useUniqueFilename = true,
             tags = arrayOf("nice", "copy", "books"),
-            uploadPolicy = UploadPolicy.Builder().requiresBatteryCharging(false).build(),
+            policy = UploadPolicy.Builder().requiresBatteryCharging(false).build(),
             folder = "/dummy/folder/",
             imageKitCallback = this
         )

@@ -43,12 +43,13 @@ class UploadPolicy private constructor(
         }
 
         fun maxRetries(maxRetries: Int): Builder {
-            require(maxRetries >= 0) { "maxRetries cannot be negative." }
+            require(maxRetries >= 0) { "maxRetries cannot be a negative integer" }
             this.maxRetries = maxRetries
             return this
         }
 
         fun backoffCriteria(backoffMillis: Long, backoffPolicy: BackoffPolicy): Builder {
+            require(backoffMillis >= 0) { "backoffMillis cannot be a negative integer" }
             this.backoffMillis = backoffMillis
             this.backoffPolicy = backoffPolicy
             return this
@@ -68,7 +69,7 @@ class UploadPolicy private constructor(
 
     companion object {
         private const val DEFAULT_MAX_ERROR_RETRIES = 5
-        private const val DEFAULT_BACKOFF_MILLIS = 100_000L
+        private const val DEFAULT_BACKOFF_MILLIS = 1000L
         private val DEFAULT_BACKOFF_POLICY = BackoffPolicy.LINEAR
 
         fun defaultPolicy(): UploadPolicy = Builder()

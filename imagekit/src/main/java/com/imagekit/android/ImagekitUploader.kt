@@ -39,6 +39,8 @@ class ImagekitUploader @Inject constructor(
      * and width and height of the area of interest in format x,y,width,height. For example - 10,10,100,100.
      * Can be used with fo-custom transformation.
      * If this field is not specified and the file is overwritten, then customCoordinates will be removed.
+     * @param policy Set the custom policy to override the default policy for this upload request only.
+     * This doesn't modify the default upload policy.
      * @param responseFields Comma-separated values of the fields that you want ImageKit.io to return in response.
      * For example, set the value of this field to tags,customCoordinates,isPrivateFile,metadata to get value of tags,
      * customCoordinates, isPrivateFile , and metadata in the response.
@@ -52,11 +54,11 @@ class ImagekitUploader @Inject constructor(
         folder: String? = null,
         isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
-        uploadPolicy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
+        policy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
         responseFields: String? = null,
         imageKitCallback: ImageKitCallback
     ) {
-        if (checkUploadPolicy(uploadPolicy,imageKitCallback)) {
+        if (checkUploadPolicy(policy, imageKitCallback)) {
             mRepository.upload(
                 bitmapToFile(
                     context,
@@ -70,7 +72,7 @@ class ImagekitUploader @Inject constructor(
                 isPrivateFile,
                 customCoordinates,
                 responseFields,
-                uploadPolicy,
+                policy,
                 imageKitCallback
             )
         } else {
@@ -96,6 +98,8 @@ class ImagekitUploader @Inject constructor(
      * and width and height of the area of interest in format x,y,width,height. For example - 10,10,100,100.
      * Can be used with fo-custom transformation.
      * If this field is not specified and the file is overwritten, then customCoordinates will be removed.
+     * @param policy Set the custom policy to override the default policy for this upload request only.
+     * This doesn't modify the default upload policy.
      * @param responseFields Comma-separated values of the fields that you want ImageKit.io to return in response.
      * For example, set the value of this field to tags,customCoordinates,isPrivateFile,metadata to get value of tags,
      * customCoordinates, isPrivateFile , and metadata in the response.
@@ -110,10 +114,10 @@ class ImagekitUploader @Inject constructor(
         isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
         responseFields: String? = null,
-        uploadPolicy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
+        policy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
         imageKitCallback: ImageKitCallback
     ) {
-        if (checkUploadPolicy(uploadPolicy, imageKitCallback)) {
+        if (checkUploadPolicy(policy, imageKitCallback)) {
             if (!file.exists()) {
                 imageKitCallback.onError(
                     UploadError(
@@ -132,7 +136,7 @@ class ImagekitUploader @Inject constructor(
                 isPrivateFile,
                 customCoordinates,
                 responseFields,
-                uploadPolicy,
+                policy,
                 imageKitCallback
             )
         } else {
@@ -158,6 +162,8 @@ class ImagekitUploader @Inject constructor(
      * and width and height of the area of interest in format x,y,width,height. For example - 10,10,100,100.
      * Can be used with fo-custom transformation.
      * If this field is not specified and the file is overwritten, then customCoordinates will be removed.
+     * @param policy Set the custom policy to override the default policy for this upload request only.
+     * This doesn't modify the default upload policy.
      * @param responseFields Comma-separated values of the fields that you want ImageKit.io to return in response.
      * For example, set the value of this field to tags,customCoordinates,isPrivateFile,metadata to get value of tags,
      * customCoordinates, isPrivateFile , and metadata in the response.
@@ -172,7 +178,7 @@ class ImagekitUploader @Inject constructor(
         isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
         responseFields: String? = null,
-        uploadPolicy: UploadPolicy,
+        policy: UploadPolicy,
         imageKitCallback: ImageKitCallback
     ) = mRepository.upload(
         file,
@@ -183,7 +189,7 @@ class ImagekitUploader @Inject constructor(
         isPrivateFile,
         customCoordinates,
         responseFields,
-        uploadPolicy,
+        policy,
         imageKitCallback
     )
 
@@ -195,7 +201,8 @@ class ImagekitUploader @Inject constructor(
                 imageKitCallback.onError(
                     UploadError(
                         exception = false,
-                        statusCode = "UPLOAD_POLICY_ERROR",
+                        statusNumber = 1501,
+                        statusCode = "POLICY_ERROR_METERED_NETWORK",
                         message = "Upload policy error: current network is metered"
                     )
                 )
@@ -215,7 +222,8 @@ class ImagekitUploader @Inject constructor(
                 imageKitCallback.onError(
                     UploadError(
                         exception = false,
-                        statusCode = "UPLOAD_POLICY_ERROR",
+                        statusNumber = 1502,
+                        statusCode = "POLICY_ERROR_BATTERY_DISCHARGING",
                         message = "Upload policy error: device battery is not charging"
                     )
                 )
@@ -229,7 +237,8 @@ class ImagekitUploader @Inject constructor(
                 imageKitCallback.onError(
                     UploadError(
                         exception = false,
-                        statusCode = "UPLOAD_POLICY_ERROR",
+                        statusNumber = 1503,
+                        statusCode = "POLICY_ERROR_DEVICE_NOT_IDLE",
                         message = "Upload policy error: device is not in idle mode"
                     )
                 )
