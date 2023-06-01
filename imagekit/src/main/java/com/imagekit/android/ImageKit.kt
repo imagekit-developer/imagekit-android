@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import com.imagekit.android.entity.TransformationPosition
+import com.imagekit.android.entity.UploadPolicy
 import com.imagekit.android.injection.component.DaggerUtilComponent
 import com.imagekit.android.injection.component.UtilComponent
 import com.imagekit.android.injection.module.ContextModule

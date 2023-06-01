@@ -2,11 +2,10 @@ package com.imagekit.android.data
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import com.google.gson.Gson
 import com.imagekit.android.ImageKitCallback
 import com.imagekit.android.R
-import com.imagekit.android.UploadPolicy
+import com.imagekit.android.entity.UploadPolicy
 import com.imagekit.android.entity.SignatureResponse
 import com.imagekit.android.entity.UploadError
 import com.imagekit.android.entity.UploadResponse
@@ -15,10 +14,8 @@ import com.imagekit.android.util.LogUtil
 import com.imagekit.android.util.SharedPrefUtil
 import io.reactivex.Single
 import retrofit2.HttpException
-import java.util.Timer
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.concurrent.schedule
 import kotlin.math.pow
 
 

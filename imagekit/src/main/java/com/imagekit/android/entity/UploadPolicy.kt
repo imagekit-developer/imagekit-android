@@ -1,4 +1,4 @@
-package com.imagekit.android
+package com.imagekit.android.entity
 
 class UploadPolicy private constructor(
     val networkType: NetworkType,
@@ -77,18 +77,9 @@ class UploadPolicy private constructor(
             .requiresBatteryCharging(false)
             .maxRetries(DEFAULT_MAX_ERROR_RETRIES)
             .backoffCriteria(
-                backoffMillis = UploadPolicy.DEFAULT_BACKOFF_MILLIS,
-                backoffPolicy = UploadPolicy.DEFAULT_BACKOFF_POLICY
+                backoffMillis = DEFAULT_BACKOFF_MILLIS,
+                backoffPolicy = DEFAULT_BACKOFF_POLICY
             )
             .build()
-    }
-
-    fun newBuilder(): Builder {
-        return Builder()
-            .requiresBatteryCharging(requiresCharging)
-            .requiresDeviceIdle(requiresIdle)
-            .backoffCriteria(backoffMillis, backoffPolicy)
-            .maxRetries(maxErrorRetries)
-            .requireNetworkType(networkType)
     }
 }

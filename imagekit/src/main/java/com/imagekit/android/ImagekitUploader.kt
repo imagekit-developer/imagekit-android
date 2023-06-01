@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.PowerManager
 import com.imagekit.android.data.Repository
 import com.imagekit.android.entity.UploadError
+import com.imagekit.android.entity.UploadPolicy
 import com.imagekit.android.util.BitmapUtil.bitmapToFile
 import com.imagekit.android.util.LogUtil
 import java.io.File
@@ -55,9 +56,7 @@ class ImagekitUploader @Inject constructor(
         responseFields: String? = null,
         imageKitCallback: ImageKitCallback
     ) {
-        if (!checkUploadPolicy(uploadPolicy,imageKitCallback)) {
-            LogUtil.logError("Upload failed! Upload Policy Violation!")
-        }else{
+        if (checkUploadPolicy(uploadPolicy,imageKitCallback)) {
             mRepository.upload(
                 bitmapToFile(
                     context,
@@ -74,6 +73,8 @@ class ImagekitUploader @Inject constructor(
                 uploadPolicy,
                 imageKitCallback
             )
+        } else {
+            LogUtil.logError("Upload failed! Upload Policy Violation!")
         }
     }
 
@@ -112,9 +113,7 @@ class ImagekitUploader @Inject constructor(
         uploadPolicy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
         imageKitCallback: ImageKitCallback
     ) {
-        if (!checkUploadPolicy(uploadPolicy,imageKitCallback)) {
-            LogUtil.logError("Upload failed! Upload Policy Violation!")
-        }else{
+        if (checkUploadPolicy(uploadPolicy, imageKitCallback)) {
             if (!file.exists()) {
                 imageKitCallback.onError(
                     UploadError(
@@ -136,6 +135,8 @@ class ImagekitUploader @Inject constructor(
                 uploadPolicy,
                 imageKitCallback
             )
+        } else {
+            LogUtil.logError("Upload error: upload policy constraints not satisfied")
         }
     }
 
@@ -186,15 +187,16 @@ class ImagekitUploader @Inject constructor(
         imageKitCallback
     )
 
-    private fun checkUploadPolicy(policy: UploadPolicy,imageKitCallback: ImageKitCallback): Boolean {
+    private fun checkUploadPolicy(policy: UploadPolicy, imageKitCallback: ImageKitCallback): Boolean {
         if (policy.networkType == UploadPolicy.NetworkType.UNMETERED) {
             val service =
                 context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             if (service.isActiveNetworkMetered) {
                 imageKitCallback.onError(
                     UploadError(
-                        exception = true,
-                        message = "Upload failed! Network is metered!"
+                        exception = false,
+                        statusCode = "UPLOAD_POLICY_ERROR",
+                        message = "Upload policy error: current network is metered"
                     )
                 )
                 return false
@@ -212,8 +214,9 @@ class ImagekitUploader @Inject constructor(
             if (!isCharging) {
                 imageKitCallback.onError(
                     UploadError(
-                        exception = true,
-                        message = "Upload failed! Device is not Charging!"
+                        exception = false,
+                        statusCode = "UPLOAD_POLICY_ERROR",
+                        message = "Upload policy error: device battery is not charging"
                     )
                 )
                 return false
@@ -225,8 +228,9 @@ class ImagekitUploader @Inject constructor(
             if (!powerManager.isDeviceIdleMode) {
                 imageKitCallback.onError(
                     UploadError(
-                        exception = true,
-                        message = "Upload failed! Device is not on idle mode!"
+                        exception = false,
+                        statusCode = "UPLOAD_POLICY_ERROR",
+                        message = "Upload policy error: device is not in idle mode"
                     )
                 )
                 return false
