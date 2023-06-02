@@ -1,6 +1,7 @@
 package com.imagekit.android
 
 import android.content.Context
+import android.view.View
 import com.imagekit.android.ImageKit.Companion.IK_VERSION_KEY
 import com.imagekit.android.entity.*
 import com.imagekit.android.injection.component.DaggerUtilComponent
@@ -1079,6 +1080,48 @@ class ImagekitUrlConstructor constructor(
         params.forEach { (key, value) -> queryParams[key] = value }
         return this
     }
+
+    /**
+     * Set the image size and crop of the image to be responsive to the target view/window.
+     * Method allows you to automatically set the height, width and DPR parameters of images according to the target View specified. The height and width can be constrained
+     * by varying the parameters - minSize, maxSize, and step. the default crop mode and focus area values can also be overridden by passing the crop and focus arguments, else.
+     * @param view The reference of the view of which the dimensions are to be taken into consideration for image sizing.
+     * @param minSize Minimum allowed size for image width/height.
+     * @param maxSize Maximum allowed size for image width/height.
+     * @param step Possible values include positive integer values.
+     * @param cropMode Possible values include the values defined in enum CropMode.
+     * @param focus Possible values include the values defined in enum FocusType.
+     * @return the current ImagekitUrlConstructor object.
+     */
+    fun setResponsive(
+        view: View,
+        minSize: Int = 0,
+        maxSize: Int = 5000,
+        step: Int = 100,
+        cropMode: CropMode = CropMode.RESIZE,
+        focus: FocusType = FocusType.CENTER
+    ): ImagekitUrlConstructor {
+        check(minSize % step == 0 && maxSize % step == 0) {
+            "Values of minSize and maxSize should be in the multiples of step"
+        }
+        val displayMetrics = context.resources.displayMetrics
+        var targetWidth = view.width - view.paddingLeft - view.paddingRight
+        var targetHeight = view.height - view.paddingTop - view.paddingBottom
+        val aspectRatio = targetWidth.toFloat() / targetHeight
+        if (targetWidth <= 0) {
+            targetWidth = displayMetrics.widthPixels - view.paddingLeft - view.paddingRight
+        }
+        if (targetHeight <= 0) {
+            targetHeight = (displayMetrics.heightPixels * if (aspectRatio < 1) 0.5f else 1f).toInt() - view.paddingTop - view.paddingBottom
+        }
+        return this.width(roundUpSize(targetWidth, step).coerceIn(minSize..maxSize))
+            .height(roundUpSize(targetHeight, step).coerceIn(minSize..maxSize))
+            .dpr(displayMetrics.density)
+            .cropMode(cropMode)
+            .focus(focus)
+    }
+
+    private fun roundUpSize(size: Int, step: Int): Int = ((size - 1) / step + 1) * step
 
     /**
      * Used to create the url using the transformations specified before invoking this method.
