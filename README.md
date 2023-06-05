@@ -405,6 +405,7 @@ The complete list of transformations supported and their usage in ImageKit can b
 | effectContrast                | effectContrast(flag: Boolean)                                                                                                                                                                                                                                                                                                                        | e-contrast              |
 | effectGray                    | effectGray(flag: Boolean)                                                                                                                                                                                                                                                                                                                            | e-grayscale             |
 | original                      | original(flag: Boolean)                                                                                                                                                                                                                                                                                                                              | orig                    |
+| Raw param string              | raw(params: String)                                                                                                                                                                                                                                                                                                                                  | -                       |
 
 </details>
 
@@ -638,9 +639,9 @@ val policy = UploadPolicy.Builder()
 
 ## Upload preprocessors
 ### ImagePreprocess
-The `ImagePreprocess` class encapsulates a set of methods to apply certain transformations to an image before uploading.
+The `ImagePreprocessor` class encapsulates a set of methods to apply certain transformations to an image before uploading.
 
-`ImagePreprocess.Builder` class is responsible for building the ImagePreprocess instances. This class provides following methods to access and modify the policy parameters:
+`ImagePreprocessor.Builder` class is responsible for building the ImagePreprocess instances. This class provides following methods to access and modify the policy parameters:
 
 | Parameter                                                                                                               | Type                    | Description                                                              |
 |:------------------------------------------------------------------------------------------------------------------------|:------------------------|:-------------------------------------------------------------------------|
@@ -651,16 +652,16 @@ The `ImagePreprocess` class encapsulates a set of methods to apply certain trans
 
 Example code
 ```kotlin
-val preprocess = ImagePreprocess.Builder()
+val preprocess = ImagePreprocessor.Builder()
     .limit(1280, 720)
     .format(Bitmap.CompressFormat.WEBP)
     .rotate(45f)
     .build()
 ```
 ### VideoPreprocess
-The `VideoPreprocess` class encapsulates a set of methods to apply certain transformations to an image before uploading.
+The `VideoPreprocessor` class encapsulates a set of methods to apply certain transformations to an image before uploading.
 
-`VideoPreprocess.Builder` class is responsible for building the VideoPreprocess instances. This class provides following methods to access and modify the policy parameters:
+`VideoPreprocessor.Builder` class is responsible for building the VideoPreprocess instances. This class provides following methods to access and modify the policy parameters:
 
 | Parameter                            | Type                    | Description                                          |
 |:-------------------------------------|:------------------------|:-----------------------------------------------------|
@@ -672,7 +673,7 @@ The `VideoPreprocess` class encapsulates a set of methods to apply certain trans
 
 Example code
 ```kotlin
-val preprocess = VideoPreprocess.Builder()
+val preprocess = VideoPreprocessor.Builder()
     .frameRate(90)      
     .targetAudioBitrateKBps(320)
     .targetVideoBitrateKBps(480)
