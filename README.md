@@ -469,83 +469,6 @@ ImageKit.getInstance()
     .create()
 ```
 
-## Adding overlay layers to videos
-The `addVideoOverlay()` method can be used to set the URL parameters for adding overlay layers to a video.
-
-The layers can be created by instances of `OverlayLayer` class, which can be built from `OverlayLayer.Builder()` class with a set of builder methods.
-
-### Basic Examples
-```kotlin
-// Kotlin
-// https://ik.imagekit.io/your_imagekit_id/default-video.mp4?tr=h-400.00,w-400.00,l-image,i-logo.png,lx-16,ly-24,lfo-top_right,lso-22.7,lso-22.7,leo-33.9,ldu-11.1,w-200.00,h-400.00,l-end
-ImageKit.getInstance()
-    .url(
-        path = "default-video.mp4",
-        transformationPosition = TransformationPosition.QUERY
-    )
-    .height(400f)
-    .width(400f)
-    .addVideoOverlay(OverlayLayer.Builder()
-        .type(OverlayType.IMAGE)
-        .source("logo.png")
-        .positionX(16)
-        .positionY(24)
-        .positionRelative(LayerPosition.TOP_RIGHT)
-        .displayStartTime(22.7)
-        .displayEndTime(33.9)
-        .displayDuration(11.1)
-        .transform(ImageOverlayTransform.Builder()
-            .width(200)
-            .height(400)
-            .build()
-        )
-        .nestedLayer(OverlayLayer.Builder()
-            ...
-            .build()
-        )
-        .build()
-    )
-    .create()
-```
-
-### Adaptive bitrate streaming
-To obtain the video URL with adaptive streaming, call `ImageKit.getInstance().url(...).setAdaptiveStreaming(...)` with a set of parameters defined below.
-
-| Parameter   | Type            | Description                                                                                                               |
-|:------------|:----------------|:--------------------------------------------------------------------------------------------------------------------------|
-| format      | StreamingFormat | Specifies the format for streaming video. Supported values for type are `StreamingFormat.HLS` and `StreamingFormat.DASH`. |
-| resolutions | List\<Int>      | Specifies the representations of the required video resolutions. E. g. 480, 720, 1080 etc.                                |
-
-Code example:
-```kotlin
-// Kotlin
-// https://ik.imagekit.io/your_imagekit_id/default-video.mp4/ik-master.m3u8?tr=sr-240_360_480_720_1080_1440_2160
-ImageKit.getInstance()
-    .url(
-        path = "default-video.mp4",
-        transformationPosition = TransformationPosition.QUERY
-    )
-    .setAdaptiveStreaming(
-        format = StreamingFormat.HLS,
-        resolutions = listOf(240, 360, 480, 720, 1080, 1440, 2160)
-    )
-    .create()
-```
-
-```java
-// Java
-// https://ik.imagekit.io/your_imagekit_id/default-video.mp4/ik-master.m3u8?tr=sr-240_360_480_720_1080_1440_2160
-ImageKit.Companion.getInstance()
-    .url(
-        "default-video.mp4",
-        TransformationPosition.QUERY
-    )
-    .setAdaptiveStreaming(StreamingFormat.HLS,
-        Arrays.asList(240, 360, 480, 720, 1080, 1440, 2160)
-    )
-    .create();
-```
-
 ## File Upload
 The SDK provides a simple interface using the `ImageKit.getInstance().uploader().upload(...)` method to upload files to the ImageKit Media Library. It accepts all the parameters supported by the [ImageKit Upload API](https://docs.imagekit.io/api-reference/upload-file-api/client-side-file-upload#request-structure-multipart-form-data).
 
@@ -598,7 +521,7 @@ ImageKit.getInstance().uploader().upload(
         .requireNetworkType(UploadPolicy.UploadPolicy.NetworkType.UNMETERED)
         .setMaxRetries(5)
         .build(),
-    preprocess = ImagePreprocess.Builder()
+    preprocessor = ImagePreprocess.Builder()
         .limit(512, 512)
         .rotate(90f)
         .build(),
@@ -652,7 +575,7 @@ The `ImagePreprocessor` class encapsulates a set of methods to apply certain tra
 
 Example code
 ```kotlin
-val preprocess = ImagePreprocessor.Builder()
+val preprocessor = ImagePreprocessor.Builder()
     .limit(1280, 720)
     .format(Bitmap.CompressFormat.WEBP)
     .rotate(45f)
@@ -673,12 +596,29 @@ The `VideoPreprocessor` class encapsulates a set of methods to apply certain tra
 
 Example code
 ```kotlin
-val preprocess = VideoPreprocessor.Builder()
+val preprocessor = VideoPreprocessor.Builder()
     .frameRate(90)      
     .targetAudioBitrateKBps(320)
     .targetVideoBitrateKBps(480)
     .build()
 ```
+
+
+## Third-party integrations
+### Glide
+In the module build.gradle file, add:
+```gradle 
+implementation 'com.github.imagekit-developer:imagekit-android-glide:<VERSION>'
+```
+#### Usage
+
+### Picasso
+In the module build.gradle file, add:
+```gradle 
+implementation 'com.github.imagekit-developer:imagekit-android-picasso:<VERSION>'
+```
+#### Usage
+
 
 ## Support
 For any feedback or to report any issues or general implementation support please reach out to [support@imagekit.io](mailto:support@imagekit.io)
