@@ -560,18 +560,18 @@ val policy = UploadPolicy.Builder()
     .build()
 ```
 
-## Upload preprocessors
-### ImagePreprocess
+## Upload preprocessing
+### Image preprocessing
 The `ImagePreprocessor` class encapsulates a set of methods to apply certain transformations to an image before uploading.
 
 `ImagePreprocessor.Builder` class is responsible for building the ImagePreprocess instances. This class provides following methods to access and modify the policy parameters:
 
-| Parameter                                                                                                               | Type                    | Description                                                              |
-|:------------------------------------------------------------------------------------------------------------------------|:------------------------|:-------------------------------------------------------------------------|
-| limit(width: Int, height: Int)                                                                                          | ImagePreprocess.Builder | Specifies the maximum width and height of the image                      |
-| crop(p1: Point, p2: Point)                                                                                              | ImagePreprocess.Builder | Specifies the two points on the diagonal of the rectangle to be cropped. |
-| format(format: [Bitmap.CompressFormat](https://developer.android.com/reference/android/graphics/Bitmap.CompressFormat)) | ImagePreprocess.Builder | Specify the target image format.                                         |
-| rotate(degrees: Float)                                                                                                  | ImagePreprocess.Builder | Specify the rotation angle of the target image.                          |
+| Parameter                                                                                                               | Type                      | Description                                                              |
+|:------------------------------------------------------------------------------------------------------------------------|:--------------------------|:-------------------------------------------------------------------------|
+| limit(width: Int, height: Int)                                                                                          | ImagePreprocessor.Builder | Specifies the maximum width and height of the image                      |
+| crop(p1: Point, p2: Point)                                                                                              | ImagePreprocessor.Builder | Specifies the two points on the diagonal of the rectangle to be cropped. |
+| format(format: [Bitmap.CompressFormat](https://developer.android.com/reference/android/graphics/Bitmap.CompressFormat)) | ImagePreprocessor.Builder | Specify the target image format.                                         |
+| rotate(degrees: Float)                                                                                                  | ImagePreprocessor.Builder | Specify the rotation angle of the target image.                          |
 
 Example code
 ```kotlin
@@ -581,18 +581,18 @@ val preprocessor = ImagePreprocessor.Builder()
     .rotate(45f)
     .build()
 ```
-### VideoPreprocess
+### Video preprocessing
 The `VideoPreprocessor` class encapsulates a set of methods to apply certain transformations to an image before uploading.
 
 `VideoPreprocessor.Builder` class is responsible for building the VideoPreprocess instances. This class provides following methods to access and modify the policy parameters:
 
-| Parameter                            | Type                    | Description                                          |
-|:-------------------------------------|:------------------------|:-----------------------------------------------------|
-| limit(width: Int, height: Int)       | VideoPreprocess.Builder | Specifies the maximum width and height of the video. |
-| frameRate(frameRateValue: Int)       | VideoPreprocess.Builder | Specifies the target frame rate of the video.        |
-| keyFramesInterval(interval: Int)     | VideoPreprocess.Builder | Specify the target keyframes interval of video.      |
-| targetAudioBitrateKBps(bitrate: Int) | VideoPreprocess.Builder | Specify the target audio bitrate of the video.       |
-| targetVideoBitrateKBps(bitrate: Int) | VideoPreprocess.Builder | Specify the target video bitrate of the video.       |
+| Parameter                            | Type                      | Description                                          |
+|:-------------------------------------|:--------------------------|:-----------------------------------------------------|
+| limit(width: Int, height: Int)       | VideoPreprocessor.Builder | Specifies the maximum width and height of the video. |
+| frameRate(frameRateValue: Int)       | VideoPreprocessor.Builder | Specifies the target frame rate of the video.        |
+| keyFramesInterval(interval: Int)     | VideoPreprocessor.Builder | Specify the target keyframes interval of video.      |
+| targetAudioBitrateKBps(bitrate: Int) | VideoPreprocessor.Builder | Specify the target audio bitrate of the video.       |
+| targetVideoBitrateKBps(bitrate: Int) | VideoPreprocessor.Builder | Specify the target video bitrate of the video.       |
 
 Example code
 ```kotlin
@@ -603,22 +603,44 @@ val preprocessor = VideoPreprocessor.Builder()
     .build()
 ```
 
-
 ## Third-party integrations
 ### Glide
 In the module build.gradle file, add:
 ```gradle 
-implementation 'com.github.imagekit-developer:imagekit-android-glide:<VERSION>'
+implementation 'com.github.imagekit-developer:imagekit-glide-extension:1.0.0'
 ```
-#### Usage
+Then add the `createWithGlide()` extension function to the ImageKit URL constructor chain to get Glide's `RequestBuilder` instance to load into any target.
+```kotlin
+ImageKit.getInstance()
+    .url(
+        path = "default-image.jpg",
+        transformationPosition = TransformationPosition.QUERY
+    )
+    .height(400f)
+    .aspectRatio(3, 2)
+    .createWithGlide()
+    .circleCrop()
+    .into(imageView)
+```
 
 ### Picasso
 In the module build.gradle file, add:
 ```gradle 
-implementation 'com.github.imagekit-developer:imagekit-android-picasso:<VERSION>'
+implementation 'com.github.imagekit-developer:imagekit-picasso-extension:1.0.0'
 ```
-#### Usage
-
+Then add the `createWithPicasso()` extension function to the ImageKit URL constructor chain to get Picasso's `RequestCreator` instance to load into any target.
+```kotlin
+ImageKit.getInstance()
+    .url(
+        path = "default-image.jpg",
+        transformationPosition = TransformationPosition.QUERY
+    )
+    .height(400f)
+    .aspectRatio(3, 2)
+    .createWithPicasso()
+    .centerCrop()
+    .into(imageView)
+```
 
 ## Support
 For any feedback or to report any issues or general implementation support please reach out to [support@imagekit.io](mailto:support@imagekit.io)
