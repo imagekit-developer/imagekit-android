@@ -144,28 +144,28 @@ ImageKit.Companion.getInstance()
 ```kotlin
 // https://ik.imagekit.io/your_imagekit_id/plant.jpeg?tr=w-400,ot-Hand with a green plant,otc-264120,ots-30,ox-10,oy-10
 ImageKit.getInstance()
-        .url(src = "https://ik.imagekit.io/your_imagekit_id/plant.jpeg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20")
-        .addCustomTransformation("w", "400")
-        .overlayText("Hand with a green plant")
-        .overlayTextColor("264120")
-        .overlayTextSize(30)
-        .overlayPosX(10)
-        .overlayPosY(10)
-        .create()
+    .url(src = "https://ik.imagekit.io/your_imagekit_id/plant.jpeg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20")
+    .addCustomTransformation("w", "400")
+    .overlayText("Hand with a green plant")
+    .overlayTextColor("264120")
+    .overlayTextSize(30)
+    .overlayPosX(10)
+    .overlayPosY(10)
+    .create()
 ```
 
 ```java
 // Java
 // https://ik.imagekit.io/your_imagekit_id/plant.jpeg?tr=w-400,ot-Hand with a green plant,otc-264120,ots-30,ox-10,oy-10
 ImageKit.Companion.getInstance()
-        .url("https://ik.imagekit.io/your_imagekit_id/plant.jpeg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20")
-        .addCustomTransformation("w", "400")
-        .overlayText("Hand with a green plant")
-        .overlayTextColor("264120")
-        .overlayTextSize(30)
-        .overlayPosX(10)
-        .overlayPosY(10)
-        .create()
+    .url("https://ik.imagekit.io/your_imagekit_id/plant.jpeg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20")
+    .addCustomTransformation("w", "400")
+    .overlayText("Hand with a green plant")
+    .overlayTextColor("264120")
+    .overlayTextSize(30)
+    .overlayPosX(10)
+    .overlayPosY(10)
+    .create()
 ```
 
 #### Upload file from bitmap
@@ -318,26 +318,26 @@ The transformations to be applied to the URL can be chained to `ImageKit.getInst
 // Kotlin
 // https://ik.imagekit.io/your_imagekit_id/default-image.jpg?tr=h-400.00,ar-3-2
 ImageKit.getInstance()
-        .url(
-            path = "default-image.jpg",
-            transformationPosition = TransformationPosition.QUERY
-        )
-        .height(400f)
-        .aspectRatio(3, 2)
-        .create()
+    .url(
+        path = "default-image.jpg",
+        transformationPosition = TransformationPosition.QUERY
+    )
+    .height(400f)
+    .aspectRatio(3, 2)
+    .create()
 ```
 
 ```java
 // Java
 // https://ik.imagekit.io/your_imagekit_id/default-image.jpg?tr=h-400.00,ar-3-2
 ImageKit.Companion.getInstance()
-        .url(
-            "default-image.jpg",
-            TransformationPosition.QUERY
-        )
-        .height(400f)
-        .aspectRatio(3, 2)
-        .create()
+    .url(
+        "default-image.jpg",
+        TransformationPosition.QUERY
+    )
+    .height(400f)
+    .aspectRatio(3, 2)
+    .create()
 ```
 
 More Examples can be found in [URLGenerationTests.kt](imagekit/src/test/java/com/imagekit/android/URLGenerationTests.kt)
@@ -442,12 +442,12 @@ ImageKit.getInstance()
 // Java
 // https://ik.imagekit.io/your_imagekit_id/default-image.jpg?tr=h-400.00,w-400.00,
 ImageKit.Companion.getInstance()
-        .url(
-            "default-image.jpg",
-            TransformationPosition.QUERY
-        )
-        .setResponsive(displayView, CropMode.EXTRACT, FocusType.TOP_LEFT)
-        .create();
+    .url(
+        "default-image.jpg",
+        TransformationPosition.QUERY
+    )
+    .setResponsive(displayView, CropMode.EXTRACT, FocusType.TOP_LEFT)
+    .create();
 ```
 
 ## Constructing Video URLs
@@ -467,6 +467,44 @@ ImageKit.getInstance()
     .height(400f)
     .width(400f)
     .create()
+```
+
+### Adaptive bitrate streaming
+To obtain the video URL with adaptive streaming, call `ImageKit.getInstance().url(...).setAdaptiveStreaming(...)` with a set of parameters defined below.
+
+| Parameter   | Type            | Description                                                                                                               |
+|:------------|:----------------|:--------------------------------------------------------------------------------------------------------------------------|
+| format      | StreamingFormat | Specifies the format for streaming video. Supported values for type are `StreamingFormat.HLS` and `StreamingFormat.DASH`. |
+| resolutions | List\<Int>      | Specifies the representations of the required video resolutions. E. g. 480, 720, 1080 etc.                                |
+
+Code example:
+```kotlin
+// Kotlin
+// https://ik.imagekit.io/your_imagekit_id/default-video.mp4/ik-master.m3u8?tr=sr-240_360_480_720_1080_1440_2160
+ImageKit.getInstance()
+    .url(
+        path = "default-video.mp4",
+        transformationPosition = TransformationPosition.QUERY
+    )
+    .setAdaptiveStreaming(
+        format = StreamingFormat.HLS,
+        resolutions = listOf(240, 360, 480, 720, 1080, 1440, 2160)
+    )
+    .create()
+```
+
+```java
+// Java
+// https://ik.imagekit.io/your_imagekit_id/default-video.mp4/ik-master.m3u8?tr=sr-240_360_480_720_1080_1440_2160
+ImageKit.Companion.getInstance()
+    .url(
+        "default-video.mp4",
+        TransformationPosition.QUERY
+    )
+    .setAdaptiveStreaming(StreamingFormat.HLS,
+        Arrays.asList(240, 360, 480, 720, 1080, 1440, 2160)
+    )
+    .create();
 ```
 
 ## File Upload
@@ -591,19 +629,20 @@ The `VideoPreprocessor` class encapsulates a set of methods to apply certain tra
 | limit(width: Int, height: Int)       | VideoPreprocessor.Builder | Specifies the maximum width and height of the video. |
 | frameRate(frameRateValue: Int)       | VideoPreprocessor.Builder | Specifies the target frame rate of the video.        |
 | keyFramesInterval(interval: Int)     | VideoPreprocessor.Builder | Specify the target keyframes interval of video.      |
-| targetAudioBitrateKBps(bitrate: Int) | VideoPreprocessor.Builder | Specify the target audio bitrate of the video.       |
-| targetVideoBitrateKBps(bitrate: Int) | VideoPreprocessor.Builder | Specify the target video bitrate of the video.       |
+| targetAudioBitrateKbps(bitrate: Int) | VideoPreprocessor.Builder | Specify the target audio bitrate of the video.       |
+| targetVideoBitrateKbps(bitrate: Int) | VideoPreprocessor.Builder | Specify the target video bitrate of the video.       |
 
 Example code
 ```kotlin
 val preprocessor = VideoPreprocessor.Builder()
     .frameRate(90)      
-    .targetAudioBitrateKBps(320)
-    .targetVideoBitrateKBps(480)
+    .targetAudioBitrateKbps(320)
+    .targetVideoBitrateKbps(480)
     .build()
 ```
 
 ## Third-party integrations
+
 ### Glide
 In the module build.gradle file, add:
 ```gradle 
