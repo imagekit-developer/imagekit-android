@@ -681,6 +681,27 @@ ImageKit.getInstance()
     .into(imageView)
 ```
 
+### Coil
+In the module build.gradle file, add:
+```gradle 
+implementation 'com.github.imagekit-developer:imagekit-coil-extension:1.0.0'
+```
+Then add the `createWithCoil()` extension function to the ImageKit URL constructor chain to get Coil's `ImageRequest.Builder` instance to load into any target, which can be enqueued with an `ImageLoader` instance.
+```kotlin
+Coil.imageLoader(context)
+    .enqueue(ImageKit.getInstance()
+        .url(
+            path = "default-image.jpg",
+            transformationPosition = TransformationPosition.QUERY
+        )
+        .height(400f)
+        .aspectRatio(3, 2)
+        .createWithCoil()
+        .target(imageView)
+        .build()
+    )
+```
+
 ## Support
 For any feedback or to report any issues or general implementation support please reach out to [support@imagekit.io](mailto:support@imagekit.io)
 
