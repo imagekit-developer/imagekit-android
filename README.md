@@ -702,6 +702,24 @@ Coil.imageLoader(context)
     )
 ```
 
+### Fresco
+In the module build.gradle file, add:
+```gradle 
+implementation 'com.github.imagekit-developer:imagekit-fresco-extension:1.0.0'
+```
+Then add the `createWithFresco()` extension function to the ImageKit URL constructor chain to get Fresco's `ImageRequest` instance to load into any target, which can be loaded into the controller of target `DraweeView` provided by Fresco by calling the `buildWithTarget()` method.
+```kotlin
+ImageKit.getInstance()
+    .url(
+        path = "default-image.jpg",
+        transformationPosition = TransformationPosition.QUERY
+    )
+    .height(400f)
+    .aspectRatio(3, 2)
+    .createWithFresco()
+    .buildWithTarget(simpleDraweeView)
+```
+
 ## Support
 For any feedback or to report any issues or general implementation support please reach out to [support@imagekit.io](mailto:support@imagekit.io)
 
