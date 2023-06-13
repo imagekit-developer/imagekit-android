@@ -14,6 +14,31 @@ ImageKit is a complete image optimization and transformation solution that comes
 
 ImageKit Android SDK allows you to use real-time [image resizing](https://docs.imagekit.io/features/image-transformations), [optimization](https://docs.imagekit.io/features/image-optimization), and [file uploading](https://docs.imagekit.io/api-reference/upload-file-api/client-side-file-upload) in the client-side.
 
+
+## Table of contents
+* [Installation](#installation)
+* [Initialization](#initialization)
+* [URL construction](#url-construction)
+* [Components](#components)
+* [ImageKit](#imagekit)
+    * [List of supported transformations](#list-of-supported-transformations)
+    * [Responsive image loading](#responsive-image-loading)
+* [Constructing Video URLs](#constructing-video-urls)
+    * [Adaptive bitrate streaming](#adaptive-bitrate-streaming)
+* [File Upload](#file-upload)
+    * [Upload policy](#uploadpolicy)
+* [Upload preprocessing](#upload-preprocessing)
+    * [Image preprocessing](#image-preprocessing)
+    * [Video preprocessing](#video-preprocessing)
+* [Third-party integrations](#third-party-integrations)
+    * [Glide](#glide)
+    * [Picasso](#picasso)
+    * [Coil](#coil)
+    * [Fresco](#fresco)
+* [Support](#support)
+* [Links](#links)
+* [License](#license)
+
 ## Installation
 
 ### Requirements
@@ -366,33 +391,6 @@ The complete list of transformations supported and their usage in ImageKit can b
 | rotation                      | rotation(rotation: Rotation)                                                                                                                                                                                                                                                                                                                         | rt                      |
 | blur                          | blur(blur: Int)                                                                                                                                                                                                                                                                                                                                      | bl                      |
 | named                         | named(namedTransformation: String)                                                                                                                                                                                                                                                                                                                   | n                       |
-| overlayX                      | overlayX(overlayX: Int)                                                                                                                                                                                                                                                                                                                              | ox                      |
-| overlayY                      | overlayY(overlayY: Int)                                                                                                                                                                                                                                                                                                                              | oy                      |
-| overlayFocus                  | overlayFocus(overlayFocus: OverlayFocusType)                                                                                                                                                                                                                                                                                                         | ofo                     |
-| overlayHeight                 | overlayHeight(overlayHeight: Int)                                                                                                                                                                                                                                                                                                                    | oh                      |
-| overlayWidth                  | overlayWidth(overlayWidth: Int)                                                                                                                                                                                                                                                                                                                      | ow                      |
-| overlayImage                  | overlayImage(overlayImage: String)                                                                                                                                                                                                                                                                                                                   | oi                      |
-| overlayImageTrim              | overlayImageTrim(overlayImageTrim: Boolean)                                                                                                                                                                                                                                                                                                          | oit                     |
-| overlayImageAspectRatio       | overlayImageAspectRatio(width: Int, height: Int)                                                                                                                                                                                                                                                                                                     | oiar                    |
-| overlayImageBackground        | overlayImageBackground(overlayImageBackground: String)                                                                                                                                                                                                                                                                                               | oibg                    |
-| overlayImageBorder            | overlayImageBorder(borderWidth: Int, borderColor: String)                                                                                                                                                                                                                                                                                            | oib                     |
-| overlayImageDPR               | overlayImageDPR(dpr: Float)                                                                                                                                                                                                                                                                                                                          | oidpr                   |
-| overlayImageQuality           | overlayImageQuality(quality: Int)                                                                                                                                                                                                                                                                                                                    | oiq                     |
-| overlayImageCropping          | overlayImageCropping(cropMode: CropMode)                                                                                                                                                                                                                                                                                                             | oic                     |
-| overlayText                   | overlayText(overlayText: String)                                                                                                                                                                                                                                                                                                                     | ot                      |
-| overlayTextFontSize           | overlayTextFontSize(overlayTextFontSize: Int)                                                                                                                                                                                                                                                                                                        | ots                     |
-| overlayTextFontFamily         | overlayTextFontFamily(overlayTextFontFamily: OverlayTextFont)                                                                                                                                                                                                                                                                                        | otf                     |
-| overlayTextColor              | overlayTextColor(overlayTextColor: String)                                                                                                                                                                                                                                                                                                           | otc                     |
-| overlayTextTransparency       | overlayTextTransparency(overlayTextTransparency: Int)                                                                                                                                                                                                                                                                                                | oa                      |
-| overlayAlpha                  | overlayAlpha(overlayAlpha: Int)                                                                                                                                                                                                                                                                                                                      | oa                      |
-| overlayTextTypography         | overlayTextTypography(overlayTextTypography: OverlayTextTypography)                                                                                                                                                                                                                                                                                  | ott                     |
-| overlayBackground             | overlayBackground(overlayBackground: String)                                                                                                                                                                                                                                                                                                         | obg                     |
-| overlayTextEncoded            | overlayTextEncoded(overlayTextEncoded: String)                                                                                                                                                                                                                                                                                                       | ote                     |
-| overlayTextWidth              | overlayTextWidth(width: Int)                                                                                                                                                                                                                                                                                                                         | otw                     |
-| overlayTextBackground         | overlayTextBackground(overlayTextColor: String)                                                                                                                                                                                                                                                                                                      | otbg                    |
-| overlayTextPadding            | overlayTextPadding(overlayTextPadding: String)<br>overlayTextPadding(overlayTextPadding: Int)<br>overlayTextPadding(verticalPadding: Int, horizontalPadding: Int)<br>overlayTextPadding(topPadding: Int, horizontalPadding: Int, bottomPadding: Int)<br>overlayTextPadding(topPadding: Int, rightPadding: Int, bottomPadding: Int, leftPadding: Int) | otp                     |
-| overlayTextInnerAlignment     | overlayTextInnerAlignment(overlayTextInnerAlignment: OverlayTextInnerAlignment)                                                                                                                                                                                                                                                                      | otia                    |
-| overlayRadius                 | overlayRadius(radius: Int)                                                                                                                                                                                                                                                                                                                           | or                      |
 | progressive                   | progressive(flag: Boolean)                                                                                                                                                                                                                                                                                                                           | pr                      |
 | lossless                      | lossless(flag: Boolean)                                                                                                                                                                                                                                                                                                                              | lo                      |
 | trim                          | trim(flag: Boolean)<br>trim(value: Int)                                                                                                                                                                                                                                                                                                              | t                       |
@@ -410,6 +408,7 @@ The complete list of transformations supported and their usage in ImageKit can b
 </details>
 
 ### Responsive image loading
+ImageKit URL constructor can be set to input any Android View and determine the parameters for image height and width based on the dimensions of the view. If the view's dimensions are not set at the time, it uses the display's dimensions as the fallback. It also sets the DPR of the image automatically to match that of the device display.
 To automatically set the dimensions and pixel ratio of the image , call `ImageKit.getInstance().url(...).setResponsive(...)` with a set of parameters defined below:
 
 | Parameter | Type                                                              | Description                                                                                                                                                                                          |
@@ -585,7 +584,7 @@ The `UploadPolicy` class represents a set of conditions that need to be met for 
 | requiresBatteryCharging(requiresCharging: Boolean) | UploadPolicy.Builder | Sets whether the device needs to be connected to a charger for the upload request. Defaults to `false`.                                                                                                                          |
 | requiresDeviceIdle(requiresIdle: Boolean)          | UploadPolicy.Builder | Sets whether the device needs to be idle for the upload request. Defaults to `false`.                                                                                                                                            |
 | setMaxRetries(count: Int)                          | UploadPolicy.Builder | Sets the maximum number of retries for the upload request. Negative value will throw an `IllegalArgumentException`. Defaults to 5.                                                                                               |
-| setRetryBackoff(interval, BackoffPolicy policy)    | UploadPolicy.Builder | Sets the backoff interval in milliseconds and policy (`UploadPolicy.BackoffPolicy.LINEAR` or `UploadPolicy.BackoffPolicy.EXPONENTIAL`) for retry attempts. Defaults to interval of 10000ms and policy of `BackoffPolicy.LINEAR`. |
+| setRetryBackoff(interval, BackoffPolicy policy)    | UploadPolicy.Builder | Sets the backoff interval in milliseconds and policy (`UploadPolicy.BackoffPolicy.LINEAR` or `UploadPolicy.BackoffPolicy.EXPONENTIAL`) for retry attempts. Defaults to interval of 10000ms and policy of `BackoffPolicy.LINEAR`. This increases the gap between each upload retry in either linear or exponential manner. E. g. if the `interval` is set to 3 seconds, then delay for each retry (n) will increase as following: <ul><li>With linear backoff: 3, 6, 9, 12 seconds.. (`interval` * n).</li><li>With exponential backoff: 3, 6, 12, 24 seconds.. (`interval` * 2<sup>n-1</sup>).</li></ul> |
 
 Example code
 ```kotlin
@@ -620,7 +619,7 @@ val preprocessor = ImagePreprocessor.Builder()
     .build()
 ```
 ### Video preprocessing
-The `VideoPreprocessor` class encapsulates a set of methods to apply certain transformations to an image before uploading.
+The `VideoPreprocessor` class encapsulates a set of methods to apply certain transformations to a video before uploading.
 
 `VideoPreprocessor.Builder` class is responsible for building the VideoPreprocess instances. This class provides following methods to access and modify the policy parameters:
 
