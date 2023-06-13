@@ -599,7 +599,7 @@ val policy = UploadPolicy.Builder()
 
 ## Upload preprocessing
 ### Image preprocessing
-The `ImagePreprocessor` class encapsulates a set of methods to apply certain transformations to an image before uploading.
+The `ImagePreprocessor` class encapsulates a set of methods to apply certain transformations to an image before uploading. This will create a copy of the selected image, which will be transformed as per the given parameters before uploading.
 
 `ImagePreprocessor.Builder` class is responsible for building the ImagePreprocess instances. This class provides following methods to access and modify the policy parameters:
 
@@ -619,7 +619,7 @@ val preprocessor = ImagePreprocessor.Builder()
     .build()
 ```
 ### Video preprocessing
-The `VideoPreprocessor` class encapsulates a set of methods to apply certain transformations to a video before uploading.
+The `VideoPreprocessor` class encapsulates a set of methods to apply certain transformations to a video before uploading. This will create a copy of the selected video, which will be transformed as per the given parameters before uploading.
 
 `VideoPreprocessor.Builder` class is responsible for building the VideoPreprocess instances. This class provides following methods to access and modify the policy parameters:
 
