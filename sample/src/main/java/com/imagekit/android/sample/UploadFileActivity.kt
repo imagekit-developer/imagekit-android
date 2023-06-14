@@ -9,6 +9,8 @@ import com.imagekit.android.ImageKit
 import com.imagekit.android.ImageKitCallback
 import com.imagekit.android.entity.UploadError
 import com.imagekit.android.entity.UploadResponse
+import com.imagekit.android.preprocess.ImageUploadPreprocessor
+import com.imagekit.android.preprocess.VideoUploadPreprocessor
 import kotlinx.android.synthetic.main.activity_upload_image.*
 import java.io.*
 
@@ -44,6 +46,10 @@ class UploadFileActivity : AppCompatActivity(), ImageKitCallback, View.OnClickLi
                 useUniqueFilename = true,
                 tags = arrayOf("nice", "copy", "books"),
                 folder = "/dummy/folder/",
+                preprocessor = ImageUploadPreprocessor.Builder()
+                    .limit(1366, 768)
+                    .rotate(45f)
+                    .build(),
                 imageKitCallback = this
             )
         }

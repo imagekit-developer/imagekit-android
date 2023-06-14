@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import com.imagekit.android.data.Repository
 import com.imagekit.android.entity.UploadError
+import com.imagekit.android.preprocess.ImageUploadPreprocessor
+import com.imagekit.android.preprocess.UploadPreprocessor
 import com.imagekit.android.util.BitmapUtil.bitmapToFile
 import java.io.File
 import javax.inject.Inject
@@ -45,14 +47,17 @@ class ImagekitUploader @Inject constructor(
         isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
         responseFields: String? = null,
+        preprocessor: ImageUploadPreprocessor<Bitmap>? = null,
         imageKitCallback: ImageKitCallback
     ) {
+        val imageFile = preprocessor?.outputFile(file, fileName, context) ?: bitmapToFile(
+            context,
+            fileName,
+            file,
+            Bitmap.CompressFormat.PNG
+        )
         return mRepository.upload(
-            bitmapToFile(
-                context,
-                fileName,
-                file
-            ),
+            imageFile,
             fileName,
             useUniqueFilename,
             tags,
@@ -96,6 +101,7 @@ class ImagekitUploader @Inject constructor(
         isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
         responseFields: String? = null,
+        preprocessor: UploadPreprocessor<File>? = null,
         imageKitCallback: ImageKitCallback
     ) {
         if (!file.exists()) {
@@ -107,8 +113,9 @@ class ImagekitUploader @Inject constructor(
             )
             return
         }
+        val outputFile = preprocessor?.outputFile(file, fileName, context) ?: file
         return mRepository.upload(
-            file,
+            outputFile,
             fileName,
             useUniqueFilename,
             tags,

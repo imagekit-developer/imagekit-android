@@ -2,7 +2,7 @@ package com.imagekit.android.preprocess
 
 import android.graphics.Bitmap
 
-class ImageDimensionsLimiter(
+internal class ImageDimensionsLimiter(
     private val maxWidth: Int,
     private val maxHeight: Int
 ) : Preprocess<Bitmap> {

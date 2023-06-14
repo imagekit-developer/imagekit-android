@@ -3,7 +3,7 @@ package com.imagekit.android.preprocess
 import android.graphics.Bitmap
 import android.graphics.Point
 
-class ImageCrop(
+internal class ImageCrop(
     private val topLeft: Point,
     private val bottomRight: Point
 ) : Preprocess<Bitmap> {
