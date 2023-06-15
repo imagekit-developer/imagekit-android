@@ -65,8 +65,6 @@ implementation 'com.github.imagekit-developer:imagekit-android:<VERSION>'
 ### Initialization
 `urlEndpoint` is the required parameter. You can get the value of URL-endpoint from your ImageKit dashboard - https://imagekit.io/dashboard#url-endpoints.
 
-`publicKey` and `authenticationEndpoint` parameters are optional and only needed if you want to use the SDK for client-side file upload. You can get these parameters from the developer section in your ImageKit dashboard - https://imagekit.io/dashboard#developers.
-
 `transformationPosition` is optional. The default value for this parameter is `TransformationPosition.PATH`. Acceptable values are `TransformationPosition.PATH` & `TransformationPosition.QUERY`.
 
 `defaultUploadPolicy` is optional and only needed if you want to use the SDK for client-side file upload. This sets the default constraints for all the upload requests.
@@ -82,7 +80,6 @@ ImageKit.init(
     publicKey = "your_public_api_key",
     urlEndpoint = "https://ik.imagekit.io/your_imagekit_id",
     transformationPosition = TransformationPosition.PATH,
-    authenticationEndpoint = "your_authentication_endpoint",
     defaultUploadPolicy = UploadPolicy.Builder()
         .requireNetworkType(UploadPolicy.NetworkType.ANY)
         .setMaxRetries(3)
@@ -99,7 +96,6 @@ ImageKit.Companion.init(
     "your_public_api_key",
     "https://ik.imagekit.io/your_imagekit_id",
     TransformationPosition.PATH,
-    "your_authentication_endpoint",
     UploadPolicy.Builder()
         .requireNetworkType(UploadPolicy.NetworkType.ANY)
         .setMaxRetries(3)
@@ -259,7 +255,7 @@ You can run the demo application in [sample](/sample) folder.
 
 The library includes 3 Primary Classes:
 
-* [`ImageKit`](#ImageKit) for defining options like `urlEndpoint`, `publicKey` or `authenticationEndpoint` for the application to use.
+* [`ImageKit`](#ImageKit) for defining options like `urlEndpoint` for the application to use.
 * `ImageKitURLConstructor` for [constructing image urls](#constructing-image-urls).
 * `ImageKitUploader`for client-side [file uploading](#file-upload).
 * `UploadPolicy` for setting a set of policy constraints that need to be validated for an upload request to be executed.
@@ -277,7 +273,6 @@ ImageKit.init(
     publicKey = "your_public_api_key",
     urlEndpoint = "https://ik.imagekit.io/your_imagekit_id",
     transformationPosition = TransformationPosition.PATH,
-    authenticationEndpoint = "http://www.yourserver.com/auth",
     defaultUploadPolicy = UploadPolicy.Builder()
         .requireNetworkType(UploadPolicy.NetworkType.ANY)
         .setMaxRetries(3)
@@ -294,7 +289,6 @@ ImageKit.Companion.init(
     "your_public_api_key",
     "https://ik.imagekit.io/your_imagekit_id",
     TransformationPosition.PATH,
-    "http://www.yourserver.com/auth",
     UploadPolicy.Builder()
         .requireNetworkType(UploadPolicy.NetworkType.ANY)
         .setMaxRetries(3)
@@ -302,7 +296,6 @@ ImageKit.Companion.init(
 );
 ```
 * `urlEndpoint` is required to use the SDK. You can get URL-endpoint from your ImageKit dashboard - https://imagekit.io/dashboard#url-endpoints.
-* `publicKey` and `authenticationEndpoint` parameters are required if you want to use the SDK for client-side file upload. You can get these parameters from the developer section in your ImageKit dashboard - https://imagekit.io/dashboard#developers.
 * `transformationPosition` is optional. The default value for this parameter is `TransformationPosition.PATH`. Acceptable values are `TransformationPosition.PATH` & `TransformationPosition.QUERY`.
 * `defaultUploadPolicy` is optional and only needed if you want to use the SDK for client-side [file uploading](#file-upload). This sets the default constraints for all the upload requests.
 
@@ -493,16 +486,13 @@ ImageKit.Companion.getInstance()
 ## File Upload
 The SDK provides a simple interface using the `ImageKit.getInstance().uploader().upload(...)` method to upload files to the ImageKit Media Library. It accepts all the parameters supported by the [ImageKit Upload API](https://docs.imagekit.io/api-reference/upload-file-api/client-side-file-upload#request-structure-multipart-form-data).
 
-Make sure that you have specified `authenticationEndpoint` during SDK initialization. The SDK makes an HTTP GET request to this endpoint and expects a JSON response with three fields i.e. `signature`, `token`, and `expire`.  
-
-[Learn how to implement authenticationEndpoint](https://docs.imagekit.io/api-reference/upload-file-api/client-side-file-upload#how-to-implement-authenticationendpoint-endpoint) on your server.
-
 The `ImageKit.getInstance().uploader().upload(...)` accepts the following parameters
 
 | Parameter               | Type                                                                                      | Description                                                                                                                                                                                                                                                                                                                                                                        |
 |:------------------------|:------------------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | file                    | Binary / Bitmap / String                                                                  | Required.                                                                                                                                                                                                                                                                                                                                                                          |
 | fileName                | String                                                                                    | Required. If not specified, the file system name is picked.                                                                                                                                                                                                                                                                                                                        |
+| token                | String                                                                                    | Required. the client-generated JSON Web Token (JWT), which the ImageKit.io server uses to authenticate and check that the upload request parameters have not been tampered with after the generation of the token. Refer this [guide](https://docs.imagekit.io/api-reference/upload-file-api/secure-client-side-file-upload#how-to-implement-authenticationendpoint-endpoint) to create the token below on the page.                                                                                                                                                                                                                                                                                                                        |
 | useUniqueFileName       | Boolean                                                                                   | Optional. Accepts `true` of `false`. The default value is `true`. Specify whether to use a unique filename for this file or not.                                                                                                                                                                                                                                                   |
 | tags                    | Array of string                                                                           | Optional. Set the tags while uploading the file e.g. ["tag1","tag2"]                                                                                                                                                                                                                                                                                                               |
 | folder                  | String                                                                                    | Optional. The folder path (e.g. `/images/folder/`) in which the file has to be uploaded. If the folder doesn't exist before, a new folder is created.                                                                                                                                                                                                                              |
@@ -519,6 +509,9 @@ The `ImageKit.getInstance().uploader().upload(...)` accepts the following parame
 | policy                  | [UploadPolicy](README.md#UploadPolicy)                                                    | Optional. Set the custom policy to override the default policy for this upload request only. This doesn't modify the default upload policy.                                                                                                                                                                                                                                        |
 | preprocess              | [ImagePreprocess](README.md#ImagePreprocess)/[VideoPreprocess](README.md#VideoPreprocess) | Optional. Set the set the parameters for preprocessing the image/video before uploads. This doesn't modify the default upload policy.                                                                                                                                                                                                                                              |
 | imageKitCallback        | [ImageKitCallback](imagekit/src/main/java/com/imagekit/android/ImageKitCallback.kt)       | Required.                                                                                                                                                                                                                                                                                                                                                                          |
+
+Note: Sending a JWT that has been used in the past will result in a validation error. Even if your previous request resulted in an error, you should always send a new JWT as the token parameter.
+Warning: JWT must be generated on the server-side because it is generated using your account's private API key. This field is required for authentication when uploading a file from the client-side.
 
 Sample Usage
 ```kotlin
