@@ -146,9 +146,6 @@ ImageKit.getInstance()
         src = https://ik.imagekit.io/your_imagekit_id/medium_cafe_B1iTdD0C.jpg",
         transformationPosition = TransformationPosition.PATH
     )
-    .overlayImage("logo-white_SJwqB4Nfe.png")
-    .overlayPosX(10)
-    .overlayPosY(20)
     .create()
 ```
 
@@ -159,9 +156,6 @@ ImageKit.Companion.getInstance()
         "https://ik.imagekit.io/your_imagekit_id/medium_cafe_B1iTdD0C.jpg",
         TransformationPosition.PATH
     )
-    .overlayImage("logo-white_SJwqB4Nfe.png")
-    .overlayPosX(10)
-    .overlayPosY(20)
     .create()
 ```
 
@@ -171,11 +165,6 @@ ImageKit.Companion.getInstance()
 ImageKit.getInstance()
     .url(src = "https://ik.imagekit.io/your_imagekit_id/plant.jpeg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20")
     .addCustomTransformation("w", "400")
-    .overlayText("Hand with a green plant")
-    .overlayTextColor("264120")
-    .overlayTextSize(30)
-    .overlayPosX(10)
-    .overlayPosY(10)
     .create()
 ```
 
@@ -185,11 +174,6 @@ ImageKit.getInstance()
 ImageKit.Companion.getInstance()
     .url("https://ik.imagekit.io/your_imagekit_id/plant.jpeg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20")
     .addCustomTransformation("w", "400")
-    .overlayText("Hand with a green plant")
-    .overlayTextColor("264120")
-    .overlayTextSize(30)
-    .overlayPosX(10)
-    .overlayPosY(10)
     .create()
 ```
 
@@ -596,6 +580,7 @@ val policy = UploadPolicy.Builder()
     .setRetryBackoff(60000L, UploadPolicy.BackoffPolicy.EXPONENTIAL)
     .build()
 ```
+This code snippet will set the policy to allow the upload request to be placed only when the connected network in unmetered (e. g. over a Wi-Fi network) and the device battery is charging. Also the upload request will get the maximum of 5 retry attempts in case of failure, with the initial timeout of 60000ms which will increase exponentially for each subsequent retry.
 
 ## Upload preprocessing
 ### Image preprocessing
