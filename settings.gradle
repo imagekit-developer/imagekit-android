@@ -1,1 +1,3 @@
 include ':sample', ':imagekit'
+include ':imagekit-glide-extension'
+include ':imagekit-picasso-extension'
