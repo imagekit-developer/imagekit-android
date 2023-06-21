@@ -1,14 +1,19 @@
 package com.imagekit.android.glide_extension
 
 import android.graphics.drawable.Drawable
-import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.imagekit.android.ImagekitUrlConstructor
 
 fun ImagekitUrlConstructor.createWithGlide(
-    @DrawableRes placeholderImage: Int?,
-    @DrawableRes errorImage: Int?
-): RequestBuilder<Drawable> = Glide.with(context)
-    .load(create())
-    .error(errorImage)
+    placeholderImage: Int?,
+    errorImage: Int?
+): RequestBuilder<Drawable> {
+    val builder = Glide.with(context)
+        .load(create())
+        .error(errorImage)
+    if (placeholderImage != null) {
+        return builder.placeholder(placeholderImage)
+    }
+    return builder
+}

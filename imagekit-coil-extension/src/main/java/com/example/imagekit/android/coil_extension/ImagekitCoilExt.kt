@@ -1,19 +1,18 @@
-package com.example.imagekit.android.picasso_extension
+package com.example.imagekit.android.coil_extension
 
+import coil.request.ImageRequest
 import com.imagekit.android.ImagekitUrlConstructor
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.RequestCreator
 
-fun ImagekitUrlConstructor.createWithPicasso(
+fun ImagekitUrlConstructor.createWithCoil(
     placeholderImage: Int?,
     errorImage: Int?
-): RequestCreator = Picasso.get()
-    .load(create())
-    .apply {
+): ImageRequest.Builder = ImageRequest.Builder(context)
+    .data(create())
+    /*.apply {
         if (placeholderImage != null) {
             placeholder(placeholderImage)
         }
         if (errorImage != null) {
             error(errorImage)
         }
-    }
+    }*/

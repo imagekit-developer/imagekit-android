@@ -4,8 +4,6 @@ plugins {
     id 'maven-publish'
 }
 
-group = 'com.github.imagekit-developer'
-
 android {
     compileSdkVersion 33
 
@@ -30,12 +28,11 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
     publishing {
         publications {
             release(MavenPublication) {
                 groupId = group
-                artifactId = 'imagekit-picasso-extension'
+                artifactId = 'imagekit-coil-extension'
                 version = '1.0.0'
 
                 afterEvaluate {
@@ -49,7 +46,7 @@ android {
 dependencies {
 
     implementation project(":imagekit")
-    api "com.squareup.picasso:picasso:2.71828"
+    api "io.coil-kt:coil:2.4.0"
     implementation 'androidx.core:core-ktx:+'
 
     testImplementation 'junit:junit:4.13.2'
