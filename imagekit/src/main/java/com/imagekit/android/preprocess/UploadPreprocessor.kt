@@ -5,20 +5,23 @@ import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat
 import android.graphics.BitmapFactory
 import android.graphics.Point
+import android.media.MediaCodecInfo
+import android.media.MediaExtractor
+import android.media.MediaFormat
+import android.net.Uri
 import androidx.annotation.WorkerThread
 import com.imagekit.android.util.BitmapUtil
+import com.linkedin.android.litr.MediaTransformer
+import com.linkedin.android.litr.TransformationListener
+import com.linkedin.android.litr.analytics.TrackTransformationInfo
 import java.io.File
 import java.io.IOException
 
 sealed class UploadPreprocessor<T> {
 
-    override fun equals(other: Any?): Boolean {
-        return this === other
-    }
+    override fun equals(other: Any?): Boolean = this === other
 
-    override fun hashCode(): Int {
-        return System.identityHashCode(this)
-    }
+    override fun hashCode(): Int = System.identityHashCode(this)
 
     abstract fun outputFile(input: T, fileName: String, context: Context): File
 }
@@ -46,25 +49,13 @@ class ImageUploadPreprocessor <I> private constructor(
         private var outputFormat: CompressFormat = CompressFormat.PNG
         private var rotationAngle: Float = 0f
 
-        fun limit(width: Int, height: Int): Builder {
-            maxLimits = width to height
-            return this
-        }
+        fun limit(width: Int, height: Int): Builder = apply { maxLimits = width to height }
 
-        fun crop(p1: Point, p2: Point): Builder {
-            cropPoints = p1 to p2
-            return this
-        }
+        fun crop(p1: Point, p2: Point): Builder = apply { cropPoints = p1 to p2 }
 
-        fun rotate(degrees: Float): Builder {
-            rotationAngle = degrees
-            return this
-        }
+        fun rotate(degrees: Float): Builder = apply { rotationAngle = degrees }
 
-        fun format(format: CompressFormat): Builder {
-            outputFormat = format
-            return this
-        }
+        fun format(format: CompressFormat): Builder = apply { outputFormat = format }
 
         fun <I> build(): ImageUploadPreprocessor<I> = ImageUploadPreprocessor(
             limit = ImageDimensionsLimiter(maxLimits.first, maxLimits.second),
@@ -86,41 +77,96 @@ class VideoUploadPreprocessor private constructor(
     @WorkerThread
     @Throws(IOException::class)
     override fun outputFile(input: File, fileName: String, context: Context): File {
-        TODO("Not yet implemented")
+        val outFile = File(context.externalCacheDir, fileName).also {
+            it.createNewFile()
+        }
+        var result: Boolean? = null
+
+        val extractor = MediaExtractor().apply { setDataSource(input.path) }
+        val tracks = List(extractor.trackCount) { extractor.getTrackFormat(it) }
+        val videoTrack = tracks.find { it.getString(MediaFormat.KEY_MIME)?.startsWith("video") == true }
+        val audioTrack = tracks.find { it.getString(MediaFormat.KEY_MIME)?.startsWith("audio") == true }
+
+        val targetVideo = MediaFormat().apply {
+            setString(MediaFormat.KEY_MIME, videoTrack?.getString(MediaFormat.KEY_MIME) ?: MediaFormat.MIMETYPE_VIDEO_MPEG2)
+            setInteger(MediaFormat.KEY_WIDTH, (videoTrack?.getInteger(MediaFormat.KEY_WIDTH) ?: 0).coerceAtMost(limit.first))
+            setInteger(MediaFormat.KEY_HEIGHT, (videoTrack?.getInteger(MediaFormat.KEY_HEIGHT) ?: 0).coerceAtMost(limit.second))
+            setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, keyFramesInterval)
+            setInteger(MediaFormat.KEY_BIT_RATE, targetVideoBitrate)
+            setInteger(MediaFormat.KEY_FRAME_RATE, frameRate)
+            setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface)
+        }
+        val targetAudio = MediaFormat().apply {
+            setString(MediaFormat.KEY_MIME, audioTrack?.getString(MediaFormat.KEY_MIME))
+            setInteger(MediaFormat.KEY_CHANNEL_COUNT, videoTrack?.getInteger(MediaFormat.KEY_CHANNEL_COUNT) ?: 2)
+            setInteger(MediaFormat.KEY_SAMPLE_RATE, videoTrack?.getInteger(MediaFormat.KEY_SAMPLE_RATE)!!)
+            setInteger(MediaFormat.KEY_BIT_RATE, targetAudioBitrate)
+        }
+        MediaTransformer(context.applicationContext).transform(
+            "",
+            Uri.parse(input.path),
+            outFile.path,
+            targetVideo,
+            targetAudio,
+            object : TransformationListener {
+                override fun onStarted(id: String) {
+                }
+
+                override fun onProgress(id: String, progress: Float) {
+                }
+
+                override fun onCompleted(
+                    id: String,
+                    trackTransformationInfos: MutableList<TrackTransformationInfo>?
+                ) {
+                    result = true
+                }
+
+                override fun onCancelled(
+                    id: String,
+                    trackTransformationInfos: MutableList<TrackTransformationInfo>?
+                ) {
+                    result = false
+                }
+
+                override fun onError(
+                    id: String,
+                    cause: Throwable?,
+                    trackTransformationInfos: MutableList<TrackTransformationInfo>?
+                ) {
+                    result = false
+                }
+            },
+            null
+        )
+
+        while (result == null) {
+            continue
+        }
+
+        return outFile
     }
 
     class Builder {
         private var maxLimits: Pair<Int, Int> = Int.MAX_VALUE to Int.MAX_VALUE
-        private var frameRate: Int = 60
-        private var keyFrameInterval: Int = 10
-        private var audioBitrate: Int = 320
+        private var frameRate: Int = 30
+        private var keyFrameInterval: Int = 3
+        private var audioBitrate: Int = 128
         private var videoBitrate: Int = 640
 
-        fun limit(width: Int, height: Int): Builder {
-            maxLimits = width to height
-            return this
+        fun limit(width: Int, height: Int): Builder = apply { maxLimits = width to height }
+
+        fun frameRate(frameRateValue: Int): Builder = apply { frameRate = frameRateValue }
+
+        fun keyFramesInterval(interval: Int): Builder = apply { keyFrameInterval = interval }
+
+        fun targetAudioBitrateKbps(targetAudioBitrateKbps: Int): Builder = apply {
+            audioBitrate = targetAudioBitrateKbps * 1024
         }
 
-        fun frameRate(frameRateValue: Int): Builder {
-            frameRate = frameRateValue
-            return this
+        fun targetVideoBitrateKbps(targetVideoBitrateKbps: Int): Builder = apply {
+            videoBitrate = targetVideoBitrateKbps * 1024
         }
-
-        fun keyFramesInterval(interval: Int): Builder {
-            keyFrameInterval = interval
-            return this
-        }
-
-        fun targetAudioBitrateKBps(targetAudioBitrateKBps: Int): Builder {
-            audioBitrate = targetAudioBitrateKBps
-            return this
-        }
-
-        fun targetVideoBitrateKBps(targetVideoBitrateKBps: Int): Builder {
-            videoBitrate = targetVideoBitrateKBps
-            return this
-        }
-
 
         fun build(): VideoUploadPreprocessor = VideoUploadPreprocessor(
             limit = maxLimits,
