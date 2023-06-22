@@ -16,6 +16,7 @@ import com.linkedin.android.litr.TransformationListener
 import com.linkedin.android.litr.analytics.TrackTransformationInfo
 import java.io.File
 import java.io.IOException
+import java.util.UUID
 
 sealed class UploadPreprocessor<T> {
 
@@ -74,15 +75,20 @@ class VideoUploadPreprocessor private constructor(
     val targetVideoBitrate: Int
 ) : UploadPreprocessor<File>() {
 
+    private lateinit var _listener: TransformationListener
+    var listener: TransformationListener
+        get() = _listener
+        set(value) {
+            _listener = value
+        }
+
     @WorkerThread
     @Throws(IOException::class)
     override fun outputFile(input: File, fileName: String, context: Context): File {
-        val outFile = File(context.externalCacheDir, fileName).also {
-            it.createNewFile()
-        }
-        var result: Boolean? = null
+        val tempFile = input.copyTo(File(context.externalCacheDir, input.name), overwrite = true)
+        val outFile = File(context.externalCacheDir, fileName).also { it.createNewFile() }
 
-        val extractor = MediaExtractor().apply { setDataSource(input.path) }
+        val extractor = MediaExtractor().apply { setDataSource(tempFile.path) }
         val tracks = List(extractor.trackCount) { extractor.getTrackFormat(it) }
         val videoTrack = tracks.find { it.getString(MediaFormat.KEY_MIME)?.startsWith("video") == true }
         val audioTrack = tracks.find { it.getString(MediaFormat.KEY_MIME)?.startsWith("audio") == true }
@@ -103,46 +109,14 @@ class VideoUploadPreprocessor private constructor(
             setInteger(MediaFormat.KEY_BIT_RATE, targetAudioBitrate)
         }
         MediaTransformer(context.applicationContext).transform(
-            "",
-            Uri.parse(input.path),
+            UUID.randomUUID().toString(),
+            Uri.parse(tempFile.path),
             outFile.path,
             targetVideo,
             targetAudio,
-            object : TransformationListener {
-                override fun onStarted(id: String) {
-                }
-
-                override fun onProgress(id: String, progress: Float) {
-                }
-
-                override fun onCompleted(
-                    id: String,
-                    trackTransformationInfos: MutableList<TrackTransformationInfo>?
-                ) {
-                    result = true
-                }
-
-                override fun onCancelled(
-                    id: String,
-                    trackTransformationInfos: MutableList<TrackTransformationInfo>?
-                ) {
-                    result = false
-                }
-
-                override fun onError(
-                    id: String,
-                    cause: Throwable?,
-                    trackTransformationInfos: MutableList<TrackTransformationInfo>?
-                ) {
-                    result = false
-                }
-            },
+            _listener,
             null
         )
-
-        while (result == null) {
-            continue
-        }
 
         return outFile
     }
