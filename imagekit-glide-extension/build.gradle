@@ -10,6 +10,7 @@ android {
     compileSdkVersion 33
 
     defaultConfig {
+        namespace = "com.imagekit.android.glide_extension"
         minSdkVersion 21
         targetSdkVersion 33
 
@@ -49,8 +50,7 @@ android {
 dependencies {
 
     implementation project(":imagekit")
-    api "com.github.bumptech.glide:glide:4.15.1"
-    implementation 'androidx.core:core-ktx:+'
+    implementation "com.github.bumptech.glide:glide:4.15.1"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

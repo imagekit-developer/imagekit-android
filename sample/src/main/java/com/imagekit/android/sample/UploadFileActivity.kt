@@ -9,7 +9,7 @@ import com.imagekit.android.ImageKit
 import com.imagekit.android.ImageKitCallback
 import com.imagekit.android.entity.UploadError
 import com.imagekit.android.entity.UploadResponse
-import kotlinx.android.synthetic.main.activity_upload_image.*
+import com.imagekit.android.sample.databinding.ActivityUploadFileBinding
 import java.io.*
 
 
@@ -26,8 +26,9 @@ class UploadFileActivity : AppCompatActivity(), ImageKitCallback, View.OnClickLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         copyAssets()
-        setContentView(R.layout.activity_upload_file)
-        btUpload.setOnClickListener(this)
+        val binding = ActivityUploadFileBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.btUpload.setOnClickListener(this)
 
     }
 
