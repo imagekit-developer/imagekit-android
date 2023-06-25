@@ -7,21 +7,23 @@ import com.imagekit.android.ImageKit
 import com.imagekit.android.entity.CropMode
 import com.imagekit.android.entity.Rotation
 import com.imagekit.android.entity.TransformationPosition
+import com.imagekit.android.sample.databinding.ActivityFetchImageBinding
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_fetch_image.*
 
 class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
+    private lateinit var binding: ActivityFetchImageBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_fetch_image)
+        binding = ActivityFetchImageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        btTran1.setOnClickListener(this)
-        btTran2.setOnClickListener(this)
-        btTran3.setOnClickListener(this)
-        btTran4.setOnClickListener(this)
-        btTran5.setOnClickListener(this)
-        btTran6.setOnClickListener(this)
+        binding.btTran2.setOnClickListener(this)
+        binding.btTran1.setOnClickListener(this)
+        binding.btTran3.setOnClickListener(this)
+        binding.btTran4.setOnClickListener(this)
+        binding.btTran5.setOnClickListener(this)
+        binding.btTran6.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -95,10 +97,10 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun showImage(imagePath: String) {
-        tvConstructedUrl.text = "Image Url: $imagePath"
+        binding.tvConstructedUrl.text = "Image Url: $imagePath"
 
         Picasso.get()
             .load(imagePath)
-            .into(ivImage)
+            .into(binding.ivImage)
     }
 }
