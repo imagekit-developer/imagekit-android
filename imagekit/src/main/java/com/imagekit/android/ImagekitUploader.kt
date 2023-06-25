@@ -176,6 +176,7 @@ class ImagekitUploader @Inject constructor(
                             id: String,
                             trackTransformationInfos: MutableList<TrackTransformationInfo>?
                         ) {
+                            println("Process cancelled")
                             imageKitCallback.onError(UploadError(
                                 exception = true,
                                 message = context.getString(R.string.error_upload_preprocess)
@@ -187,6 +188,7 @@ class ImagekitUploader @Inject constructor(
                             cause: Throwable?,
                             trackTransformationInfos: MutableList<TrackTransformationInfo>?
                         ) {
+                            cause?.printStackTrace()
                             imageKitCallback.onError(UploadError(
                                 exception = true,
                                 message = context.getString(R.string.error_upload_preprocess)
@@ -196,6 +198,7 @@ class ImagekitUploader @Inject constructor(
                     try {
                         outputFile = preprocessor.outputFile(file, fileName, context)
                     } catch (e: Exception) {
+                        e.printStackTrace()
                         imageKitCallback.onError(UploadError(
                             exception = true,
                             message = context.getString(R.string.error_upload_preprocess)

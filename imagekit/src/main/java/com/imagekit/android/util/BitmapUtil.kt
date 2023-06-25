@@ -16,7 +16,7 @@ object BitmapUtil {
 
         //Convert bitmap to byte array
         val bos = ByteArrayOutputStream()
-        bitmap.compress(format, 0 /*ignored for PNG*/, bos)
+        bitmap.compress(format, 100 /*ignored for PNG*/, bos)
         val bitmapdata = bos.toByteArray()
 
         //write the bytes in file
