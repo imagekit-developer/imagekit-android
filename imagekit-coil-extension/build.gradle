@@ -47,7 +47,7 @@ android {
 dependencies {
 
     implementation project(":imagekit")
-    implementation "io.coil-kt:coil:2.4.0"
+    api "io.coil-kt:coil:2.4.0"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

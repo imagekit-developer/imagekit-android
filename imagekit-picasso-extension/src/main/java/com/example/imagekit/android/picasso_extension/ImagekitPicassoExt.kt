@@ -1,12 +1,13 @@
 package com.example.imagekit.android.picasso_extension
 
+import android.graphics.drawable.Drawable
 import com.imagekit.android.ImagekitUrlConstructor
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.RequestCreator
 
 fun ImagekitUrlConstructor.createWithPicasso(
-    placeholderImage: Int?,
-    errorImage: Int?
+    placeholderImage: Drawable? = null,
+    errorImage: Drawable? = null
 ): RequestCreator = Picasso.get()
     .load(create())
     .apply {

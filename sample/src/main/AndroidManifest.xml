@@ -10,10 +10,14 @@
             android:supportsRtl="true"
             android:usesCleartextTraffic="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
-        <activity android:name=".UploadImageActivity"></activity>
-        <activity android:name=".UploadFileActivity"></activity>
-        <activity android:name=".FetchImageActivity"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".UploadImageActivity"
+                android:exported="false" />
+        <activity android:name=".UploadFileActivity"
+                android:exported="false" />
+        <activity android:name=".FetchImageActivity"
+                android:exported="false" />
+        <activity android:name=".MainActivity"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

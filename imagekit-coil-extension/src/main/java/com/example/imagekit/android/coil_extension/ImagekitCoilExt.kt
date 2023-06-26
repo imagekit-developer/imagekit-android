@@ -1,18 +1,13 @@
 package com.example.imagekit.android.coil_extension
 
+import android.graphics.drawable.Drawable
 import coil.request.ImageRequest
 import com.imagekit.android.ImagekitUrlConstructor
 
 fun ImagekitUrlConstructor.createWithCoil(
-    placeholderImage: Int?,
-    errorImage: Int?
+    placeholderImage: Drawable? = null,
+    errorImage: Drawable? = null
 ): ImageRequest.Builder = ImageRequest.Builder(context)
     .data(create())
-    /*.apply {
-        if (placeholderImage != null) {
-            placeholder(placeholderImage)
-        }
-        if (errorImage != null) {
-            error(errorImage)
-        }
-    }*/
+    .placeholder(placeholderImage)
+    .error(errorImage)
