@@ -1,10 +1,18 @@
 package com.imagekit.android
 
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Bitmap
+import android.net.ConnectivityManager
+import android.os.BatteryManager
+import android.os.Build
+import android.os.PowerManager
 import com.imagekit.android.data.Repository
 import com.imagekit.android.entity.UploadError
+import com.imagekit.android.entity.UploadPolicy
 import com.imagekit.android.util.BitmapUtil.bitmapToFile
+import com.imagekit.android.util.LogUtil
 import java.io.File
 import javax.inject.Inject
 
@@ -31,6 +39,8 @@ class ImagekitUploader @Inject constructor(
      * and width and height of the area of interest in format x,y,width,height. For example - 10,10,100,100.
      * Can be used with fo-custom transformation.
      * If this field is not specified and the file is overwritten, then customCoordinates will be removed.
+     * @param policy Set the custom policy to override the default policy for this upload request only.
+     * This doesn't modify the default upload policy.
      * @param responseFields Comma-separated values of the fields that you want ImageKit.io to return in response.
      * For example, set the value of this field to tags,customCoordinates,isPrivateFile,metadata to get value of tags,
      * customCoordinates, isPrivateFile , and metadata in the response.
@@ -44,24 +54,30 @@ class ImagekitUploader @Inject constructor(
         folder: String? = null,
         isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
+        policy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
         responseFields: String? = null,
         imageKitCallback: ImageKitCallback
     ) {
-        return mRepository.upload(
-            bitmapToFile(
-                context,
+        if (checkUploadPolicy(policy, imageKitCallback)) {
+            mRepository.upload(
+                bitmapToFile(
+                    context,
+                    fileName,
+                    file
+                ),
                 fileName,
-                file
-            ),
-            fileName,
-            useUniqueFilename,
-            tags,
-            folder,
-            isPrivateFile,
-            customCoordinates,
-            responseFields,
-            imageKitCallback
-        )
+                useUniqueFilename,
+                tags,
+                folder,
+                isPrivateFile,
+                customCoordinates,
+                responseFields,
+                policy,
+                imageKitCallback
+            )
+        } else {
+            LogUtil.logError("Upload failed! Upload Policy Violation!")
+        }
     }
 
     /**
@@ -82,6 +98,8 @@ class ImagekitUploader @Inject constructor(
      * and width and height of the area of interest in format x,y,width,height. For example - 10,10,100,100.
      * Can be used with fo-custom transformation.
      * If this field is not specified and the file is overwritten, then customCoordinates will be removed.
+     * @param policy Set the custom policy to override the default policy for this upload request only.
+     * This doesn't modify the default upload policy.
      * @param responseFields Comma-separated values of the fields that you want ImageKit.io to return in response.
      * For example, set the value of this field to tags,customCoordinates,isPrivateFile,metadata to get value of tags,
      * customCoordinates, isPrivateFile , and metadata in the response.
@@ -96,28 +114,34 @@ class ImagekitUploader @Inject constructor(
         isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
         responseFields: String? = null,
+        policy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
         imageKitCallback: ImageKitCallback
     ) {
-        if (!file.exists()) {
-            imageKitCallback.onError(
-                UploadError(
-                    exception = true,
-                    message = context.getString(R.string.error_file_not_found)
+        if (checkUploadPolicy(policy, imageKitCallback)) {
+            if (!file.exists()) {
+                imageKitCallback.onError(
+                    UploadError(
+                        exception = true,
+                        message = context.getString(R.string.error_file_not_found)
+                    )
                 )
+                return
+            }
+            return mRepository.upload(
+                file,
+                fileName,
+                useUniqueFilename,
+                tags,
+                folder,
+                isPrivateFile,
+                customCoordinates,
+                responseFields,
+                policy,
+                imageKitCallback
             )
-            return
+        } else {
+            LogUtil.logError("Upload error: upload policy constraints not satisfied")
         }
-        return mRepository.upload(
-            file,
-            fileName,
-            useUniqueFilename,
-            tags,
-            folder,
-            isPrivateFile,
-            customCoordinates,
-            responseFields,
-            imageKitCallback
-        )
     }
 
     /**
@@ -138,6 +162,8 @@ class ImagekitUploader @Inject constructor(
      * and width and height of the area of interest in format x,y,width,height. For example - 10,10,100,100.
      * Can be used with fo-custom transformation.
      * If this field is not specified and the file is overwritten, then customCoordinates will be removed.
+     * @param policy Set the custom policy to override the default policy for this upload request only.
+     * This doesn't modify the default upload policy.
      * @param responseFields Comma-separated values of the fields that you want ImageKit.io to return in response.
      * For example, set the value of this field to tags,customCoordinates,isPrivateFile,metadata to get value of tags,
      * customCoordinates, isPrivateFile , and metadata in the response.
@@ -152,6 +178,7 @@ class ImagekitUploader @Inject constructor(
         isPrivateFile: Boolean = false,
         customCoordinates: String? = null,
         responseFields: String? = null,
+        policy: UploadPolicy,
         imageKitCallback: ImageKitCallback
     ) = mRepository.upload(
         file,
@@ -162,6 +189,63 @@ class ImagekitUploader @Inject constructor(
         isPrivateFile,
         customCoordinates,
         responseFields,
+        policy,
         imageKitCallback
     )
+
+    private fun checkUploadPolicy(policy: UploadPolicy, imageKitCallback: ImageKitCallback): Boolean {
+        if (policy.networkType == UploadPolicy.NetworkType.UNMETERED) {
+            val service =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            if (service.isActiveNetworkMetered) {
+                imageKitCallback.onError(
+                    UploadError(
+                        exception = false,
+                        statusNumber = 1501,
+                        statusCode = "POLICY_ERROR_METERED_NETWORK",
+                        message = "Upload policy error: current network is metered"
+                    )
+                )
+                return false
+            }
+        }
+
+        if (policy.requiresCharging) {
+            val batteryStatus: Intent? =
+                IntentFilter(Intent.ACTION_BATTERY_CHANGED).let { ifilter ->
+                    context.registerReceiver(null, ifilter)
+                }
+            val status: Int = batteryStatus?.getIntExtra(BatteryManager.EXTRA_STATUS, -1) ?: -1
+            val isCharging: Boolean = status == BatteryManager.BATTERY_STATUS_CHARGING
+                    || status == BatteryManager.BATTERY_STATUS_FULL
+            if (!isCharging) {
+                imageKitCallback.onError(
+                    UploadError(
+                        exception = false,
+                        statusNumber = 1502,
+                        statusCode = "POLICY_ERROR_BATTERY_DISCHARGING",
+                        message = "Upload policy error: device battery is not charging"
+                    )
+                )
+                return false
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && policy.requiresIdle) {
+            val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+            if (!powerManager.isDeviceIdleMode) {
+                imageKitCallback.onError(
+                    UploadError(
+                        exception = false,
+                        statusNumber = 1503,
+                        statusCode = "POLICY_ERROR_DEVICE_NOT_IDLE",
+                        message = "Upload policy error: device is not in idle mode"
+                    )
+                )
+                return false
+            }
+        }
+        return true
+    }
+
 }

@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.imagekit.android.ImageKit
 import com.imagekit.android.ImageKitCallback
+import com.imagekit.android.entity.UploadPolicy
 import com.imagekit.android.entity.UploadError
 import com.imagekit.android.entity.UploadResponse
 import kotlinx.android.synthetic.main.activity_upload_image.*
@@ -55,6 +56,7 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
                 .setCancelable(false)
                 .show()
 
+
             val filename = "icLauncher.png"
             ImageKit.getInstance().uploader().upload(
                 file = bitmap!!,
@@ -62,6 +64,10 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
                 useUniqueFilename = true,
                 tags = arrayOf("nice", "copy", "books"),
                 folder = "/dummy/folder/",
+                policy = UploadPolicy.Builder().maxRetries(5).backoffCriteria(
+                    backoffMillis = 100L,
+                    backoffPolicy = UploadPolicy.BackoffPolicy.EXPONENTIAL
+                ).build(),
                 imageKitCallback = this
             )
         }
@@ -79,6 +85,7 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
             fileName = filename,
             useUniqueFilename = true,
             tags = arrayOf("nice", "copy", "books"),
+            policy = UploadPolicy.Builder().requiresBatteryCharging(false).build(),
             folder = "/dummy/folder/",
             imageKitCallback = this
         )
