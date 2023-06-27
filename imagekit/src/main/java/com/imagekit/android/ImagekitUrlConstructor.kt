@@ -972,6 +972,12 @@ class ImagekitUrlConstructor constructor(
         return this
     }
 
+    /**
+     * Set the prarameters to fetch the video in an adaptive streaming format.
+     * @param format The desired streaming format to be fetched (HLS or DASH).
+     * @param resolutions The list of video resolutions to be made available to choose from during video streaming.
+     * @return the current ImagekitUrlConstructor object.
+     */
     fun setAdaptiveStreaming(
         format: StreamingFormat,
         resolutions: List<Int>
