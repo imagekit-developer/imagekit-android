@@ -166,15 +166,10 @@ class Repository @Inject constructor(
 
     }
 
-    private fun getRetryTimeOut(policy: UploadPolicy, retryCount: Int): Long {
-        var retryTimeOut = policy.backoffMillis
-        if (policy.backoffPolicy == UploadPolicy.BackoffPolicy.LINEAR) {
-            retryTimeOut *= retryCount
-        }
-        if (policy.backoffPolicy == UploadPolicy.BackoffPolicy.EXPONENTIAL) {
-            retryTimeOut *= 2.0.pow(retryCount.toDouble()).toLong()
-        }
-        return retryTimeOut
-    }
-
+    private fun getRetryTimeOut(policy: UploadPolicy, retryCount: Int): Long =
+        if (policy.backoffPolicy == UploadPolicy.BackoffPolicy.LINEAR)
+            policy.backoffMillis * retryCount
+        else if (policy.backoffPolicy == UploadPolicy.BackoffPolicy.EXPONENTIAL && retryCount > 0)
+            policy.backoffMillis * 2.0.pow(retryCount - 1).toLong()
+        else 0L
 }
