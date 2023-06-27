@@ -1,6 +1,7 @@
 package com.imagekit.android
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import com.imagekit.android.ImageKit.Companion.IK_VERSION_KEY
 import com.imagekit.android.entity.*
@@ -11,6 +12,7 @@ import java.lang.Math.abs
 import java.net.URI
 import java.net.URLEncoder
 import java.util.*
+import kotlin.collections.HashMap
 
 class ImagekitUrlConstructor constructor(
     private val context: Context,
@@ -23,6 +25,7 @@ class ImagekitUrlConstructor constructor(
     private var isSource: Boolean = true
     private var queryParams: HashMap<String, String> =
         hashMapOf(IK_VERSION_KEY to "android-${BuildConfig.API_VERSION}")
+    private var streamingParam: HashMap<String, String> = hashMapOf()
 
     constructor(
         context: Context,
@@ -969,6 +972,23 @@ class ImagekitUrlConstructor constructor(
         return this
     }
 
+    fun setAdaptiveStreaming(
+        format: StreamingFormat,
+        resolutions: List<Int>
+    ): ImagekitUrlConstructor {
+        streamingParam["ik-master"] = format.extension
+
+        transformationMap[TransformationMapping.streamingResolution] = resolutions
+        transformationList.add(
+            String.format(
+                "%s-%s",
+                TransformationMapping.streamingResolution,
+                resolutions.joinToString(separator = "_")
+            )
+        )
+        return this
+    }
+
     /**
      * Unsharp masking (USM) is an image sharpening technique.
      * Method allows you to apply and control unsharp mask on your images. The amount of sharpening can be controlled
@@ -1133,6 +1153,10 @@ class ImagekitUrlConstructor constructor(
 
         if (url.isEmpty()) {
             return ""
+        }
+
+        if (streamingParam.containsKey("ik-master")) {
+            url = url.plus("/ik-master.${streamingParam["ik-master"]}")
         }
 
         if (transformationList.isNotEmpty()) {
