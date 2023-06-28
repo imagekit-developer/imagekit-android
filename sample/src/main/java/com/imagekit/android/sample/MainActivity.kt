@@ -17,10 +17,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         ImageKit.init(
             context = applicationContext,
-            publicKey = "public_5P5QM23aRv9XkOcfJO1okZ0DzOw=",
-            urlEndpoint = "https://ik.imagekit.io/tqhfz73me",
+            publicKey = "YOUR_PUBLIC_KEY",
+            urlEndpoint = "https://ik.imagekit.io/YOUR_IMAGEKIT_ID",
             transformationPosition = TransformationPosition.PATH,
-            authenticationEndpoint = "https://2303-2401-4900-1c46-e905-38ef-8dd2-56ae-1080.ngrok-free.app/"
+            authenticationEndpoint = "YOUR_AUTHENTICATION_ENDPOINT"
         )
 
         binding.btUploadImage.setOnClickListener {

@@ -56,4 +56,5 @@ internal object TransformationMapping {
     const val effectGray = "e-grayscale"
     const val original = "orig"
     const val transformationStep = ":"
+    const val streamingResolution="sr"
 }

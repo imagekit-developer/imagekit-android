@@ -1,6 +1,8 @@
 package com.imagekit.android
 
 import android.content.Context
+import android.util.Log
+import android.view.View
 import com.imagekit.android.ImageKit.Companion.IK_VERSION_KEY
 import com.imagekit.android.entity.*
 import com.imagekit.android.injection.component.DaggerUtilComponent
@@ -10,6 +12,7 @@ import java.lang.Math.abs
 import java.net.URI
 import java.net.URLEncoder
 import java.util.*
+import kotlin.collections.HashMap
 
 class ImagekitUrlConstructor constructor(
     private val context: Context,
@@ -22,6 +25,7 @@ class ImagekitUrlConstructor constructor(
     private var isSource: Boolean = true
     private var queryParams: HashMap<String, String> =
         hashMapOf(IK_VERSION_KEY to "android-${BuildConfig.API_VERSION}")
+    private var streamingParam: HashMap<String, String> = hashMapOf()
 
     constructor(
         context: Context,
@@ -969,6 +973,29 @@ class ImagekitUrlConstructor constructor(
     }
 
     /**
+     * Set the prarameters to fetch the video in an adaptive streaming format.
+     * @param format The desired streaming format to be fetched (HLS or DASH).
+     * @param resolutions The list of video resolutions to be made available to choose from during video streaming.
+     * @return the current ImagekitUrlConstructor object.
+     */
+    fun setAdaptiveStreaming(
+        format: StreamingFormat,
+        resolutions: List<Int>
+    ): ImagekitUrlConstructor {
+        streamingParam["ik-master"] = format.extension
+
+        transformationMap[TransformationMapping.streamingResolution] = resolutions
+        transformationList.add(
+            String.format(
+                "%s-%s",
+                TransformationMapping.streamingResolution,
+                resolutions.joinToString(separator = "_")
+            )
+        )
+        return this
+    }
+
+    /**
      * Unsharp masking (USM) is an image sharpening technique.
      * Method allows you to apply and control unsharp mask on your images. The amount of sharpening can be controlled
      * by varying the 4 parameters - radius, sigma, amount and threshold. This results in perceptually better images
@@ -1081,6 +1108,48 @@ class ImagekitUrlConstructor constructor(
     }
 
     /**
+     * Set the image size and crop of the image to be responsive to the target view/window.
+     * Method allows you to automatically set the height, width and DPR parameters of images according to the target View specified. The height and width can be constrained
+     * by varying the parameters - minSize, maxSize, and step. the default crop mode and focus area values can also be overridden by passing the crop and focus arguments, else.
+     * @param view The reference of the view of which the dimensions are to be taken into consideration for image sizing.
+     * @param minSize Minimum allowed size for image width/height.
+     * @param maxSize Maximum allowed size for image width/height.
+     * @param step Possible values include positive integer values.
+     * @param cropMode Possible values include the values defined in enum CropMode.
+     * @param focus Possible values include the values defined in enum FocusType.
+     * @return the current ImagekitUrlConstructor object.
+     */
+    fun setResponsive(
+        view: View,
+        minSize: Int = 0,
+        maxSize: Int = 5000,
+        step: Int = 100,
+        cropMode: CropMode = CropMode.RESIZE,
+        focus: FocusType = FocusType.CENTER
+    ): ImagekitUrlConstructor {
+        check(minSize % step == 0 && maxSize % step == 0) {
+            "Values of minSize and maxSize should be in the multiples of step"
+        }
+        val displayMetrics = context.resources.displayMetrics
+        var targetWidth = view.width - view.paddingLeft - view.paddingRight
+        var targetHeight = view.height - view.paddingTop - view.paddingBottom
+        val aspectRatio = targetWidth.toFloat() / targetHeight
+        if (targetWidth <= 0) {
+            targetWidth = displayMetrics.widthPixels - view.paddingLeft - view.paddingRight
+        }
+        if (targetHeight <= 0) {
+            targetHeight = (displayMetrics.heightPixels * if (aspectRatio < 1) 0.5f else 1f).toInt() - view.paddingTop - view.paddingBottom
+        }
+        return this.width(roundUpSize(targetWidth, step).coerceIn(minSize..maxSize))
+            .height(roundUpSize(targetHeight, step).coerceIn(minSize..maxSize))
+            .dpr(displayMetrics.density)
+            .cropMode(cropMode)
+            .focus(focus)
+    }
+
+    private fun roundUpSize(size: Int, step: Int): Int = ((size - 1) / step + 1) * step
+
+    /**
      * Used to create the url using the transformations specified before invoking this method.
      * @return the Url used to fetch an image after applying the specified transformations.
      */
@@ -1090,6 +1159,10 @@ class ImagekitUrlConstructor constructor(
 
         if (url.isEmpty()) {
             return ""
+        }
+
+        if (streamingParam.containsKey("ik-master")) {
+            url = url.plus("/ik-master.${streamingParam["ik-master"]}")
         }
 
         if (transformationList.isNotEmpty()) {

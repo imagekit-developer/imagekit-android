@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import com.imagekit.android.entity.TransformationPosition
+import com.imagekit.android.entity.UploadPolicy
 import com.imagekit.android.injection.component.DaggerUtilComponent
 import com.imagekit.android.injection.component.UtilComponent
 import com.imagekit.android.injection.module.ContextModule
@@ -18,7 +19,8 @@ class ImageKit private constructor(
     clientPublicKey: String,
     imageKitEndpoint: String,
     transformationPosition: TransformationPosition,
-    authenticationEndpoint: String
+    authenticationEndpoint: String,
+    val defaultUploadPolicy: UploadPolicy
 ) {
 
     @Inject
@@ -56,7 +58,8 @@ class ImageKit private constructor(
             publicKey: String = "",
             urlEndpoint: String,
             transformationPosition: TransformationPosition = TransformationPosition.PATH,
-            authenticationEndpoint: String = ""
+            authenticationEndpoint: String = "",
+            defaultUploadPolicy: UploadPolicy = UploadPolicy.defaultPolicy()
         ) {
             if (context !is Application)
                 throw Exception("Application Context Expected!!")
@@ -67,7 +70,8 @@ class ImageKit private constructor(
                 publicKey,
                 urlEndpoint,
                 transformationPosition,
-                authenticationEndpoint
+                authenticationEndpoint,
+                defaultUploadPolicy
             )
         }
 
