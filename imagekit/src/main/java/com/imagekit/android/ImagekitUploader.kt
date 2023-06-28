@@ -65,47 +65,32 @@ class ImagekitUploader @Inject constructor(
         preprocessor: ImageUploadPreprocessor<Bitmap>? = null,
         imageKitCallback: ImageKitCallback
     ) {
-        try {
-            val imageFile = preprocessor?.outputFile(file, fileName, context) ?: bitmapToFile(
-                context,
-                fileName,
-                file,
-                Bitmap.CompressFormat.PNG
-            )
-            return mRepository.upload(
-                imageFile,
-                fileName,
-                useUniqueFilename,
-                tags,
-                folder,
-                isPrivateFile,
-                customCoordinates,
-                responseFields,
-                imageKitCallback
-            )
-        } catch (e: IOException) {
-            imageKitCallback.onError(UploadError(
-                exception = true,
-                message = context.getString(R.string.error_upload_preprocess)
-            ))
-        }
         if (checkUploadPolicy(policy, imageKitCallback)) {
-            mRepository.upload(
-                bitmapToFile(
+            try {
+                val imageFile = preprocessor?.outputFile(file, fileName, context) ?: bitmapToFile(
                     context,
                     fileName,
-                    file
-                ),
-                fileName,
-                useUniqueFilename,
-                tags,
-                folder,
-                isPrivateFile,
-                customCoordinates,
-                responseFields,
-                policy,
-                imageKitCallback
-            )
+                    file,
+                    Bitmap.CompressFormat.PNG
+                )
+                return mRepository.upload(
+                    imageFile,
+                    fileName,
+                    useUniqueFilename,
+                    tags,
+                    folder,
+                    isPrivateFile,
+                    customCoordinates,
+                    responseFields,
+                    policy,
+                    imageKitCallback
+                )
+            } catch (e: IOException) {
+                imageKitCallback.onError(UploadError(
+                    exception = true,
+                    message = context.getString(R.string.error_upload_preprocess)
+                ))
+            }
         } else {
             LogUtil.logError("Upload failed! Upload Policy Violation!")
         }
@@ -172,6 +157,7 @@ class ImagekitUploader @Inject constructor(
                             isPrivateFile,
                             customCoordinates,
                             responseFields,
+                            policy,
                             imageKitCallback
                         )
                     } catch (e: Exception) {
@@ -203,6 +189,7 @@ class ImagekitUploader @Inject constructor(
                                 isPrivateFile,
                                 customCoordinates,
                                 responseFields,
+                                policy,
                                 imageKitCallback
                             )
                         }
