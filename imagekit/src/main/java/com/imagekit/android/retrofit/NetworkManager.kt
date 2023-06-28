@@ -11,8 +11,6 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
-import java.time.Duration
-import java.util.concurrent.TimeUnit
 
 object NetworkManager {
     private const val TAG = "Application Handler"
@@ -25,7 +23,6 @@ object NetworkManager {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
         val okHttpClient = OkHttpClient.Builder()
-            .readTimeout(20, TimeUnit.SECONDS)
             .addInterceptor(logging)
             .addInterceptor(BuildVersionQueryInterceptor())
             .build()

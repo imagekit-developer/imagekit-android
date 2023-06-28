@@ -5,7 +5,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Point
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,8 +14,7 @@ import com.imagekit.android.ImageKit
 import com.imagekit.android.ImageKitCallback
 import com.imagekit.android.entity.UploadError
 import com.imagekit.android.entity.UploadResponse
-import com.imagekit.android.preprocess.ImageUploadPreprocessor
-import com.imagekit.android.sample.databinding.ActivityUploadImageBinding
+import kotlinx.android.synthetic.main.activity_upload_image.*
 import java.io.FileNotFoundException
 
 
@@ -25,8 +23,6 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
     private var loadingDialog: AlertDialog? = null
 
     private var bitmap: Bitmap? = null
-
-    private lateinit var binding: ActivityUploadImageBinding
 
     override fun onClick(v: View?) {
         when (v!!.id) {
@@ -40,11 +36,10 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityUploadImageBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_upload_image)
 
-        binding.btSelect.setOnClickListener(this)
-        binding.btUpload.setOnClickListener(this)
+        btSelect.setOnClickListener(this)
+        btUpload.setOnClickListener(this)
     }
 
     private fun selectImage() {
@@ -67,12 +62,6 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
                 useUniqueFilename = true,
                 tags = arrayOf("nice", "copy", "books"),
                 folder = "/dummy/folder/",
-                preprocessor = ImageUploadPreprocessor.Builder()
-                    .limit(400, 400)
-                    .rotate(45f)
-                    .crop(Point(20, 40), Point(100, 120))
-                    .format(Bitmap.CompressFormat.JPEG)
-                    .build(),
                 imageKitCallback = this
             )
         }
@@ -104,10 +93,10 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
                 val imageUri = data!!.data
                 val imageStream = contentResolver.openInputStream(imageUri!!)
                 val selectedImage = BitmapFactory.decodeStream(imageStream)
-                binding.ivImage.setImageBitmap(selectedImage)
+                ivImage.setImageBitmap(selectedImage)
 
                 bitmap = selectedImage
-                binding.btUpload.visibility = View.VISIBLE
+                btUpload.visibility = View.VISIBLE
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
