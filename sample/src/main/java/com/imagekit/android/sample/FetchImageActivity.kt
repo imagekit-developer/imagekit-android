@@ -87,7 +87,7 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                         .height(300)
                         .chainTransformation()
                         .setResponsive(
-                            view = ivImage,
+                            view = binding.ivImage,
                             minSize = 200,
                             maxSize = 1600,
                             step = 100

@@ -15,7 +15,7 @@ import java.util.*
 import kotlin.collections.HashMap
 
 class ImagekitUrlConstructor constructor(
-    private val context: Context,
+    val context: Context,
     private var source: String,
     private var transformationPosition: TransformationPosition
 ) {
