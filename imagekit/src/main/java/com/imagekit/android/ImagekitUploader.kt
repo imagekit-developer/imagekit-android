@@ -11,9 +11,15 @@ import android.os.PowerManager
 import com.imagekit.android.data.Repository
 import com.imagekit.android.entity.UploadError
 import com.imagekit.android.entity.UploadPolicy
+import com.imagekit.android.preprocess.ImageUploadPreprocessor
+import com.imagekit.android.preprocess.UploadPreprocessor
+import com.imagekit.android.preprocess.VideoUploadPreprocessor
 import com.imagekit.android.util.BitmapUtil.bitmapToFile
+import com.linkedin.android.litr.TransformationListener
+import com.linkedin.android.litr.analytics.TrackTransformationInfo
 import com.imagekit.android.util.LogUtil
 import java.io.File
+import java.io.IOException
 import javax.inject.Inject
 
 class ImagekitUploader @Inject constructor(
@@ -56,25 +62,35 @@ class ImagekitUploader @Inject constructor(
         customCoordinates: String? = null,
         policy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
         responseFields: String? = null,
+        preprocessor: ImageUploadPreprocessor<Bitmap>? = null,
         imageKitCallback: ImageKitCallback
     ) {
         if (checkUploadPolicy(policy, imageKitCallback)) {
-            mRepository.upload(
-                bitmapToFile(
+            try {
+                val imageFile = preprocessor?.outputFile(file, fileName, context) ?: bitmapToFile(
                     context,
                     fileName,
-                    file
-                ),
-                fileName,
-                useUniqueFilename,
-                tags,
-                folder,
-                isPrivateFile,
-                customCoordinates,
-                responseFields,
-                policy,
-                imageKitCallback
-            )
+                    file,
+                    Bitmap.CompressFormat.PNG
+                )
+                return mRepository.upload(
+                    imageFile,
+                    fileName,
+                    useUniqueFilename,
+                    tags,
+                    folder,
+                    isPrivateFile,
+                    customCoordinates,
+                    responseFields,
+                    policy,
+                    imageKitCallback
+                )
+            } catch (e: IOException) {
+                imageKitCallback.onError(UploadError(
+                    exception = true,
+                    message = context.getString(R.string.error_upload_preprocess)
+                ))
+            }
         } else {
             LogUtil.logError("Upload failed! Upload Policy Violation!")
         }
@@ -115,6 +131,7 @@ class ImagekitUploader @Inject constructor(
         customCoordinates: String? = null,
         responseFields: String? = null,
         policy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
+        preprocessor: UploadPreprocessor<File>? = null,
         imageKitCallback: ImageKitCallback
     ) {
         if (checkUploadPolicy(policy, imageKitCallback)) {
@@ -127,7 +144,91 @@ class ImagekitUploader @Inject constructor(
                 )
                 return
             }
-            return mRepository.upload(
+            preprocessor?.let {
+            when (it) {
+                is ImageUploadPreprocessor -> {
+                    try {
+                        mRepository.upload(
+                            preprocessor.outputFile(file, fileName, context),
+                            fileName,
+                            useUniqueFilename,
+                            tags,
+                            folder,
+                            isPrivateFile,
+                            customCoordinates,
+                            responseFields,
+                            policy,
+                            imageKitCallback
+                        )
+                    } catch (e: Exception) {
+                        imageKitCallback.onError(UploadError(
+                            exception = true,
+                            message = context.getString(R.string.error_upload_preprocess)
+                        ))
+                    }
+                }
+                is VideoUploadPreprocessor -> {
+                    var outputFile: File? = null
+                    (preprocessor as VideoUploadPreprocessor).listener = object : TransformationListener {
+                        override fun onStarted(id: String) {
+                        }
+
+                        override fun onProgress(id: String, progress: Float) {
+                        }
+
+                        override fun onCompleted(
+                            id: String,
+                            trackTransformationInfos: MutableList<TrackTransformationInfo>?
+                        ) {
+                            mRepository.upload(
+                                outputFile!!,
+                                fileName,
+                                useUniqueFilename,
+                                tags,
+                                folder,
+                                isPrivateFile,
+                                customCoordinates,
+                                responseFields,
+                                policy,
+                                imageKitCallback
+                            )
+                        }
+
+                        override fun onCancelled(
+                            id: String,
+                            trackTransformationInfos: MutableList<TrackTransformationInfo>?
+                        ) {
+                            println("Process cancelled")
+                            imageKitCallback.onError(UploadError(
+                                exception = true,
+                                message = context.getString(R.string.error_upload_preprocess)
+                            ))
+                        }
+
+                        override fun onError(
+                            id: String,
+                            cause: Throwable?,
+                            trackTransformationInfos: MutableList<TrackTransformationInfo>?
+                        ) {
+                            cause?.printStackTrace()
+                            imageKitCallback.onError(UploadError(
+                                exception = true,
+                                message = context.getString(R.string.error_upload_preprocess)
+                            ))
+                        }
+                    }
+                    try {
+                        outputFile = preprocessor.outputFile(file, fileName, context)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        imageKitCallback.onError(UploadError(
+                            exception = true,
+                            message = context.getString(R.string.error_upload_preprocess)
+                        ))
+                    }
+                }
+            }
+        } ?: mRepository.upload(
                 file,
                 fileName,
                 useUniqueFilename,
