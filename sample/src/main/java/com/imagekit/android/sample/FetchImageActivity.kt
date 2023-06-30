@@ -55,9 +55,6 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                             src = "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg",
                             transformationPosition = TransformationPosition.PATH
                         )
-                        .overlayImage("logo-white_SJwqB4Nfe.png")
-                        .overlayX(10)
-                        .overlayY(20)
                         .create()
 
                 }
@@ -72,11 +69,6 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                     ImageKit.getInstance()
                         .url(src = "https://ik.imagekit.io/demo/img/plant.jpeg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20")
                         .addCustomTransformation("w", "400")
-                        .overlayText("Hand with a green plant")
-                        .overlayTextColor("264120")
-                        .overlayTextFontSize(30)
-                        .overlayX(10)
-                        .overlayY(10)
                         .create()
                 }
                 R.id.btTran6 -> {
