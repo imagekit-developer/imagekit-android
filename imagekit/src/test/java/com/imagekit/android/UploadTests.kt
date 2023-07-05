@@ -135,7 +135,7 @@ class UploadTests {
             file = file,
             token = "",
             fileName = "sample.pdf",
-            useUniqueFilename = true,
+            useUniqueFileName = true,
             tags = arrayOf("test"),
             folder = "/tmp/test",
             imageKitCallback = object : ImageKitCallback {
@@ -219,7 +219,7 @@ class UploadTests {
             file = file,
             token = "",
             fileName = "sample.pdf",
-            useUniqueFilename = true,
+            useUniqueFileName = true,
             tags = arrayOf("test"),
             folder = "/tmp/test",
             imageKitCallback = object : ImageKitCallback {
@@ -258,7 +258,7 @@ class UploadTests {
             file = "http://ik.imagekit.io/demo/img/default-image.jpg",
             token = "",
             fileName = "default-image-test.jpg",
-            useUniqueFilename = true,
+            useUniqueFileName = true,
             tags = arrayOf("test"),
             folder = "/tmp/test",
             customCoordinates = "0,0,200,200",
@@ -352,7 +352,7 @@ class UploadTests {
             file = "http://ik.imagekit.io/demo/img/default-image.jpg",
             token = "",
             fileName = "default-image-test.jpg",
-            useUniqueFilename = true,
+            useUniqueFileName = true,
             tags = arrayOf("test"),
             folder = "/tmp/test",
             imageKitCallback = object : ImageKitCallback {
@@ -391,7 +391,7 @@ class UploadTests {
             file = bitmap,
             token = "",
             fileName = "default-image-test.jpg",
-            useUniqueFilename = true,
+            useUniqueFileName = true,
             tags = arrayOf("test"),
             folder = "/tmp/test",
             imageKitCallback = object : ImageKitCallback {

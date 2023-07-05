@@ -70,7 +70,7 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
                 val filename = "icLauncher.png"
                 val authToken = viewModel.getUploadToken(mapOf(
                     "fileName" to filename,
-                    "useUniqueFilename" to "true",
+                    "useUniqueFileName" to "true",
                     "tags" to arrayOf("nice", "copy", "books").joinToString(","),
                     "folder" to "/dummy/folder/"
                 ))?.let { it["token"] }.toString()
@@ -78,7 +78,7 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
                     file = bitmap!!,
                     token = authToken,
                     fileName = filename,
-                    useUniqueFilename = true,
+                    useUniqueFileName = true,
                     tags = arrayOf("nice", "copy", "books"),
                     folder = "/dummy/folder/",
                     policy = UploadPolicy.Builder().maxRetries(0).backoffCriteria(
@@ -108,7 +108,7 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
             file = "https://ik.imagekit.io/demo/img/default-image.jpg",
             token = "",
             fileName = filename,
-            useUniqueFilename = true,
+            useUniqueFileName = true,
             tags = arrayOf("nice", "copy", "books"),
             policy = UploadPolicy.Builder().requiresBatteryCharging(false).build(),
             folder = "/dummy/folder/",
