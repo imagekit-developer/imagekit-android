@@ -25,6 +25,7 @@ class ImagekitUrlConstructor constructor(
     private var queryParams: HashMap<String, String> =
         hashMapOf(IK_VERSION_KEY to "android-${BuildConfig.API_VERSION}")
     private var streamingParam: HashMap<String, String> = hashMapOf()
+    private var rawParams: String? = null
 
     constructor(
         context: Context,
@@ -431,7 +432,7 @@ class ImagekitUrlConstructor constructor(
     }
 
     /**
-     * Set the prarameters to fetch the video in an adaptive streaming format.
+     * Set the parameters to fetch the video in an adaptive streaming format.
      * @param format The desired streaming format to be fetched (HLS or DASH).
      * @param resolutions The list of video resolutions to be made available to choose from during video streaming.
      * @return the current ImagekitUrlConstructor object.
@@ -450,6 +451,16 @@ class ImagekitUrlConstructor constructor(
                 resolutions.joinToString(separator = "_")
             )
         )
+        return this
+    }
+
+    /**
+     * Add the raw transformation options passed as a string to the transformations list.
+     * @param params The string containing the comma-separated transformation parameters.
+     * @return the current ImagekitUrlConstructor object.
+     */
+    fun raw(params: String): ImagekitUrlConstructor {
+        rawParams = params
         return this
     }
 
@@ -621,6 +632,10 @@ class ImagekitUrlConstructor constructor(
 
         if (streamingParam.containsKey("ik-master")) {
             url = url.plus("/ik-master.${streamingParam["ik-master"]}")
+        }
+
+        if (rawParams != null) {
+            transformationList.addAll(rawParams?.split(',') ?: emptyList())
         }
 
         if (transformationList.isNotEmpty()) {
