@@ -55,6 +55,7 @@ class UploadFileActivity : AppCompatActivity(), ImageKitCallback, View.OnClickLi
 
             ImageKit.getInstance().uploader().upload(
                 file = file!!,
+                token = "",
                 fileName = file!!.name,
                 useUniqueFilename = true,
                 tags = arrayOf("nice", "copy", "books"),

@@ -54,14 +54,22 @@ class ImagekitUploader @Inject constructor(
      */
     fun upload(
         file: Bitmap,
+        token: String,
         fileName: String,
-        useUniqueFilename: Boolean = true,
+        useUniqueFilename: Boolean? = null,
         tags: Array<String>? = null,
         folder: String? = null,
-        isPrivateFile: Boolean = false,
+        isPrivateFile: Boolean? = null,
         customCoordinates: String? = null,
-        policy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
         responseFields: String? = null,
+        extensions: List<Map<String, Any>>? = null,
+        webhookUrl: String? = null,
+        overwriteFile: Boolean? = null,
+        overwriteAITags: Boolean? = null,
+        overwriteTags: Boolean? = null,
+        overwriteCustomMetadata: Boolean? = null,
+        customMetadata: Map<String, Any>? = null,
+        policy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
         preprocessor: ImageUploadPreprocessor<Bitmap>? = null,
         imageKitCallback: ImageKitCallback
     ) {
@@ -75,6 +83,7 @@ class ImagekitUploader @Inject constructor(
                 )
                 return mRepository.upload(
                     imageFile,
+                    token,
                     fileName,
                     useUniqueFilename,
                     tags,
@@ -82,6 +91,13 @@ class ImagekitUploader @Inject constructor(
                     isPrivateFile,
                     customCoordinates,
                     responseFields,
+                    extensions,
+                    webhookUrl,
+                    overwriteFile,
+                    overwriteAITags,
+                    overwriteTags,
+                    overwriteCustomMetadata,
+                    customMetadata,
                     policy,
                     imageKitCallback
                 )
@@ -123,13 +139,21 @@ class ImagekitUploader @Inject constructor(
      */
     fun upload(
         file: File,
+        token: String,
         fileName: String,
-        useUniqueFilename: Boolean = true,
+        useUniqueFilename: Boolean? = null,
         tags: Array<String>? = null,
         folder: String? = null,
-        isPrivateFile: Boolean = false,
+        isPrivateFile: Boolean? = null,
         customCoordinates: String? = null,
         responseFields: String? = null,
+        extensions: List<Map<String, Any>>? = null,
+        webhookUrl: String? = null,
+        overwriteFile: Boolean? = null,
+        overwriteAITags: Boolean? = null,
+        overwriteTags: Boolean? = null,
+        overwriteCustomMetadata: Boolean? = null,
+        customMetadata: Map<String, Any>? = null,
         policy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
         preprocessor: UploadPreprocessor<File>? = null,
         imageKitCallback: ImageKitCallback
@@ -150,6 +174,7 @@ class ImagekitUploader @Inject constructor(
                     try {
                         mRepository.upload(
                             preprocessor.outputFile(file, fileName, context),
+                            token,
                             fileName,
                             useUniqueFilename,
                             tags,
@@ -157,6 +182,13 @@ class ImagekitUploader @Inject constructor(
                             isPrivateFile,
                             customCoordinates,
                             responseFields,
+                            extensions,
+                            webhookUrl,
+                            overwriteFile,
+                            overwriteAITags,
+                            overwriteTags,
+                            overwriteCustomMetadata,
+                            customMetadata,
                             policy,
                             imageKitCallback
                         )
@@ -182,6 +214,7 @@ class ImagekitUploader @Inject constructor(
                         ) {
                             mRepository.upload(
                                 outputFile!!,
+                                token,
                                 fileName,
                                 useUniqueFilename,
                                 tags,
@@ -189,6 +222,13 @@ class ImagekitUploader @Inject constructor(
                                 isPrivateFile,
                                 customCoordinates,
                                 responseFields,
+                                extensions,
+                                webhookUrl,
+                                overwriteFile,
+                                overwriteAITags,
+                                overwriteTags,
+                                overwriteCustomMetadata,
+                                customMetadata,
                                 policy,
                                 imageKitCallback
                             )
@@ -230,6 +270,7 @@ class ImagekitUploader @Inject constructor(
             }
         } ?: mRepository.upload(
                 file,
+                token,
                 fileName,
                 useUniqueFilename,
                 tags,
@@ -237,6 +278,13 @@ class ImagekitUploader @Inject constructor(
                 isPrivateFile,
                 customCoordinates,
                 responseFields,
+                extensions,
+                webhookUrl,
+                overwriteFile,
+                overwriteAITags,
+                overwriteTags,
+                overwriteCustomMetadata,
+                customMetadata,
                 policy,
                 imageKitCallback
             )
@@ -272,17 +320,26 @@ class ImagekitUploader @Inject constructor(
      */
     fun upload(
         file: String,
+        token: String,
         fileName: String,
-        useUniqueFilename: Boolean = true,
+        useUniqueFilename: Boolean? = null,
         tags: Array<String>? = null,
         folder: String? = null,
-        isPrivateFile: Boolean = false,
+        isPrivateFile: Boolean? = null,
         customCoordinates: String? = null,
         responseFields: String? = null,
-        policy: UploadPolicy,
+        extensions: List<Map<String, Any>>? = null,
+        webhookUrl: String? = null,
+        overwriteFile: Boolean? = null,
+        overwriteAITags: Boolean? = null,
+        overwriteTags: Boolean? = null,
+        overwriteCustomMetadata: Boolean? = null,
+        customMetadata: Map<String, Any>? = null,
+        policy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
         imageKitCallback: ImageKitCallback
     ) = mRepository.upload(
         file,
+        token,
         fileName,
         useUniqueFilename,
         tags,
@@ -290,6 +347,13 @@ class ImagekitUploader @Inject constructor(
         isPrivateFile,
         customCoordinates,
         responseFields,
+        extensions,
+        webhookUrl,
+        overwriteFile,
+        overwriteAITags,
+        overwriteTags,
+        overwriteCustomMetadata,
+        customMetadata,
         policy,
         imageKitCallback
     )
