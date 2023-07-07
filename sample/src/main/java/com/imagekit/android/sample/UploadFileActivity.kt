@@ -2,9 +2,7 @@ package com.imagekit.android.sample
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -14,11 +12,9 @@ import com.imagekit.android.ImageKit
 import com.imagekit.android.ImageKitCallback
 import com.imagekit.android.entity.UploadError
 import com.imagekit.android.entity.UploadResponse
-import com.imagekit.android.preprocess.ImageUploadPreprocessor
 import com.imagekit.android.preprocess.VideoUploadPreprocessor
 import com.imagekit.android.sample.databinding.ActivityUploadFileBinding
 import java.io.*
-import java.util.UUID
 
 
 class UploadFileActivity : AppCompatActivity(), ImageKitCallback, View.OnClickListener {
@@ -55,8 +51,9 @@ class UploadFileActivity : AppCompatActivity(), ImageKitCallback, View.OnClickLi
 
             ImageKit.getInstance().uploader().upload(
                 file = file!!,
+                token = "",
                 fileName = file!!.name,
-                useUniqueFilename = true,
+                useUniqueFileName = true,
                 tags = arrayOf("nice", "copy", "books"),
                 folder = "/dummy/folder/",
                 preprocessor = VideoUploadPreprocessor.Builder()

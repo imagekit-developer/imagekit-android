@@ -31,7 +31,7 @@ class ImagekitUploader @Inject constructor(
      * Method to upload an image to ImageKit.
      * @param file The image bitmap that is to be uploaded
      * @param fileName The name with which the file has to be uploaded
-     * @param useUniqueFilename “true” or “false”. If set to true, ImageKit will add a unique code to the filename parameter
+     * @param useUniqueFileName “true” or “false”. If set to true, ImageKit will add a unique code to the filename parameter
      * to get a unique filename. If false, the image is uploaded with the filename parameter as name. If an image exists
      * with the same name, this new image will override it. Default is “true”
      * @param tags Array of tags e.g tag1,tag2,tag3. The maximum length of all characters should not exceed 500.
@@ -54,14 +54,22 @@ class ImagekitUploader @Inject constructor(
      */
     fun upload(
         file: Bitmap,
+        token: String,
         fileName: String,
-        useUniqueFilename: Boolean = true,
+        useUniqueFileName: Boolean? = null,
         tags: Array<String>? = null,
         folder: String? = null,
-        isPrivateFile: Boolean = false,
+        isPrivateFile: Boolean? = null,
         customCoordinates: String? = null,
-        policy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
         responseFields: String? = null,
+        extensions: List<Map<String, Any>>? = null,
+        webhookUrl: String? = null,
+        overwriteFile: Boolean? = null,
+        overwriteAITags: Boolean? = null,
+        overwriteTags: Boolean? = null,
+        overwriteCustomMetadata: Boolean? = null,
+        customMetadata: Map<String, Any>? = null,
+        policy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
         preprocessor: ImageUploadPreprocessor<Bitmap>? = null,
         imageKitCallback: ImageKitCallback
     ) {
@@ -75,13 +83,21 @@ class ImagekitUploader @Inject constructor(
                 )
                 return mRepository.upload(
                     imageFile,
+                    token,
                     fileName,
-                    useUniqueFilename,
+                    useUniqueFileName,
                     tags,
                     folder,
                     isPrivateFile,
                     customCoordinates,
                     responseFields,
+                    extensions,
+                    webhookUrl,
+                    overwriteFile,
+                    overwriteAITags,
+                    overwriteTags,
+                    overwriteCustomMetadata,
+                    customMetadata,
                     policy,
                     imageKitCallback
                 )
@@ -100,7 +116,7 @@ class ImagekitUploader @Inject constructor(
      * Method to upload a file to ImageKit. Permitted types: JPG, PNG, WebP, GIF, PDF, JS, CSS and TXT
      * @param file The file that is to be uploaded
      * @param fileName The name with which the file has to be uploaded
-     * @param useUniqueFilename “true” or “false”. If set to true, ImageKit will add a unique code to the filename parameter
+     * @param useUniqueFileName “true” or “false”. If set to true, ImageKit will add a unique code to the filename parameter
      * to get a unique filename. If false, the image is uploaded with the filename parameter as name. If an image exists
      * with the same name, this new image will override it. Default is “true”
      * @param tags Array of tags e.g tag1,tag2,tag3. The maximum length of all characters should not exceed 500.
@@ -123,13 +139,21 @@ class ImagekitUploader @Inject constructor(
      */
     fun upload(
         file: File,
+        token: String,
         fileName: String,
-        useUniqueFilename: Boolean = true,
+        useUniqueFileName: Boolean? = null,
         tags: Array<String>? = null,
         folder: String? = null,
-        isPrivateFile: Boolean = false,
+        isPrivateFile: Boolean? = null,
         customCoordinates: String? = null,
         responseFields: String? = null,
+        extensions: List<Map<String, Any>>? = null,
+        webhookUrl: String? = null,
+        overwriteFile: Boolean? = null,
+        overwriteAITags: Boolean? = null,
+        overwriteTags: Boolean? = null,
+        overwriteCustomMetadata: Boolean? = null,
+        customMetadata: Map<String, Any>? = null,
         policy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
         preprocessor: UploadPreprocessor<File>? = null,
         imageKitCallback: ImageKitCallback
@@ -150,13 +174,21 @@ class ImagekitUploader @Inject constructor(
                     try {
                         mRepository.upload(
                             preprocessor.outputFile(file, fileName, context),
+                            token,
                             fileName,
-                            useUniqueFilename,
+                            useUniqueFileName,
                             tags,
                             folder,
                             isPrivateFile,
                             customCoordinates,
                             responseFields,
+                            extensions,
+                            webhookUrl,
+                            overwriteFile,
+                            overwriteAITags,
+                            overwriteTags,
+                            overwriteCustomMetadata,
+                            customMetadata,
                             policy,
                             imageKitCallback
                         )
@@ -182,13 +214,21 @@ class ImagekitUploader @Inject constructor(
                         ) {
                             mRepository.upload(
                                 outputFile!!,
+                                token,
                                 fileName,
-                                useUniqueFilename,
+                                useUniqueFileName,
                                 tags,
                                 folder,
                                 isPrivateFile,
                                 customCoordinates,
                                 responseFields,
+                                extensions,
+                                webhookUrl,
+                                overwriteFile,
+                                overwriteAITags,
+                                overwriteTags,
+                                overwriteCustomMetadata,
+                                customMetadata,
                                 policy,
                                 imageKitCallback
                             )
@@ -230,13 +270,21 @@ class ImagekitUploader @Inject constructor(
             }
         } ?: mRepository.upload(
                 file,
+                token,
                 fileName,
-                useUniqueFilename,
+                useUniqueFileName,
                 tags,
                 folder,
                 isPrivateFile,
                 customCoordinates,
                 responseFields,
+                extensions,
+                webhookUrl,
+                overwriteFile,
+                overwriteAITags,
+                overwriteTags,
+                overwriteCustomMetadata,
+                customMetadata,
                 policy,
                 imageKitCallback
             )
@@ -249,7 +297,7 @@ class ImagekitUploader @Inject constructor(
      * Method to upload a file from a url to ImageKit. Permitted types: JPG, PNG, WebP, GIF, PDF, JS, CSS and TXT
      * @param file The fileUrl from which to download the file that is to be uploaded
      * @param fileName The name with which the file has to be uploaded
-     * @param useUniqueFilename “true” or “false”. If set to true, ImageKit will add a unique code to the filename parameter
+     * @param useUniqueFileName “true” or “false”. If set to true, ImageKit will add a unique code to the filename parameter
      * to get a unique filename. If false, the image is uploaded with the filename parameter as name. If an image exists
      * with the same name, this new image will override it. Default is “true”
      * @param tags Array of tags e.g tag1,tag2,tag3. The maximum length of all characters should not exceed 500.
@@ -272,24 +320,40 @@ class ImagekitUploader @Inject constructor(
      */
     fun upload(
         file: String,
+        token: String,
         fileName: String,
-        useUniqueFilename: Boolean = true,
+        useUniqueFileName: Boolean? = null,
         tags: Array<String>? = null,
         folder: String? = null,
-        isPrivateFile: Boolean = false,
+        isPrivateFile: Boolean? = null,
         customCoordinates: String? = null,
         responseFields: String? = null,
-        policy: UploadPolicy,
+        extensions: List<Map<String, Any>>? = null,
+        webhookUrl: String? = null,
+        overwriteFile: Boolean? = null,
+        overwriteAITags: Boolean? = null,
+        overwriteTags: Boolean? = null,
+        overwriteCustomMetadata: Boolean? = null,
+        customMetadata: Map<String, Any>? = null,
+        policy: UploadPolicy = ImageKit.getInstance().defaultUploadPolicy,
         imageKitCallback: ImageKitCallback
     ) = mRepository.upload(
         file,
+        token,
         fileName,
-        useUniqueFilename,
+        useUniqueFileName,
         tags,
         folder,
         isPrivateFile,
         customCoordinates,
         responseFields,
+        extensions,
+        webhookUrl,
+        overwriteFile,
+        overwriteAITags,
+        overwriteTags,
+        overwriteCustomMetadata,
+        customMetadata,
         policy,
         imageKitCallback
     )

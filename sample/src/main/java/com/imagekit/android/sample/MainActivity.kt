@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
             publicKey = "YOUR_PUBLIC_KEY",
             urlEndpoint = "https://ik.imagekit.io/YOUR_IMAGEKIT_ID",
             transformationPosition = TransformationPosition.PATH,
-            authenticationEndpoint = "YOUR_AUTHENTICATION_ENDPOINT"
         )
 
         binding.btUploadImage.setOnClickListener {

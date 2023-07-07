@@ -10,7 +10,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.imagekit.android.ImageKit
 import com.imagekit.android.ImageKitCallback
 import com.imagekit.android.entity.UploadPolicy
@@ -18,6 +20,7 @@ import com.imagekit.android.entity.UploadError
 import com.imagekit.android.entity.UploadResponse
 import com.imagekit.android.preprocess.ImageUploadPreprocessor
 import com.imagekit.android.sample.databinding.ActivityUploadImageBinding
+import kotlinx.coroutines.launch
 import java.io.FileNotFoundException
 
 
@@ -28,6 +31,8 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
     private var bitmap: Bitmap? = null
 
     private lateinit var binding: ActivityUploadImageBinding
+
+    private val viewModel: UploadViewModel by viewModels()
 
     override fun onClick(v: View?) {
         when (v!!.id) {
@@ -61,26 +66,34 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
                 .setCancelable(false)
                 .show()
 
-
-            val filename = "icLauncher.png"
-            ImageKit.getInstance().uploader().upload(
-                file = bitmap!!,
-                fileName = filename,
-                useUniqueFilename = true,
-                tags = arrayOf("nice", "copy", "books"),
-                folder = "/dummy/folder/",
-                policy = UploadPolicy.Builder().maxRetries(5).backoffCriteria(
-                    backoffMillis = 100L,
-                    backoffPolicy = UploadPolicy.BackoffPolicy.EXPONENTIAL
-                ).build(),
-                preprocessor = ImageUploadPreprocessor.Builder()
-                    .limit(400, 400)
-                    .rotate(45f)
-                    .crop(Point(20, 40), Point(100, 120))
-                    .format(Bitmap.CompressFormat.JPEG)
-                    .build(),
-                imageKitCallback = this
-            )
+            lifecycleScope.launch {
+                val filename = "icLauncher.png"
+                val authToken = viewModel.getUploadToken(mapOf(
+                    "fileName" to filename,
+                    "useUniqueFileName" to "true",
+                    "tags" to arrayOf("nice", "copy", "books").joinToString(","),
+                    "folder" to "/dummy/folder/"
+                ))?.let { it["token"] }.toString()
+                ImageKit.getInstance().uploader().upload(
+                    file = bitmap!!,
+                    token = authToken,
+                    fileName = filename,
+                    useUniqueFileName = true,
+                    tags = arrayOf("nice", "copy", "books"),
+                    folder = "/dummy/folder/",
+                    policy = UploadPolicy.Builder().maxRetries(3).backoffCriteria(
+                        backoffMillis = 100L,
+                        backoffPolicy = UploadPolicy.BackoffPolicy.EXPONENTIAL
+                    ).build(),
+                    preprocessor = ImageUploadPreprocessor.Builder()
+                        .limit(400, 400)
+                        .rotate(45f)
+                        .crop(Point(20, 40), Point(100, 120))
+                        .format(Bitmap.CompressFormat.JPEG)
+                        .build(),
+                    imageKitCallback = this@UploadImageActivity
+                )
+            }
         }
     }
 
@@ -93,8 +106,9 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
         val filename = "icLauncher.png"
         ImageKit.getInstance().uploader().upload(
             file = "https://ik.imagekit.io/demo/img/default-image.jpg",
+            token = "",
             fileName = filename,
-            useUniqueFilename = true,
+            useUniqueFileName = true,
             tags = arrayOf("nice", "copy", "books"),
             policy = UploadPolicy.Builder().requiresBatteryCharging(false).build(),
             folder = "/dummy/folder/",
