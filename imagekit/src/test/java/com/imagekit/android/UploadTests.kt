@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import com.imagekit.android.entity.TransformationPosition
 import com.imagekit.android.entity.UploadError
+import com.imagekit.android.entity.UploadPolicy
 import com.imagekit.android.entity.UploadResponse
 import com.imagekit.android.retrofit.ApiInterface
 import com.imagekit.android.retrofit.BuildVersionQueryInterceptor
@@ -137,6 +138,7 @@ class UploadTests {
         ImageKit.getInstance().uploader().upload(
             file = "http://ik.imagekit.io/demo/img/default-image.jpg",
             fileName = "default-image.jpg",
+            policy = UploadPolicy.defaultPolicy(),
             imageKitCallback = object : ImageKitCallback {
 
                 override fun onSuccess(uploadResponse: UploadResponse) {
@@ -295,6 +297,7 @@ class UploadTests {
         ImageKit.getInstance().uploader().upload(
             file = "http://ik.imagekit.io/demo/img/default-image.jpg",
             fileName = "default-image-test.jpg",
+            policy = UploadPolicy.defaultPolicy(),
             useUniqueFilename = true,
             tags = arrayOf("test"),
             folder = "/tmp/test",
@@ -347,6 +350,7 @@ class UploadTests {
         ImageKit.getInstance().uploader().upload(
             file = "http://ik.imagekit.io/demo/img/default-image.jpg",
             fileName = "default-image-test.jpg",
+            policy = UploadPolicy.defaultPolicy(),
             imageKitCallback = object : ImageKitCallback {
 
                 override fun onSuccess(uploadResponse: UploadResponse) {
@@ -388,6 +392,7 @@ class UploadTests {
             file = "http://ik.imagekit.io/demo/img/default-image.jpg",
             fileName = "default-image-test.jpg",
             useUniqueFilename = true,
+            policy = UploadPolicy.defaultPolicy(),
             tags = arrayOf("test"),
             folder = "/tmp/test",
             imageKitCallback = object : ImageKitCallback {
