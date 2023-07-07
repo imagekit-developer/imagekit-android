@@ -1,6 +1,7 @@
 package com.imagekit.android
 
 import android.content.Context
+import android.view.View
 import com.imagekit.android.ImageKit.Companion.IK_VERSION_KEY
 import com.imagekit.android.entity.*
 import com.imagekit.android.injection.component.DaggerUtilComponent
@@ -10,9 +11,10 @@ import java.lang.Math.abs
 import java.net.URI
 import java.net.URLEncoder
 import java.util.*
+import kotlin.collections.HashMap
 
 class ImagekitUrlConstructor constructor(
-    private val context: Context,
+    val context: Context,
     private var source: String,
     private var transformationPosition: TransformationPosition
 ) {
@@ -22,6 +24,8 @@ class ImagekitUrlConstructor constructor(
     private var isSource: Boolean = true
     private var queryParams: HashMap<String, String> =
         hashMapOf(IK_VERSION_KEY to "android-${BuildConfig.API_VERSION}")
+    private var streamingParam: HashMap<String, String> = hashMapOf()
+    private var rawParams: String? = null
 
     constructor(
         context: Context,
@@ -286,547 +290,6 @@ class ImagekitUrlConstructor constructor(
     }
 
     /**
-     * Method used to provide more granular control over the positioning of the overlay image on the input image.
-     * The top left corner of the input image is considered as (0,0) and the bottom right corner is considered as (w, h)
-     * where w is the width and h is the height of the input image.
-     * Negative values are supported with a leading capital N in front of the value provided. The value provided
-     * is subtracted from the original dimension of the image & positioned accordingly.
-     * @param overlayX Possible values include all integers.
-     * @return the current ImagekitUrlConstructor object.
-     * or the overlay focus has already been applied
-     */
-    fun overlayX(overlayX: Int): ImagekitUrlConstructor {
-        val s = if (overlayX < 0)
-            String.format("%s-N%s", TransformationMapping.overlayX, abs(overlayX))
-        else
-            String.format("%s-%d", TransformationMapping.overlayX, overlayX)
-
-        transformationMap[TransformationMapping.overlayX] = s
-        transformationList.add(s)
-        return this
-    }
-
-    /**
-     * Method used to provide more granular control over the positioning of the overlay image on the input image.
-     * The top left corner of the input image is considered as (0,0) and the bottom right corner is considered as (w, h)
-     * where w is the width and h is the height of the input image.
-     * Negative values are supported with a leading capital N in front of the value provided. The value provided
-     * is subtracted from the original dimension of the image & positioned accordingly.
-     * @param overlayY Possible values include all integers.
-     * @return the current ImagekitUrlConstructor object.
-     * or the overlay focus has already been applied
-     */
-    fun overlayY(overlayY: Int): ImagekitUrlConstructor {
-        val s = if (overlayY < 0)
-            String.format("%s-N%s", TransformationMapping.overlayY, abs(overlayY))
-        else
-            String.format("%s-%d", TransformationMapping.overlayY, overlayY)
-
-        transformationMap[TransformationMapping.overlayY] = s
-        transformationList.add(s)
-        return this
-    }
-
-    /**
-     * Method used to specify the position of the overlaid image relative to the input image.
-     * @param overlayFocus Possible values include center, top, left, bottom, right, top_left, top_right, bottom_left and bottom_right.
-     * Default value - center
-     * @see OverlayFocusType
-     * @return the current ImagekitUrlConstructor object.
-     * using either overlayPosX() or overlayPosY()
-     */
-    fun overlayFocus(overlayFocus: OverlayFocusType): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayFocus] = overlayFocus
-        transformationList.add(
-            String.format(
-                "%s-%s",
-                TransformationMapping.overlayFocus,
-                overlayFocus.value
-            )
-        )
-        return this
-    }
-
-    /**
-     * Method used to specify the height of the overlaid image.
-     * @param overlayHeight
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayHeight(overlayHeight: Int): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayHeight] = overlayHeight
-        transformationList.add(
-            String.format(
-                "%s-%d",
-                TransformationMapping.overlayHeight,
-                overlayHeight
-            )
-        )
-        return this
-    }
-
-    /**
-     * Method used to specify the width of the overlaid image.
-     * @param overlayWidth
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayWidth(overlayWidth: Int): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayWidth] = overlayWidth
-        transformationList.add(
-            String.format(
-                "%s-%d",
-                TransformationMapping.overlayWidth,
-                overlayWidth
-            )
-        )
-        return this
-    }
-
-    /**
-     * Method to specify an image to overlay over another image. This will help you generate watermarked images if needed.
-     * @param overlayImage
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayImage(overlayImage: String): ImagekitUrlConstructor {
-        val formattedOverlayImage = overlayImage.replace("/", "@@")
-        transformationMap[TransformationMapping.overlayImage] = formattedOverlayImage
-        transformationList.add(
-            String.format(
-                "%s-%s",
-                TransformationMapping.overlayImage,
-                formattedOverlayImage
-            )
-        )
-        return this
-    }
-
-
-    /**
-     * Method to trims the overlay image before overlaying it on the base.
-     * @param overlayImage
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayImageTrim(overlayImageTrim: Boolean): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayImageTrim] = overlayImageTrim.toString()
-        transformationList.add(
-            String.format(
-                "%s-%s",
-                TransformationMapping.overlayImageTrim,
-                overlayImageTrim.toString()
-            )
-        )
-        return this
-    }
-
-    /**
-     * Method to specify the aspect ratio of the output image or the ratio of width to height of the output image.
-     * This transform must be used along with either the height or the width transform.
-     * @param width Accepts integer value greater than equal to 1
-     * @param height Accepts integer value greater than equal to 1
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayImageAspectRatio(width: Int, height: Int): ImagekitUrlConstructor {
-        val s =
-            String.format("%s-%d-%d", TransformationMapping.overlayImageAspectRatio, width, height)
-        transformationMap[TransformationMapping.overlayImageAspectRatio] = s
-        transformationList.add(s)
-        return this
-    }
-
-    /**
-     * Method used to specify the colour of background canvas to be overlaid. Possible values include a valid RGB Hex code.
-     * @param overlayBackground
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayImageBackground(overlayImageBackground: String): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayImageBackground] =
-            overlayImageBackground.toUpperCase(Locale.getDefault())
-        transformationList.add(
-            String.format(
-                "%s-%s",
-                TransformationMapping.overlayImageBackground,
-                overlayImageBackground.toUpperCase(Locale.getDefault())
-            )
-        )
-        return this
-    }
-
-    /**
-     * Method used to specify the width and color of the border that is added around the overlaid image.
-     * The width is a positive integer that specifies the border width in pixels.
-     * The border color is specified as a standard RGB hex code e.g b-{width}_{color}
-     * @param borderWidth width of the border
-     * @param borderColor color of the border as RGB hex code
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayImageBorder(borderWidth: Int, borderColor: String): ImagekitUrlConstructor {
-        val s = String.format(
-            "%s-%d_%s",
-            TransformationMapping.overlayImageBorder,
-            borderWidth,
-            borderColor.toUpperCase(Locale.getDefault())
-        )
-        transformationMap[TransformationMapping.border] = s
-        transformationList.add(s)
-        return this
-    }
-
-    /**
-     * Method to specify the device pixel ratio to be used to calculate the dimension of the overlaid image. It is useful
-     * when creating image transformations for devices with high density screens (DPR greater than 1) like the iPhone.
-     * The DPR option works only when either the height or the width or both are specified for resizing the image
-     * If the resulting height or width after considering the specified DPR value is less than 1px or more than 5000px
-     * then the value of DPR is not considered and the normal height or width specified in the transformation string is used.
-     * @param dpr Possible values: 0.1 to 5.0
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayImageDPR(dpr: Float): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayImageDPR] = dpr
-        transformationList.add(String.format("%s-%.2f", TransformationMapping.overlayImageDPR, dpr))
-        return this
-    }
-
-    /**
-     * Method to specify the output quality of the lossy formats like JPG and WebP of Overlaid Image. A higher quality number means a
-     * larger size of the output image with high quality. A smaller number means low quality image at a smaller size.
-     * @param quality Accepts integer value between 1 and 100.
-     * Default value is picked from the dashboard settings. It is set to 80.
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayImageQuality(quality: Int): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayImageQuality] = quality
-        transformationList.add(
-            String.format(
-                "%s-%d",
-                TransformationMapping.overlayImageQuality,
-                quality
-            )
-        )
-        return this
-    }
-
-
-    /**
-     * Method used to specify the strategy of how the overlay image is used for cropping to get the output image.
-     * @param cropMode Accepts value of type CropMode. Possible values include resize, extract, pad_extract and pad_resize.
-     * Default value - resize
-     * @see CropMode
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayImageCropping(cropMode: CropMode): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayImageCropping] = cropMode
-        transformationList.add(
-            String.format(
-                "%s-%s",
-                TransformationMapping.overlayImageCropping,
-                cropMode.value
-            )
-        )
-        return this
-    }
-
-
-    /**
-     * Method used to overlay text over an image. Our current support is limited to alphanumberic & special characters _ & - only.
-     * @param overlayText
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayText(overlayText: String): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayText] =
-            URLEncoder.encode(overlayText, "UTF-8")
-        transformationList.add(
-            String.format(
-                "%s-%s",
-                TransformationMapping.overlayText,
-                URLEncoder.encode(overlayText, "UTF-8")
-            )
-        )
-        return this
-    }
-
-    /**
-     * Method used to specify the size of the overlaid text.
-     * @param overlayTextFontSize Possible values include any integer. Default value - 14px
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayTextFontSize(overlayTextFontSize: Int): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayTextFontSize] = overlayTextFontSize
-        transformationList.add(
-            String.format(
-                "%s-%d",
-                TransformationMapping.overlayTextFontSize,
-                overlayTextFontSize
-            )
-        )
-        return this
-    }
-
-    /**
-     * Method used to specify the font family for the overlaid text.
-     * @param overlayTextFontFamily
-     * @return the current ImagekitUrlConstructor object.
-     * @see overlayTextFontFamily
-     */
-    fun overlayTextFontFamily(overlayTextFontFamily: OverlayTextFont): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayTextFontFamily] = overlayTextFontFamily
-        transformationList.add(
-            String.format(
-                "%s-%s",
-                TransformationMapping.overlayTextFontFamily,
-                overlayTextFontFamily.value
-            )
-        )
-        return this
-    }
-
-    /**
-     * Method used to specify the color of the overlaid text on the image.
-     * @param overlayTextColor Possible value is a valid valid RGB Hex Code
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayTextColor(overlayTextColor: String): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayTextColor] =
-            overlayTextColor.toUpperCase(Locale.getDefault())
-        transformationList.add(
-            String.format(
-                "%s-%s",
-                TransformationMapping.overlayTextColor,
-                overlayTextColor.toUpperCase(Locale.getDefault())
-            )
-        )
-        return this
-    }
-
-    /**
-     * Method used to specify the transparency leve of the overlaid text on the image.
-     * Note Overlay transparency is currently supported for overlay texts & backgrounds only.
-     * @param overlayAlpha Possible values include integer from 1 to 9.
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayTextTransparency(overlayTextTransparency: Int): ImagekitUrlConstructor {
-        return this.overlayAlpha(overlayTextTransparency)
-    }
-
-    /**
-     * Method used to specify the transparency level for the overlaid image.
-     * Note Overlay transparency is currently supported for overlay texts & backgrounds only.
-     * @param overlayAlpha Possible values include integer from 1 to 9.
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayAlpha(overlayAlpha: Int): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayAlpha] = overlayAlpha
-        transformationList.add(
-            String.format(
-                "%s-%d",
-                TransformationMapping.overlayAlpha,
-                overlayAlpha
-            )
-        )
-        return this
-    }
-
-    /**
-     * Method used to specify the typography of the font family used for the overlaid text. Possible values include bold b and italics i.
-     * Note Bold & Italics are not supported for all provided fonts.
-     * @param overlayTextTypography
-     * @return the current ImagekitUrlConstructor object
-     * @see OverlayTextTypography
-     */
-    fun overlayTextTypography(overlayTextTypography: OverlayTextTypography): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayTextTypography] = overlayTextTypography
-        transformationList.add(
-            String.format(
-                "%s-%s",
-                TransformationMapping.overlayTextTypography,
-                overlayTextTypography.value
-            )
-        )
-        return this
-    }
-
-    /**
-     * Method used to specify the colour of background canvas to be overlaid. Possible values include a valid RGB Hex code.
-     * @param overlayBackground
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayBackground(overlayBackground: String): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayBackground] =
-            overlayBackground.toUpperCase(Locale.getDefault())
-        transformationList.add(
-            String.format(
-                "%s-%s",
-                TransformationMapping.overlayBackground,
-                overlayBackground.toUpperCase(Locale.getDefault())
-            )
-        )
-        return this
-    }
-
-    /**
-     * Method used to base64 encded overlay text over an image.
-     * @param overlayTextEncoded
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayTextEncoded(overlayTextEncoded: String): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayTextEncoded] =
-            overlayTextEncoded.replace("=", "%3D")
-        transformationList.add(
-            String.format(
-                "%s-%s",
-                TransformationMapping.overlayTextEncoded,
-                overlayTextEncoded.replace("=", "%3D")
-            )
-        )
-        return this
-    }
-
-    /**
-     * Method to specify the width of the overlaid text on the output image.
-     * @param width Accepts integer value greater than 1.
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayTextWidth(width: Int): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayTextWidth] = width
-        transformationList.add(
-            String.format(
-                "%s-%d",
-                TransformationMapping.overlayTextWidth,
-                width
-            )
-        )
-        return this
-    }
-
-    /**
-     * Method used to specify the background color of the overlaid text on the image.
-     * @param overlayTextColor
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayTextBackground(overlayTextColor: String): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayTextBackground] =
-            overlayTextColor.toUpperCase(Locale.getDefault())
-        transformationList.add(
-            String.format(
-                "%s-%s",
-                TransformationMapping.overlayTextBackground,
-                overlayTextColor.toUpperCase(Locale.getDefault())
-            )
-        )
-        return this
-    }
-
-    /**
-     * Method used to specify the padding of the overlaid text on the image.
-     * @param overlayTextPadding
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayTextPadding(overlayTextPadding: String): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayTextPadding] = overlayTextPadding
-        transformationList.add(
-            String.format(
-                "%s-%s",
-                TransformationMapping.overlayTextPadding,
-                overlayTextPadding
-            )
-        )
-        return this
-    }
-
-    /**
-     * Method used to specify the padding of the overlaid text on the image.
-     * @param overlayTextPadding
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayTextPadding(overlayTextPadding: Int): ImagekitUrlConstructor {
-        return this.overlayTextPadding(String.format("%d", overlayTextPadding))
-    }
-
-    /**
-     * Method used to specify the padding of the overlaid text on the image.
-     * @param verticalPadding
-     * @param horizontalPadding
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayTextPadding(verticalPadding: Int, horizontalPadding: Int): ImagekitUrlConstructor {
-        return this.overlayTextPadding(String.format("%d_%d", verticalPadding, horizontalPadding))
-    }
-
-    /**
-     * Method used to specify the padding of the overlaid text on the image.
-     * @param topPadding
-     * @param horizontalPadding
-     * @param bottomPadding
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayTextPadding(
-        topPadding: Int,
-        horizontalPadding: Int,
-        bottomPadding: Int
-    ): ImagekitUrlConstructor {
-        return this.overlayTextPadding(
-            String.format(
-                "%d_%d_%d",
-                topPadding,
-                horizontalPadding,
-                bottomPadding
-            )
-        )
-    }
-
-    /**
-     * Method used to specify the padding of the overlaid text on the image.
-     * @param topPadding
-     * @param rightPadding
-     * @param bottomPadding
-     * @param leftPadding
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayTextPadding(
-        topPadding: Int,
-        rightPadding: Int,
-        bottomPadding: Int,
-        leftPadding: Int
-    ): ImagekitUrlConstructor {
-        return this.overlayTextPadding(
-            String.format(
-                "%d_%d_%d_%d",
-                topPadding,
-                rightPadding,
-                bottomPadding,
-                leftPadding
-            )
-        )
-    }
-
-    /**
-     * Method used to specify the alignment of the overlaid text on the image.
-     * @param overlayTextInnerAlignment
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayTextInnerAlignment(overlayTextInnerAlignment: OverlayTextInnerAlignment): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayTextInnerAlignment] =
-            overlayTextInnerAlignment.value
-        transformationList.add(
-            String.format(
-                "%s-%s",
-                TransformationMapping.overlayTextInnerAlignment,
-                overlayTextInnerAlignment.value
-            )
-        )
-        return this
-    }
-
-    /**
-     * Method used to specify the radius to be used to get a rounded corner overlay.
-     * @param radius Possible values include positive integer.
-     * @return the current ImagekitUrlConstructor object.
-     */
-    fun overlayRadius(radius: Int): ImagekitUrlConstructor {
-        transformationMap[TransformationMapping.overlayRadius] = radius
-        transformationList.add(String.format("%s-%d", TransformationMapping.overlayRadius, radius))
-        return this
-    }
-
-    /**
      * Method to specify if the output JPEG image should be rendered progressively. In progressive rendering,
      * the client instead of downloading the image row-wise (baseline loading), renders a low-quality pixelated
      * full image and then gradually keeps on adding more pixels and information to the image. It gives faster-perceived load times.
@@ -969,6 +432,39 @@ class ImagekitUrlConstructor constructor(
     }
 
     /**
+     * Set the parameters to fetch the video in an adaptive streaming format.
+     * @param format The desired streaming format to be fetched (HLS or DASH).
+     * @param resolutions The list of video resolutions to be made available to choose from during video streaming.
+     * @return the current ImagekitUrlConstructor object.
+     */
+    fun setAdaptiveStreaming(
+        format: StreamingFormat,
+        resolutions: List<Int>
+    ): ImagekitUrlConstructor {
+        streamingParam["ik-master"] = format.extension
+
+        transformationMap[TransformationMapping.streamingResolution] = resolutions
+        transformationList.add(
+            String.format(
+                "%s-%s",
+                TransformationMapping.streamingResolution,
+                resolutions.joinToString(separator = "_")
+            )
+        )
+        return this
+    }
+
+    /**
+     * Add the raw transformation options passed as a string to the transformations list.
+     * @param params The string containing the comma-separated transformation parameters.
+     * @return the current ImagekitUrlConstructor object.
+     */
+    fun raw(params: String): ImagekitUrlConstructor {
+        rawParams = params
+        return this
+    }
+
+    /**
      * Unsharp masking (USM) is an image sharpening technique.
      * Method allows you to apply and control unsharp mask on your images. The amount of sharpening can be controlled
      * by varying the 4 parameters - radius, sigma, amount and threshold. This results in perceptually better images
@@ -1081,6 +577,48 @@ class ImagekitUrlConstructor constructor(
     }
 
     /**
+     * Set the image size and crop of the image to be responsive to the target view/window.
+     * Method allows you to automatically set the height, width and DPR parameters of images according to the target View specified. The height and width can be constrained
+     * by varying the parameters - minSize, maxSize, and step. the default crop mode and focus area values can also be overridden by passing the crop and focus arguments, else.
+     * @param view The reference of the view of which the dimensions are to be taken into consideration for image sizing.
+     * @param minSize Minimum allowed size for image width/height.
+     * @param maxSize Maximum allowed size for image width/height.
+     * @param step Possible values include positive integer values.
+     * @param cropMode Possible values include the values defined in enum CropMode.
+     * @param focus Possible values include the values defined in enum FocusType.
+     * @return the current ImagekitUrlConstructor object.
+     */
+    fun setResponsive(
+        view: View,
+        minSize: Int = 0,
+        maxSize: Int = 5000,
+        step: Int = 100,
+        cropMode: CropMode = CropMode.RESIZE,
+        focus: FocusType = FocusType.CENTER
+    ): ImagekitUrlConstructor {
+        check(minSize % step == 0 && maxSize % step == 0) {
+            "Values of minSize and maxSize should be in the multiples of step"
+        }
+        val displayMetrics = context.resources.displayMetrics
+        var targetWidth = view.width - view.paddingLeft - view.paddingRight
+        var targetHeight = view.height - view.paddingTop - view.paddingBottom
+        val aspectRatio = targetWidth.toFloat() / targetHeight
+        if (targetWidth <= 0) {
+            targetWidth = displayMetrics.widthPixels - view.paddingLeft - view.paddingRight
+        }
+        if (targetHeight <= 0) {
+            targetHeight = (displayMetrics.heightPixels * if (aspectRatio < 1) 0.5f else 1f).toInt() - view.paddingTop - view.paddingBottom
+        }
+        return this.width(roundUpSize(targetWidth, step).coerceIn(minSize..maxSize))
+            .height(roundUpSize(targetHeight, step).coerceIn(minSize..maxSize))
+            .dpr(displayMetrics.density)
+            .cropMode(cropMode)
+            .focus(focus)
+    }
+
+    private fun roundUpSize(size: Int, step: Int): Int = ((size - 1) / step + 1) * step
+
+    /**
      * Used to create the url using the transformations specified before invoking this method.
      * @return the Url used to fetch an image after applying the specified transformations.
      */
@@ -1090,6 +628,14 @@ class ImagekitUrlConstructor constructor(
 
         if (url.isEmpty()) {
             return ""
+        }
+
+        if (streamingParam.containsKey("ik-master")) {
+            url = url.plus("/ik-master.${streamingParam["ik-master"]}")
+        }
+
+        if (rawParams != null) {
+            transformationList.addAll(rawParams?.split(',') ?: emptyList())
         }
 
         if (transformationList.isNotEmpty()) {

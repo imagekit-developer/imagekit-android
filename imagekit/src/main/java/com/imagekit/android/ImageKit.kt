@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import com.imagekit.android.entity.TransformationPosition
+import com.imagekit.android.entity.UploadPolicy
 import com.imagekit.android.injection.component.DaggerUtilComponent
 import com.imagekit.android.injection.component.UtilComponent
 import com.imagekit.android.injection.module.ContextModule
@@ -18,7 +19,7 @@ class ImageKit private constructor(
     clientPublicKey: String,
     imageKitEndpoint: String,
     transformationPosition: TransformationPosition,
-    authenticationEndpoint: String
+    val defaultUploadPolicy: UploadPolicy
 ) {
 
     @Inject
@@ -38,7 +39,6 @@ class ImageKit private constructor(
         mSharedPrefUtil.setClientPublicKey(clientPublicKey)
         mSharedPrefUtil.setImageKitUrlEndpoint(imageKitEndpoint)
         mSharedPrefUtil.setTransformationPosition(transformationPosition)
-        mSharedPrefUtil.setClientAuthenticationEndpoint(authenticationEndpoint)
 
         NetworkManager.initialize()
     }
@@ -56,18 +56,18 @@ class ImageKit private constructor(
             publicKey: String = "",
             urlEndpoint: String,
             transformationPosition: TransformationPosition = TransformationPosition.PATH,
-            authenticationEndpoint: String = ""
+            defaultUploadPolicy: UploadPolicy = UploadPolicy.defaultPolicy()
         ) {
             if (context !is Application)
                 throw Exception("Application Context Expected!!")
-            else check(!(urlEndpoint.isBlank())) { "Missing urlEndpoint during initialization" }
+            else check(urlEndpoint.isNotBlank()) { "Missing urlEndpoint during initialization" }
 
             imageKit = ImageKit(
                 context,
                 publicKey,
                 urlEndpoint,
                 transformationPosition,
-                authenticationEndpoint
+                defaultUploadPolicy
             )
         }
 

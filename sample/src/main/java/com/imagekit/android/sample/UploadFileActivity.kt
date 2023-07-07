@@ -1,15 +1,19 @@
 package com.imagekit.android.sample
 
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.imagekit.android.ImageKit
 import com.imagekit.android.ImageKitCallback
 import com.imagekit.android.entity.UploadError
 import com.imagekit.android.entity.UploadResponse
-import kotlinx.android.synthetic.main.activity_upload_image.*
+import com.imagekit.android.preprocess.VideoUploadPreprocessor
+import com.imagekit.android.sample.databinding.ActivityUploadFileBinding
 import java.io.*
 
 
@@ -20,15 +24,22 @@ class UploadFileActivity : AppCompatActivity(), ImageKitCallback, View.OnClickLi
     private var file: File? = null
 
     override fun onClick(v: View?) {
-        uploadImage()
+        selectVideo()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        copyAssets()
-        setContentView(R.layout.activity_upload_file)
-        btUpload.setOnClickListener(this)
+//        copyAssets()
+        val binding = ActivityUploadFileBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.btUpload.setOnClickListener(this)
 
+    }
+
+    private fun selectVideo() {
+        val photoPickerIntent = Intent(Intent.ACTION_PICK)
+        photoPickerIntent.type = "video/*"
+        startActivityForResult(photoPickerIntent, 1331)
     }
 
     private fun uploadImage() {
@@ -40,10 +51,14 @@ class UploadFileActivity : AppCompatActivity(), ImageKitCallback, View.OnClickLi
 
             ImageKit.getInstance().uploader().upload(
                 file = file!!,
+                token = "",
                 fileName = file!!.name,
-                useUniqueFilename = true,
+                useUniqueFileName = true,
                 tags = arrayOf("nice", "copy", "books"),
                 folder = "/dummy/folder/",
+                preprocessor = VideoUploadPreprocessor.Builder()
+                    .limit(200, 200)
+                    .build(),
                 imageKitCallback = this
             )
         }
@@ -118,6 +133,30 @@ class UploadFileActivity : AppCompatActivity(), ImageKitCallback, View.OnClickLi
         while (read != -1) {
             out.write(buffer, 0, read)
             read = `in`.read(buffer)
+        }
+    }
+
+    override fun onActivityResult(reqCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(reqCode, resultCode, data)
+
+
+        if (resultCode == Activity.RESULT_OK) {
+            try {
+                val videoUri = data!!.data
+                contentResolver.openInputStream(videoUri!!)?.use { input ->
+                    file = File(cacheDir, "sample.mp4").also { it.createNewFile() }
+                    FileOutputStream(file).use {
+                        copyFile(input, it)
+                        uploadImage()
+                    }
+                }
+            } catch (e: FileNotFoundException) {
+                e.printStackTrace()
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
+            }
+
+        } else {
+            Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show()
         }
     }
 }

@@ -8,12 +8,9 @@ import retrofit2.http.*
 
 interface ApiInterface {
     @Multipart
-    @POST("/v1/files/upload")
+    @POST("api/v2/files/upload")
     fun uploadImage(
         @Part file: MultipartBody.Part?,
-        @Part publicKey: MultipartBody.Part?,
-        @Part signature: MultipartBody.Part?,
-        @Part expire: MultipartBody.Part?,
         @Part token: MultipartBody.Part?,
         @Part fileName: MultipartBody.Part?,
         @Part useUniqueFileName: MultipartBody.Part?,
@@ -21,7 +18,14 @@ interface ApiInterface {
         @Part folder: MultipartBody.Part?,
         @Part isPrivateFile: MultipartBody.Part?,
         @Part customCoordinates: MultipartBody.Part?,
-        @Part responseFields: MultipartBody.Part?
+        @Part responseFields: MultipartBody.Part?,
+        @Part extensions: MultipartBody.Part?,
+        @Part webhookUrl: MultipartBody.Part?,
+        @Part overwriteFile: MultipartBody.Part?,
+        @Part overwriteAITags: MultipartBody.Part?,
+        @Part overwriteTags: MultipartBody.Part?,
+        @Part overwriteCustomMetadata: MultipartBody.Part?,
+        @Part customMetadata: MultipartBody.Part?,
     ): Single<ResponseBody>
 
     @GET
