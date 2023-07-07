@@ -42,7 +42,6 @@ class URLGenerationTests {
             publicKey = clientPublicKey,
             urlEndpoint = urlEndpoint,
             transformationPosition = TransformationPosition.PATH,
-            authenticationEndpoint = "https://imagekit.io/temp/client-side-upload-signature"
         )
     }
 
