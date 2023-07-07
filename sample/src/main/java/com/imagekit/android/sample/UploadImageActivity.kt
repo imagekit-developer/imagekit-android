@@ -81,7 +81,7 @@ class UploadImageActivity : AppCompatActivity(), ImageKitCallback, View.OnClickL
                     useUniqueFileName = true,
                     tags = arrayOf("nice", "copy", "books"),
                     folder = "/dummy/folder/",
-                    policy = UploadPolicy.Builder().maxRetries(0).backoffCriteria(
+                    policy = UploadPolicy.Builder().maxRetries(3).backoffCriteria(
                         backoffMillis = 100L,
                         backoffPolicy = UploadPolicy.BackoffPolicy.EXPONENTIAL
                     ).build(),
