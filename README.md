@@ -626,6 +626,7 @@ In the module build.gradle file, add:
 implementation 'com.github.imagekit-developer:imagekit-glide-extension:1.0.0'
 ```
 Then add the `createWithGlide()` extension function to the ImageKit URL constructor chain to get Glide's `RequestBuilder` instance to load into any target.
+The `placeholderImage` and `errorImage` parameters can be optionally set to pass the drawables to show for placeholder and error states respectively.
 ```kotlin
 ImageKit.getInstance()
     .url(
@@ -634,9 +635,22 @@ ImageKit.getInstance()
     )
     .height(400f)
     .aspectRatio(3, 2)
-    .createWithGlide()
+    .createWithGlide(
+      placeholderImage = context.getDrawable(R.id.placeholder),
+      errorImage = context.getDrawable(R.id.error)
+    )
     .circleCrop()
     .into(imageView)
+```
+```java
+IKGlideExtension.createWithGlide(
+    ImageKit.Companion.getInstance()
+        .url("default-image.jpg", TransformationPosition.QUERY)
+        .height(400)
+        .aspectRatio(3, 2),
+    context.getDrawable(R.id.placeholder),
+    context.getDrawable(R.id.error)
+).circleCrop().into(imageView);
 ```
 
 ### Picasso
@@ -645,6 +659,7 @@ In the module build.gradle file, add:
 implementation 'com.github.imagekit-developer:imagekit-picasso-extension:1.0.0'
 ```
 Then add the `createWithPicasso()` extension function to the ImageKit URL constructor chain to get Picasso's `RequestCreator` instance to load into any target.
+The `placeholderImage` and `errorImage` parameters can be optionally set to pass the drawables to show for placeholder and error states respectively.
 ```kotlin
 ImageKit.getInstance()
     .url(
@@ -653,9 +668,22 @@ ImageKit.getInstance()
     )
     .height(400f)
     .aspectRatio(3, 2)
-    .createWithPicasso()
+    .createWithPicasso(
+      placeholderImage = context.getDrawable(R.id.placeholder),
+      errorImage = context.getDrawable(R.id.error)
+    )
     .centerCrop()
     .into(imageView)
+```
+```java
+IKPicassoExtension.createWithPicasso(
+    ImageKit.Companion.getInstance()
+        .url("default-image.jpg", TransformationPosition.QUERY)
+        .height(400)
+        .aspectRatio(3, 2),
+    context.getDrawable(R.id.placeholder),
+    context.getDrawable(R.id.error)
+).centerCrop().into(imageView);
 ```
 
 ### Coil
@@ -664,6 +692,7 @@ In the module build.gradle file, add:
 implementation 'com.github.imagekit-developer:imagekit-coil-extension:1.0.0'
 ```
 Then add the `createWithCoil()` extension function to the ImageKit URL constructor chain to get Coil's `ImageRequest.Builder` instance to load into any target, which can be enqueued with an `ImageLoader` instance.
+The `placeholderImage` and `errorImage` parameters can be optionally set to pass the drawables to show for placeholder and error states respectively.
 ```kotlin
 Coil.imageLoader(context)
     .enqueue(ImageKit.getInstance()
@@ -673,10 +702,28 @@ Coil.imageLoader(context)
         )
         .height(400f)
         .aspectRatio(3, 2)
-        .createWithCoil()
+        .createWithCoil(
+          placeholderImage = context.getDrawable(R.id.placeholder),
+          errorImage = context.getDrawable(R.id.error)
+        )
         .target(imageView)
         .build()
     )
+```
+```java
+Coil.imageLoader(context)
+    .enqueue(
+        IKCoilExtension.createWithCoil(
+            ImageKit.Companion.getInstance()
+                .url("default-image.jpg", TransformationPosition.QUERY)
+                .height(400)
+                .aspectRatio(3, 2),
+            context.getDrawable(R.id.placeholder),
+            context.getDrawable(R.id.error)
+        )
+        .target(imageView)
+        .build()
+);
 ```
 
 ### Fresco
@@ -685,6 +732,7 @@ In the module build.gradle file, add:
 implementation 'com.github.imagekit-developer:imagekit-fresco-extension:1.0.0'
 ```
 Then add the `createWithFresco()` extension function to the ImageKit URL constructor chain to get Fresco's `ImageRequest` instance to load into any target, which can be loaded into the controller of target `DraweeView` provided by Fresco by calling the `buildWithTarget()` method.
+The `postprocessor` parameter can be optionally set to pass a `Postprocessor` for [post-precessing of images](https://frescolib.org/docs/modifying-image.html).
 ```kotlin
 ImageKit.getInstance()
     .url(
@@ -693,8 +741,22 @@ ImageKit.getInstance()
     )
     .height(400f)
     .aspectRatio(3, 2)
-    .createWithFresco()
+    .createWithFresco(
+      postprocessor = WatermarkPostprocessor()
+    )
     .buildWithTarget(simpleDraweeView)
+```
+```java
+IKFrescoExtension.buildWithTarget(
+    IKFrescoExtension.createWithFresco(
+        ImageKit.Companion.getInstance()
+            .url("default-image.jpg", TransformationPosition.QUERY)
+            .height(400)
+            .aspectRatio(3, 2),
+        WatermarkPostprocessor()
+    ),
+    simpleDraweeView
+);
 ```
 
 ## Support
