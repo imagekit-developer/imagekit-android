@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import com.imagekit.android.entity.TransformationPosition
 import com.imagekit.android.entity.UploadError
+import com.imagekit.android.entity.UploadPolicy
 import com.imagekit.android.entity.UploadResponse
 import com.imagekit.android.retrofit.ApiInterface
 import com.imagekit.android.retrofit.BuildVersionQueryInterceptor
@@ -311,6 +312,7 @@ class UploadTests {
             file = "http://ik.imagekit.io/demo/img/default-image.jpg",
             token = "",
             fileName = "default-image-test.jpg",
+            policy = UploadPolicy.defaultPolicy(),
             imageKitCallback = object : ImageKitCallback {
 
                 override fun onSuccess(uploadResponse: UploadResponse) {

@@ -1,3 +1,4 @@
+@file:JvmName("IKGlideExtension")
 package com.imagekit.android.glide_extension
 
 import android.annotation.SuppressLint
@@ -6,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.imagekit.android.ImagekitUrlConstructor
 
+@JvmOverloads
 @SuppressLint("CheckResult")
 fun ImagekitUrlConstructor.createWithGlide(
     placeholderImage: Drawable? = null,
