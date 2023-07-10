@@ -630,10 +630,6 @@ class ImagekitUrlConstructor constructor(
             return ""
         }
 
-        if (streamingParam.containsKey("ik-master")) {
-            url = url.plus("/ik-master.${streamingParam["ik-master"]}")
-        }
-
         if (rawParams != null) {
             transformationList.addAll(rawParams?.split(',') ?: emptyList())
         }
@@ -653,13 +649,22 @@ class ImagekitUrlConstructor constructor(
                         ""
                     )
                 }
+                if (streamingParam.containsKey("ik-master")) {
+                    url = url.plus("/ik-master.${streamingParam["ik-master"]}")
+                }
                 queryParams["tr"] = transforms
             } else {
                 if (transformationPosition == TransformationPosition.PATH) {
                     url = String.format("%s/%s", addPathParams(url), path)
+                    if (streamingParam.containsKey("ik-master")) {
+                        url = url.plus("/ik-master.${streamingParam["ik-master"]}")
+                    }
                 }
                 if (transformationPosition == TransformationPosition.QUERY) {
                     url = String.format("%s/%s", url, path)
+                    if (streamingParam.containsKey("ik-master")) {
+                        url = url.plus("/ik-master.${streamingParam["ik-master"]}")
+                    }
                     queryParams["tr"] = transforms
                 }
             }
