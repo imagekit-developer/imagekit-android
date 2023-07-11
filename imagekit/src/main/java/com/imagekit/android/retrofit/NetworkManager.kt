@@ -7,6 +7,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -80,7 +81,7 @@ object NetworkManager {
         val commaSeparatedTags = getCommaSeparatedTagsFromTags(tags)
 
         val profileImagePart: MultipartBody.Part = if (file is File) {
-            val fileBody = RequestBody.create(MediaType.parse("image/png"), file.readBytes())
+            val fileBody = RequestBody.create("image/png".toMediaTypeOrNull(), file.readBytes())
             // MultipartBody.Part is used to send also the actual file name
             MultipartBody.Part.createFormData(
                 "file",
