@@ -48,7 +48,7 @@ class URLGenerationTests {
     @Test
     fun urlConstructionOverridingUrlendpointParameter() {
         val expectedTransformation =
-            "https://ik.imagekit.io/modified_imagekitid/medium_cafe_B1iTdD0C.jpg?"
+            "https://ik.imagekit.io/modified_imagekitid/medium_cafe_B1iTdD0C.jpg"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
@@ -63,7 +63,7 @@ class URLGenerationTests {
     @Test
     fun urlConstructionRemovalOfDoubleSlashesInUrlendpoint() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
@@ -78,7 +78,7 @@ class URLGenerationTests {
     @Test
     fun urlConstructionRemovalOfDoubleSlashesInPath() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
@@ -94,7 +94,7 @@ class URLGenerationTests {
     @Test
     fun urlConstructionNewTransformationParameter() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/tr:test-test/medium_cafe_B1iTdD0C.jpg?"
+            "https://ik.imagekit.io/demo/tr:test-test/medium_cafe_B1iTdD0C.jpg"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
@@ -110,7 +110,7 @@ class URLGenerationTests {
     @Test
     fun urlConstructionSdkVersionAsQueryParameter() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
@@ -142,7 +142,7 @@ class URLGenerationTests {
     @Test
     fun urlConstructionChainedTransformation() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/tr:h-300:rt-90/medium_cafe_B1iTdD0C.jpg?"
+            "https://ik.imagekit.io/demo/tr:h-300:rt-90/medium_cafe_B1iTdD0C.jpg"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
@@ -159,7 +159,7 @@ class URLGenerationTests {
     @Test
     fun urlConstructionSourceUrl() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
