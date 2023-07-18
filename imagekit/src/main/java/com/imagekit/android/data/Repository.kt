@@ -67,7 +67,14 @@ class Repository @Inject constructor(
                 overwriteCustomMetadata,
                 customMetadata
             ).doOnError { e ->
-                if(retryCount == uploadPolicy.maxErrorRetries) {
+                if (e is HttpException && e.code() in 400 until 500) {
+                    imageKitCallback.onError(
+                        Gson().fromJson(
+                            e.response()?.errorBody()!!.string(),
+                            UploadError::class.java
+                        )
+                    )
+                } else if (retryCount == uploadPolicy.maxErrorRetries) {
                     if (e is HttpException) {
                         e.response()?.let {
                             try {
