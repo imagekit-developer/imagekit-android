@@ -8,7 +8,6 @@ import com.imagekit.android.entity.UploadError
 import com.imagekit.android.entity.UploadPolicy
 import com.imagekit.android.entity.UploadResponse
 import com.imagekit.android.retrofit.ApiInterface
-import com.imagekit.android.retrofit.BuildVersionQueryInterceptor
 import com.imagekit.android.retrofit.NetworkManager
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -475,7 +474,6 @@ class UploadTests {
 
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(logging)
-            .addInterceptor(BuildVersionQueryInterceptor())
             .build()
 
         val url: String = mockWebServer.url("/").toString()

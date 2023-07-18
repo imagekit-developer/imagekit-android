@@ -28,7 +28,6 @@ object NetworkManager {
         val okHttpClient = OkHttpClient.Builder()
             .readTimeout(20, TimeUnit.SECONDS)
             .addInterceptor(logging)
-            .addInterceptor(BuildVersionQueryInterceptor())
             .build()
         val retrofit = Retrofit.Builder()
             .baseUrl(baseURL)

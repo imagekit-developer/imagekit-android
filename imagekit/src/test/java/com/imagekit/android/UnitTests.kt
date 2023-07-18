@@ -50,7 +50,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -61,7 +61,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -72,7 +72,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -84,7 +84,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:w-300/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:w-300/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -96,7 +96,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:h-300/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:h-300/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -108,7 +108,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:ar-2-3/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:ar-2-3/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -120,7 +120,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:c-maintain_ratio/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:c-maintain_ratio/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -132,7 +132,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:c-force/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:c-force/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -144,7 +144,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:c-at_least/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:c-at_least/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -156,7 +156,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:c-at_max/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:c-at_max/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -168,7 +168,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:cm-resize/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:cm-resize/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -180,7 +180,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:cm-extract/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:cm-extract/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -192,7 +192,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:cm-pad_extract/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:cm-pad_extract/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -204,7 +204,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:cm-pad_resize/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:cm-pad_resize/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -216,7 +216,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-center/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-center/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -228,7 +228,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-top/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-top/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -240,7 +240,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-left/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-left/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -252,7 +252,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-bottom/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-bottom/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -264,7 +264,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-right/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-right/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -276,7 +276,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-top_left/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-top_left/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -288,7 +288,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-top_right/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-top_right/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -300,7 +300,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-bottom_left/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-bottom_left/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -312,7 +312,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-bottom_right/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-bottom_right/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -324,7 +324,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-auto/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-auto/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -339,7 +339,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:w-300,h-300,cm-extract,x-100,y-300/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:w-300,h-300,cm-extract,x-100,y-300/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -351,7 +351,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:q-50/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:q-50/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -363,7 +363,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:f-auto/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:f-auto/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -375,7 +375,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:f-webp/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:f-webp/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -387,7 +387,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:f-jpg/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:f-jpg/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -399,7 +399,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:f-jpeg/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:f-jpeg/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -411,7 +411,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:f-png/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:f-png/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -423,7 +423,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:bl-50/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:bl-50/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -435,7 +435,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:e-grayscale/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:e-grayscale/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -447,7 +447,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:dpr-2.50/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:dpr-2.50/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -459,7 +459,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:n-test/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:n-test/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -471,7 +471,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:di-medium_cafe_B1iTdD0C.jpg/non_existent_image.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:di-medium_cafe_B1iTdD0C.jpg/non_existent_image.jpg?"
         )
     }
 
@@ -483,7 +483,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:pr-true/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:pr-true/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -495,7 +495,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:lo-true/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:lo-true/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -507,7 +507,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:t-true/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:t-true/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -519,7 +519,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:t-50/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:t-50/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -531,7 +531,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:cp-true/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:cp-true/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -543,7 +543,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:md-true/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:md-true/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -555,7 +555,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:rt-auto/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:rt-auto/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -567,7 +567,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:rt-0/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:rt-0/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -579,7 +579,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:rt-90/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:rt-90/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -591,7 +591,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:rt-180/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:rt-180/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -603,7 +603,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:rt-270/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:rt-270/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -615,7 +615,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:rt-360/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:rt-360/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -627,7 +627,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:r-5/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:r-5/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -639,7 +639,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:r-max/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:r-max/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -651,7 +651,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:bg-00AAFF55/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:bg-00AAFF55/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -663,7 +663,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:b-5_00AAFF55/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:b-5_00AAFF55/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -675,7 +675,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:e-contrast/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:e-contrast/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -687,7 +687,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:e-sharpen-5/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:e-sharpen-5/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -699,7 +699,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:e-usm-5.00-5.00-5.00-5.00/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:e-usm-5.00-5.00-5.00-5.00/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -713,7 +713,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:h-300:rt-90/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:h-300:rt-90/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -725,7 +725,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:w-300/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:w-300/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -740,7 +740,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:h-300,w-300:rt-90/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:h-300,w-300:rt-90/medium_cafe_B1iTdD0C.jpg?"
         )
     }
 
@@ -759,7 +759,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=h-300,w-300:rt-90"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?tr=h-300,w-300:rt-90"
         )
     }
 
@@ -774,7 +774,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=h-300,w-300:rt-90"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?tr=h-300,w-300:rt-90"
         )
     }
 
@@ -789,7 +789,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=h-300,w-300:rt-90"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?tr=h-300,w-300:rt-90"
         )
     }
 
@@ -804,7 +804,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=h-300,w-300:rt-90"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?tr=h-300,w-300:rt-90"
         )
     }
 
