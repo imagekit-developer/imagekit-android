@@ -613,7 +613,7 @@ class ImagekitUrlConstructor constructor(
         }
         return this.width(roundUpSize(targetWidth, step).coerceIn(minSize..maxSize))
             .height(roundUpSize(targetHeight, step).coerceIn(minSize..maxSize))
-            .dpr(displayMetrics.density)
+            .dpr(mathRound(displayMetrics.density))
             .cropMode(cropMode)
             .focus(focus)
     }
