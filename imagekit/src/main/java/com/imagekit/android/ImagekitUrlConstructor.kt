@@ -2,16 +2,19 @@ package com.imagekit.android
 
 import android.content.Context
 import android.view.View
-import com.imagekit.android.ImageKit.Companion.IK_VERSION_KEY
-import com.imagekit.android.entity.*
+import com.imagekit.android.entity.CropMode
+import com.imagekit.android.entity.CropType
+import com.imagekit.android.entity.FocusType
+import com.imagekit.android.entity.Format
+import com.imagekit.android.entity.Rotation
+import com.imagekit.android.entity.StreamingFormat
+import com.imagekit.android.entity.TransformationPosition
 import com.imagekit.android.injection.component.DaggerUtilComponent
 import com.imagekit.android.injection.module.ContextModule
 import com.imagekit.android.util.TransformationMapping
-import java.lang.Math.abs
 import java.net.URI
-import java.net.URLEncoder
-import java.util.*
-import kotlin.collections.HashMap
+import java.util.Locale
+import kotlin.math.round as mathRound
 
 class ImagekitUrlConstructor constructor(
     val context: Context,
@@ -22,8 +25,7 @@ class ImagekitUrlConstructor constructor(
     private val transformationMap = HashMap<String, Any>()
     private var path: String? = null
     private var isSource: Boolean = true
-    private var queryParams: HashMap<String, String> =
-        hashMapOf(IK_VERSION_KEY to "android-${BuildConfig.API_VERSION}")
+    private var queryParams: HashMap<String, String> = hashMapOf()
     private var streamingParam: HashMap<String, String> = hashMapOf()
     private var rawParams: String? = null
 
@@ -693,7 +695,7 @@ class ImagekitUrlConstructor constructor(
             )
         }.joinToString("&"))
 
-        return u.scheme + "://" + u.authority + u.path.replace("=", "%3D") + "?" + sb.toString()
+        return u.scheme + "://" + u.authority + u.path.replace("=", "%3D") + (if (sb.isNotEmpty()) "?" else "") + sb.toString()
 
     }
 

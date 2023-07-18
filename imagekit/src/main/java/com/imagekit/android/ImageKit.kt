@@ -48,8 +48,6 @@ class ImageKit private constructor(
         @SuppressLint("StaticFieldLeak")
         private var imageKit: ImageKit? = null
 
-        const val IK_VERSION_KEY = "ik-sdk-version"
-
         @JvmOverloads
         fun init(
             context: Context,

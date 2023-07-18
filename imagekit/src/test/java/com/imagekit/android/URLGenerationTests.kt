@@ -48,7 +48,7 @@ class URLGenerationTests {
     @Test
     fun urlConstructionOverridingUrlendpointParameter() {
         val expectedTransformation =
-            "https://ik.imagekit.io/modified_imagekitid/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/modified_imagekitid/medium_cafe_B1iTdD0C.jpg?"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
@@ -63,7 +63,7 @@ class URLGenerationTests {
     @Test
     fun urlConstructionRemovalOfDoubleSlashesInUrlendpoint() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
@@ -78,7 +78,7 @@ class URLGenerationTests {
     @Test
     fun urlConstructionRemovalOfDoubleSlashesInPath() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
@@ -94,7 +94,7 @@ class URLGenerationTests {
     @Test
     fun urlConstructionNewTransformationParameter() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/tr:test-test/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:test-test/medium_cafe_B1iTdD0C.jpg?"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
@@ -110,7 +110,7 @@ class URLGenerationTests {
     @Test
     fun urlConstructionSdkVersionAsQueryParameter() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
@@ -125,7 +125,7 @@ class URLGenerationTests {
     @Test
     fun urlConstructionQueryTransformations() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=w-300,h-300"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?tr=w-300,h-300"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
@@ -142,7 +142,7 @@ class URLGenerationTests {
     @Test
     fun urlConstructionChainedTransformation() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/tr:h-300:rt-90/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:h-300:rt-90/medium_cafe_B1iTdD0C.jpg?"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
@@ -159,7 +159,7 @@ class URLGenerationTests {
     @Test
     fun urlConstructionSourceUrl() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
@@ -173,7 +173,7 @@ class URLGenerationTests {
     @Test
     fun urlConstructionCustomQueryParameter() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&x-test-header=Test"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?x-test-header=Test"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
@@ -188,7 +188,7 @@ class URLGenerationTests {
     @Test
     fun urlConstructionCustomQueryParameterWithExisting() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?x-test=Test&${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&x-test-header=Test"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?x-test=Test&x-test-header=Test"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
@@ -203,7 +203,7 @@ class URLGenerationTests {
     @Test
     fun urlConstructionSourceUrlWithPathTransforms() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=h-300,w-300:rt-90"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?tr=h-300,w-300:rt-90"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
@@ -221,7 +221,7 @@ class URLGenerationTests {
     @Test
     fun urlConstructionCustomQueryParameterWithTransforms() {
         val expectedTransformation =
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&x-test-header=Test&tr=h-300,w-300:rt-90"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?x-test-header=Test&tr=h-300,w-300:rt-90"
         val actualTransformation =
             ImageKit.getInstance()
                 .url(
