@@ -2,12 +2,16 @@ package com.imagekit.android.retrofit
 
 import android.util.Log
 import com.google.gson.Gson
+import com.imagekit.android.BuildConfig
 import com.imagekit.android.entity.SignatureResponse
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -23,11 +27,15 @@ object NetworkManager {
     }
 
     private fun createRetrofitObject() {
-        val logging = HttpLoggingInterceptor()
-        logging.level = HttpLoggingInterceptor.Level.BODY
         val okHttpClient = OkHttpClient.Builder()
-            .readTimeout(20, TimeUnit.SECONDS)
-            .addInterceptor(logging)
+            .readTimeout(0, TimeUnit.SECONDS)
+            .apply {
+                if (BuildConfig.DEBUG) {
+                    addInterceptor(HttpLoggingInterceptor()
+                        .setLevel(HttpLoggingInterceptor.Level.BODY)
+                    )
+                }
+            }
             .build()
         val retrofit = Retrofit.Builder()
             .baseUrl(baseURL)
