@@ -3,6 +3,7 @@ package com.imagekit.android
 import android.app.Application
 import android.content.SharedPreferences
 import com.imagekit.android.entity.Rotation
+import com.imagekit.android.entity.StreamingFormat
 import com.imagekit.android.entity.TransformationPosition
 import org.junit.Before
 import org.junit.Test
@@ -231,6 +232,44 @@ class URLGenerationTests {
                 .width(300)
                 .chainTransformation()
                 .rotation(Rotation.VALUE_90)
+                .addCustomQueryParameter("x-test-header", "Test")
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
+    fun urlConstructionForAdaptiveVideoStreamingWithDASH() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/sample_video.mp4/ik-master.mpd?x-test-header=Test&tr=sr-360_480_720_1080"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    src = "https://ik.imagekit.io/demo/sample_video.mp4",
+                )
+                .setAdaptiveStreaming(
+                    format = StreamingFormat.DASH,
+                    resolutions = listOf(360, 480, 720, 1080)
+                )
+                .addCustomQueryParameter("x-test-header", "Test")
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
+    fun urlConstructionForAdaptiveVideoStreamingWithHLS() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/sample_video.mp4/ik-master.m3u8?x-test-header=Test&tr=sr-360_480_720_1080"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    src = "https://ik.imagekit.io/demo/sample_video.mp4",
+                )
+                .setAdaptiveStreaming(
+                    format = StreamingFormat.HLS,
+                    resolutions = listOf(360, 480, 720, 1080)
+                )
                 .addCustomQueryParameter("x-test-header", "Test")
                 .create()
 
