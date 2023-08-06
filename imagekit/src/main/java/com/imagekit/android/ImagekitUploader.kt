@@ -358,7 +358,7 @@ class ImagekitUploader @Inject constructor(
         imageKitCallback
     )
 
-    private fun checkUploadPolicy(policy: UploadPolicy, imageKitCallback: ImageKitCallback): Boolean {
+    internal fun checkUploadPolicy(policy: UploadPolicy, imageKitCallback: ImageKitCallback): Boolean {
         if (policy.networkType == UploadPolicy.NetworkType.UNMETERED) {
             val service =
                 context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
