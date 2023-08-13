@@ -1,8 +1,9 @@
 package com.imagekit.android.retrofit
 
+import android.content.pm.ApplicationInfo
 import android.util.Log
 import com.google.gson.Gson
-import com.imagekit.android.BuildConfig
+import com.imagekit.android.ImageKit
 import com.imagekit.android.entity.SignatureResponse
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,18 +20,18 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
 
-object NetworkManager {
+internal object NetworkManager {
     private const val TAG = "Application Handler"
     private var apiInterface: ApiInterface? = null
     fun initialize() {
-        createRetrofitObject()
+//        createRetrofitObject()
     }
 
     private fun createRetrofitObject() {
         val okHttpClient = OkHttpClient.Builder()
             .readTimeout(0, TimeUnit.SECONDS)
             .apply {
-                if (BuildConfig.DEBUG) {
+                if (ImageKit.getInstance().context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0) {
                     addInterceptor(HttpLoggingInterceptor()
                         .setLevel(HttpLoggingInterceptor.Level.BODY)
                     )
@@ -46,8 +47,7 @@ object NetworkManager {
         apiInterface = retrofit.create(ApiInterface::class.java)
     }
 
-    private val baseURL: String
-        get() = "https://upload.imagekit.io/"
+    private var baseURL: String = "https://upload.imagekit.io/"
 
     fun getApiInterface(): ApiInterface {
         if (apiInterface == null) {
@@ -165,5 +165,9 @@ object NetworkManager {
 
     private fun getCommaSeparatedTagsFromTags(tags: Array<String>?): String? {
         return tags?.joinToString(",")
+    }
+
+    fun setBaseUrl(url: String) {
+        baseURL = url
     }
 }

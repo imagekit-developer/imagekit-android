@@ -4,6 +4,8 @@ plugins {
     id 'maven-publish'
 }
 
+group = 'com.github.imagekit-developer'
+
 android {
     namespace = "com.imagekit.android.fresco_extension"
     compileSdkVersion 33
