@@ -3,6 +3,7 @@ package com.imagekit.android
 import android.app.Application
 import android.content.SharedPreferences
 import com.imagekit.android.entity.Rotation
+import com.imagekit.android.entity.StreamingFormat
 import com.imagekit.android.entity.TransformationPosition
 import org.junit.Before
 import org.junit.Test
@@ -231,6 +232,94 @@ class URLGenerationTests {
                 .width(300)
                 .chainTransformation()
                 .rotation(Rotation.VALUE_90)
+                .addCustomQueryParameter("x-test-header", "Test")
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
+    fun urlConstructionCustomQueryParameterWithRawTransforms() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?x-test-header=Test&tr=h-300,w-300:rt-90"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    src = "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg"
+                )
+                .raw("h-300,w-300:rt-90")
+                .addCustomQueryParameter("x-test-header", "Test")
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
+    fun urlConstructionPathCustomQueryParameterWithRawTransformsQuery() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?x-test-header=Test&tr=h-300,w-300,rt-90"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    path = "medium_cafe_B1iTdD0C.jpg",
+                    transformationPosition = TransformationPosition.QUERY
+                )
+                .raw("h-300,w-300,rt-90")
+                .addCustomQueryParameter("x-test-header", "Test")
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
+    fun urlConstructionPathCustomQueryParameterWithRawTransformsPath() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/tr:h-300,w-300,rt-90/medium_cafe_B1iTdD0C.jpg?x-test-header=Test"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    path = "medium_cafe_B1iTdD0C.jpg",
+                    transformationPosition = TransformationPosition.PATH
+                    )
+                .raw("h-300,w-300,rt-90")
+                .addCustomQueryParameter("x-test-header", "Test")
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
+    fun urlConstructionForAdaptiveVideoStreamingWithDASH() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/sample_video.mp4/ik-master.mpd?x-test-header=Test&tr=sr-360_480_720_1080"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    src = "https://ik.imagekit.io/demo/sample_video.mp4",
+                )
+                .setAdaptiveStreaming(
+                    format = StreamingFormat.DASH,
+                    resolutions = listOf(360, 480, 720, 1080)
+                )
+                .addCustomQueryParameter("x-test-header", "Test")
+                .create()
+
+        assertEquals(expectedTransformation, actualTransformation)
+    }
+
+    @Test
+    fun urlConstructionForAdaptiveVideoStreamingWithHLS() {
+        val expectedTransformation =
+            "https://ik.imagekit.io/demo/sample_video.mp4/ik-master.m3u8?x-test-header=Test&tr=sr-360_480_720_1080"
+        val actualTransformation =
+            ImageKit.getInstance()
+                .url(
+                    src = "https://ik.imagekit.io/demo/sample_video.mp4",
+                )
+                .setAdaptiveStreaming(
+                    format = StreamingFormat.HLS,
+                    resolutions = listOf(360, 480, 720, 1080)
+                )
                 .addCustomQueryParameter("x-test-header", "Test")
                 .create()
 

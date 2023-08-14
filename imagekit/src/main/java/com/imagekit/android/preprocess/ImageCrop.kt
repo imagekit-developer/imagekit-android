@@ -12,7 +12,7 @@ internal class ImageCrop(
             source,
             topLeft.x,
             topLeft.y,
-            bottomRight.x - topLeft.x,
-            bottomRight.y - topLeft.y
+            bottomRight.x - topLeft.x + 1,
+            bottomRight.y - topLeft.y + 1
         )
 }

@@ -50,7 +50,7 @@ class VideoUploadPreprocessor private constructor(
         val targetAudio = MediaFormat().apply {
             setString(MediaFormat.KEY_MIME, audioTrack?.getString(MediaFormat.KEY_MIME))
             setInteger(MediaFormat.KEY_CHANNEL_COUNT, audioTrack?.getInteger(MediaFormat.KEY_CHANNEL_COUNT) ?: 2)
-            setInteger(MediaFormat.KEY_SAMPLE_RATE, audioTrack?.getInteger(MediaFormat.KEY_SAMPLE_RATE)!!)
+            setInteger(MediaFormat.KEY_SAMPLE_RATE, audioTrack?.getInteger(MediaFormat.KEY_SAMPLE_RATE) ?: 0)
             setInteger(MediaFormat.KEY_BIT_RATE, targetAudioBitrate)
         }
         MediaTransformer(context.applicationContext).transform(
