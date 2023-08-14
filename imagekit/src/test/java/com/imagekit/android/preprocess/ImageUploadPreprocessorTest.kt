@@ -14,8 +14,12 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import java.io.File
 import java.io.FileInputStream
+import java.lang.Math.abs
+import java.lang.Math.cos
+import java.lang.Math.sin
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.math.PI
 
 @RunWith(RobolectricTestRunner::class)
 class ImageUploadPreprocessorTest {
@@ -66,6 +70,20 @@ class ImageUploadPreprocessorTest {
                 )
             }
         }
+    }
+
+    @Test
+    fun imageRotationTest() {
+        val rotator = ImageRotation(angle = 60f)
+
+        val angleRadians = 60f * PI / 180f
+        val rotatedWidth = abs((testBitmap.width / 2.0 * cos(angleRadians)) - (testBitmap.height / 2.0 * sin(angleRadians))).toInt() * 2
+        val rotatedHeight = abs((testBitmap.width / 2.0 * sin(angleRadians)) + (testBitmap.height / 2.0 * cos(angleRadians))).toInt() * 2
+
+        val outputBitmap = rotator.process(testBitmap)
+
+        assertEquals(rotatedWidth, outputBitmap.width)
+        assertEquals(rotatedHeight, outputBitmap.height)
     }
 
     @Test
