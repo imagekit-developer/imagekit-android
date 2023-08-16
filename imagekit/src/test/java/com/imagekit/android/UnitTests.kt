@@ -2,6 +2,7 @@ package com.imagekit.android
 
 import android.app.Application
 import android.content.SharedPreferences
+import android.provider.ContactsContract.CommonDataKinds.Im
 import com.imagekit.android.entity.*
 import org.junit.Before
 import org.junit.Test
@@ -49,7 +50,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -60,7 +61,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -71,7 +72,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -83,7 +84,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:w-300/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:w-300/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -95,7 +96,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:h-300/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:h-300/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -107,7 +108,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:ar-2-3/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:ar-2-3/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -119,7 +120,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:c-maintain_ratio/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:c-maintain_ratio/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -131,7 +132,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:c-force/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:c-force/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -143,7 +144,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:c-at_least/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:c-at_least/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -155,7 +156,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:c-at_max/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:c-at_max/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -167,7 +168,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:cm-resize/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:cm-resize/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -179,7 +180,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:cm-extract/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:cm-extract/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -191,7 +192,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:cm-pad_extract/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:cm-pad_extract/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -203,7 +204,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:cm-pad_resize/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:cm-pad_resize/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -215,7 +216,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-center/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-center/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -227,7 +228,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-top/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-top/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -239,7 +240,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-left/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-left/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -251,7 +252,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-bottom/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-bottom/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -263,7 +264,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-right/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-right/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -275,7 +276,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-top_left/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-top_left/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -287,7 +288,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-top_right/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-top_right/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -299,7 +300,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-bottom_left/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-bottom_left/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -311,7 +312,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-bottom_right/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-bottom_right/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -323,7 +324,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:fo-auto/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:fo-auto/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -338,7 +339,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:w-300,h-300,cm-extract,x-100,y-300/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:w-300,h-300,cm-extract,x-100,y-300/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -350,7 +351,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:q-50/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:q-50/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -362,7 +363,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:f-auto/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:f-auto/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -374,7 +375,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:f-webp/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:f-webp/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -386,7 +387,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:f-jpg/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:f-jpg/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -398,7 +399,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:f-jpeg/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:f-jpeg/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -410,7 +411,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:f-png/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:f-png/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -422,7 +423,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:bl-50/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:bl-50/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -434,7 +435,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:e-grayscale/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:e-grayscale/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -446,7 +447,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:dpr-2.50/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:dpr-2.50/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -458,7 +459,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:n-test/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:n-test/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -470,7 +471,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:di-medium_cafe_B1iTdD0C.jpg/non_existent_image.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:di-medium_cafe_B1iTdD0C.jpg/non_existent_image.jpg"
         )
     }
 
@@ -482,7 +483,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:pr-true/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:pr-true/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -494,7 +495,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:lo-true/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:lo-true/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -506,7 +507,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:t-true/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:t-true/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -518,776 +519,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:t-50/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_image_logo_white_s_jwq_b_4_nfe_png() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_image_quality_50() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayImageQuality(quality = 50)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,oiq-50/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_image_cropping() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayImageCropping(cropMode = CropMode.EXTRACT)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,oic-extract/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_trimming() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayImageTrim(overlayImageTrim = false)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,oit-false/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_aspect_ratio_4_3() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayImageAspectRatio(width = 4, height = 3)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,oiar-4-3/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_image_background_000000() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayImageBackground(overlayImageBackground = "000000")
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,oibg-000000/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_image_border_3_000000() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayImageBorder(borderWidth = 3, borderColor = "000000")
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,oib-3_000000/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_image_dpr_3_0() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayImageDPR(dpr = 3.0F)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,oidpr-3.00/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_focus_center() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayFocus(overlayFocus = OverlayFocusType.CENTER)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,ofo-center/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_focus_top() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayFocus(overlayFocus = OverlayFocusType.TOP)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,ofo-top/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_focus_left() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayFocus(overlayFocus = OverlayFocusType.LEFT)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,ofo-left/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_focus_bottom() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayFocus(overlayFocus = OverlayFocusType.BOTTOM)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,ofo-bottom/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_focus_right() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayFocus(overlayFocus = OverlayFocusType.RIGHT)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,ofo-right/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_focus_top_left() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayFocus(overlayFocus = OverlayFocusType.TOP_LEFT)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,ofo-top_left/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_focus_top_right() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayFocus(overlayFocus = OverlayFocusType.TOP_RIGHT)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,ofo-top_right/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_focus_bottom_left() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayFocus(overlayFocus = OverlayFocusType.BOTTOM_LEFT)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,ofo-bottom_left/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_focus_bottom_right() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayFocus(overlayFocus = OverlayFocusType.BOTTOM_RIGHT)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,ofo-bottom_right/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_x_50() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayX(overlayX = 50)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,ox-50/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_y_50() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayY(overlayY = 50)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,oy-50/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_width_50() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayWidth(overlayWidth = 50)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,ow-50/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_height_50() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayImage(overlayImage = "logo-white_SJwqB4Nfe.png")
-            .overlayHeight(overlayHeight = 50)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:oi-logo-white_SJwqB4Nfe.png,oh-50/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_text_overlay_made_easy() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_text_encoded_b_3_zlcmxhe_s_bt_yw_rl_ig_vhc_3_k() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayTextEncoded(overlayTextEncoded = "b3ZlcmxheSBtYWRlIGVhc3k=")
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ote-b3ZlcmxheSBtYWRlIGVhc3k%3D/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_text_color_00_aaff_55() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextColor(overlayTextColor = "00AAFF55")
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otc-00AAFF55/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_text_width_200_px() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontSize(overlayTextFontSize = 45)
-            .overlayTextWidth(width = 200)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,ots-45,otw-200/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_text_padding_40_px() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontSize(overlayTextFontSize = 45)
-            .overlayTextWidth(width = 200)
-            .overlayTextPadding(overlayTextPadding = 40)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,ots-45,otw-200,otp-40/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_text_padding_25_px_75_px() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontSize(overlayTextFontSize = 45)
-            .overlayTextWidth(width = 200)
-            .overlayTextPadding(verticalPadding = 25, horizontalPadding = 75)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,ots-45,otw-200,otp-25_75/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_text_padding_25_px_75_px_60_px() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontSize(overlayTextFontSize = 45)
-            .overlayTextWidth(width = 200)
-            .overlayTextPadding(topPadding = 25, horizontalPadding = 75, bottomPadding = 60)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,ots-45,otw-200,otp-25_75_60/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_text_padding_25_px_50_px_75_px_100_px() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontSize(overlayTextFontSize = 45)
-            .overlayTextWidth(width = 200)
-            .overlayTextPadding(
-                topPadding = 25,
-                rightPadding = 50,
-                bottomPadding = 75,
-                leftPadding = 100
-            )
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,ots-45,otw-200,otp-25_50_75_100/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_text_inner_alignment() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontSize(overlayTextFontSize = 45)
-            .overlayTextWidth(width = 200)
-            .overlayTextInnerAlignment(overlayTextInnerAlignment = OverlayTextInnerAlignment.RIGHT)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,ots-45,otw-200,otia-right/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_text_background_color_00_aaff_55() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextBackground(overlayTextColor = "00AAFF55")
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otbg-00AAFF55/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_circle() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayBackground(overlayBackground = "FFFFFF80")
-            .overlayRadius(radius = 150)
-            .overlayHeight(overlayHeight = 300)
-            .overlayWidth(overlayWidth = 300)
-            .overlayFocus(overlayFocus = OverlayFocusType.CENTER)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:obg-FFFFFF80,or-150,oh-300,ow-300,ofo-center/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_text_transparency_50() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextTransparency(overlayTextTransparency = 50)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,oa-50/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_family_abril_fat_face() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontFamily(overlayTextFontFamily = OverlayTextFont.ABRIL_FAT_FACE)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otf-AbrilFatFace/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_family_amarnath() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontFamily(overlayTextFontFamily = OverlayTextFont.AMARANTH)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otf-Amarnath/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_family_arvo() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontFamily(overlayTextFontFamily = OverlayTextFont.ARVO)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otf-Arvo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_family_audiowide() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontFamily(overlayTextFontFamily = OverlayTextFont.AUDIOWIDE)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otf-Audiowide/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_family_exo() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontFamily(overlayTextFontFamily = OverlayTextFont.EXO)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otf-exo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_family_fredoka_one() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontFamily(overlayTextFontFamily = OverlayTextFont.FREDOKA_ONE)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otf-FredokaOne/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_family_kanit() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontFamily(overlayTextFontFamily = OverlayTextFont.KANIT)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otf-Kanit/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_family_lato() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontFamily(overlayTextFontFamily = OverlayTextFont.LATO)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otf-Lato/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_family_lobster() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontFamily(overlayTextFontFamily = OverlayTextFont.LOBSTER)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otf-Lobster/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_family_lora() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontFamily(overlayTextFontFamily = OverlayTextFont.LORA)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otf-Lora/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_family_monoton() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontFamily(overlayTextFontFamily = OverlayTextFont.MONOTON)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otf-Monoton/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_family_montserrat() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontFamily(overlayTextFontFamily = OverlayTextFont.MONTSERRAT)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otf-Montserrat/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_family_pt_mono() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontFamily(overlayTextFontFamily = OverlayTextFont.PT_MONO)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otf-PT_Mono/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_family_pt_serif() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontFamily(overlayTextFontFamily = OverlayTextFont.PT_SERIF)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otf-PT_Serif/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_family_open_sans() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontFamily(overlayTextFontFamily = OverlayTextFont.OPEN_SANS)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otf-OpenSans/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_family_roboto() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontFamily(overlayTextFontFamily = OverlayTextFont.ROBOTO)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otf-Roboto/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_family_stag_old_standard() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontFamily(overlayTextFontFamily = OverlayTextFont.STAG_OLD_STANDARD)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otf-stagOldStandard/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_family_ubuntu() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontFamily(overlayTextFontFamily = OverlayTextFont.UBUNTU)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otf-Ubuntu/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_family_vollkorn() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontFamily(overlayTextFontFamily = OverlayTextFont.VOLLKORN)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,otf-Vollkorn/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_font_size_45() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextFontSize(overlayTextFontSize = 45)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,ots-45/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_text_typography_bold() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextTypography(overlayTextTypography = OverlayTextTypography.BOLD)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,ott-b/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_text_typography_italics() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextTypography(overlayTextTypography = OverlayTextTypography.ITALICS)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,ott-i/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_text_typography_bold_italics() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayTextTypography(overlayTextTypography = OverlayTextTypography.BOLD_ITALICS)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,ott-bi/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_text_alpha_5() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayText(overlayText = "overlay made easy")
-            .overlayAlpha(overlayAlpha = 5)
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:ot-overlay+made+easy,oa-5/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
-        )
-    }
-
-    @Test
-    fun transformations_overlay_background_00_aaff_55() {
-        val actual = ImageKit.getInstance()
-            .url(path = "medium_cafe_B1iTdD0C.jpg")
-            .overlayBackground(overlayBackground = "00AAFF55")
-            .create()
-        assertEquals(
-            actual,
-            "https://ik.imagekit.io/demo/tr:obg-00AAFF55/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:t-50/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -1299,7 +531,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:cp-true/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:cp-true/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -1311,7 +543,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:md-true/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:md-true/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -1323,7 +555,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:rt-auto/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:rt-auto/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -1335,7 +567,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:rt-0/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:rt-0/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -1347,7 +579,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:rt-90/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:rt-90/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -1359,7 +591,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:rt-180/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:rt-180/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -1371,7 +603,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:rt-270/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:rt-270/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -1383,7 +615,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:rt-360/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:rt-360/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -1395,7 +627,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:r-5/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:r-5/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -1407,7 +639,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:r-max/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:r-max/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -1419,7 +651,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:bg-00AAFF55/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:bg-00AAFF55/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -1431,7 +663,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:b-5_00AAFF55/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:b-5_00AAFF55/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -1443,7 +675,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:e-contrast/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:e-contrast/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -1455,7 +687,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:e-sharpen-5/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:e-sharpen-5/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -1467,7 +699,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:e-usm-5.00-5.00-5.00-5.00/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:e-usm-5.00-5.00-5.00-5.00/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -1481,7 +713,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:h-300:rt-90/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:h-300:rt-90/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -1493,7 +725,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:w-300/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:w-300/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -1508,7 +740,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/tr:h-300,w-300:rt-90/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}"
+            "https://ik.imagekit.io/demo/tr:h-300,w-300:rt-90/medium_cafe_B1iTdD0C.jpg"
         )
     }
 
@@ -1527,7 +759,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=h-300,w-300:rt-90"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?tr=h-300,w-300:rt-90"
         )
     }
 
@@ -1542,7 +774,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=h-300,w-300:rt-90"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?tr=h-300,w-300:rt-90"
         )
     }
 
@@ -1557,7 +789,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=h-300,w-300:rt-90"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?tr=h-300,w-300:rt-90"
         )
     }
 
@@ -1572,7 +804,7 @@ class UnitTests {
             .create()
         assertEquals(
             actual,
-            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?${ImageKit.IK_VERSION_KEY}=android-${BuildConfig.API_VERSION}&tr=h-300,w-300:rt-90"
+            "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg?tr=h-300,w-300:rt-90"
         )
     }
 

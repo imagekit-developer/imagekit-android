@@ -7,21 +7,23 @@ import com.imagekit.android.ImageKit
 import com.imagekit.android.entity.CropMode
 import com.imagekit.android.entity.Rotation
 import com.imagekit.android.entity.TransformationPosition
+import com.imagekit.android.sample.databinding.ActivityFetchImageBinding
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_fetch_image.*
 
 class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
+    private lateinit var binding: ActivityFetchImageBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_fetch_image)
+        binding = ActivityFetchImageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        btTran1.setOnClickListener(this)
-        btTran2.setOnClickListener(this)
-        btTran3.setOnClickListener(this)
-        btTran4.setOnClickListener(this)
-        btTran5.setOnClickListener(this)
-        btTran6.setOnClickListener(this)
+        binding.btTran2.setOnClickListener(this)
+        binding.btTran1.setOnClickListener(this)
+        binding.btTran3.setOnClickListener(this)
+        binding.btTran4.setOnClickListener(this)
+        binding.btTran5.setOnClickListener(this)
+        binding.btTran6.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -53,9 +55,6 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                             src = "https://ik.imagekit.io/demo/medium_cafe_B1iTdD0C.jpg",
                             transformationPosition = TransformationPosition.PATH
                         )
-                        .overlayImage("logo-white_SJwqB4Nfe.png")
-                        .overlayX(10)
-                        .overlayY(20)
                         .create()
 
                 }
@@ -70,11 +69,6 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                     ImageKit.getInstance()
                         .url(src = "https://ik.imagekit.io/demo/img/plant.jpeg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20")
                         .addCustomTransformation("w", "400")
-                        .overlayText("Hand with a green plant")
-                        .overlayTextColor("264120")
-                        .overlayTextFontSize(30)
-                        .overlayX(10)
-                        .overlayY(10)
                         .create()
                 }
                 R.id.btTran6 -> {
@@ -84,7 +78,12 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
                         .width(400)
                         .height(300)
                         .chainTransformation()
-                        .rotation(Rotation.VALUE_90)
+                        .setResponsive(
+                            view = binding.ivImage,
+                            minSize = 200,
+                            maxSize = 1600,
+                            step = 100
+                        )
                         .create()
                 }
                 else ->
@@ -95,10 +94,10 @@ class FetchImageActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun showImage(imagePath: String) {
-        tvConstructedUrl.text = "Image Url: $imagePath"
+        binding.tvConstructedUrl.text = "Image Url: $imagePath"
 
         Picasso.get()
             .load(imagePath)
-            .into(ivImage)
+            .into(binding.ivImage)
     }
 }

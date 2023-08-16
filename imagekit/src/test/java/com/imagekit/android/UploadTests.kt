@@ -5,9 +5,9 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import com.imagekit.android.entity.TransformationPosition
 import com.imagekit.android.entity.UploadError
+import com.imagekit.android.entity.UploadPolicy
 import com.imagekit.android.entity.UploadResponse
 import com.imagekit.android.retrofit.ApiInterface
-import com.imagekit.android.retrofit.BuildVersionQueryInterceptor
 import com.imagekit.android.retrofit.NetworkManager
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -107,9 +107,7 @@ class UploadTests {
             context = mockContext,
             publicKey = clientPublicKey,
             urlEndpoint = urlEndpoint,
-            transformationPosition = TransformationPosition.PATH,
-            authenticationEndpoint = mockWebServer.url("/temp/client-side-upload-signature")
-                .toString()
+            transformationPosition = TransformationPosition.PATH
         )
     }
 
@@ -118,45 +116,6 @@ class UploadTests {
         mockWebServer.shutdown()
     }
 
-
-    @Test
-    fun emptyAuthUrl() {
-        val future = CompletableFuture<String>()
-
-        val mockSignatureResponse = MockResponse().setResponseCode(HttpURLConnection.HTTP_OK)
-            .setBody("{\"token\": \"Token\", \"signature\": \"Signature\"}")
-        mockWebServer.enqueue(mockSignatureResponse)
-
-        Mockito.`when`<String>(
-            mockPrefs!!.getString(
-                ArgumentMatchers.eq("Client Authentication Endpoint"),
-                ArgumentMatchers.anyString()
-            )
-        ).thenReturn("")
-
-        ImageKit.getInstance().uploader().upload(
-            file = "http://ik.imagekit.io/demo/img/default-image.jpg",
-            fileName = "default-image.jpg",
-            imageKitCallback = object : ImageKitCallback {
-
-                override fun onSuccess(uploadResponse: UploadResponse) {
-                    Assert.fail("Should not succeed")
-                }
-
-                override fun onError(uploadError: UploadError) {
-                    assertEquals(
-                        uploadError.message,
-                        "Upload failed! Authentication endpoint is missing!"
-                    )
-                    assertEquals(uploadError.exception, true)
-                    assertEquals(uploadError.statusCode, "SERVER_ERROR")
-                    assertEquals(uploadError.statusNumber, 1500)
-                    future.complete("DONE")
-                }
-
-            })
-        future.get()
-    }
 
     @Test
     fun uploadFile() {
@@ -174,8 +133,9 @@ class UploadTests {
 
         ImageKit.getInstance().uploader().upload(
             file = file,
+            token = "",
             fileName = "sample.pdf",
-            useUniqueFilename = true,
+            useUniqueFileName = true,
             tags = arrayOf("test"),
             folder = "/tmp/test",
             imageKitCallback = object : ImageKitCallback {
@@ -218,6 +178,7 @@ class UploadTests {
 
         ImageKit.getInstance().uploader().upload(
             file = file,
+            token = "",
             fileName = "sample.pdf",
             imageKitCallback = object : ImageKitCallback {
 
@@ -256,8 +217,9 @@ class UploadTests {
 
         ImageKit.getInstance().uploader().upload(
             file = file,
+            token = "",
             fileName = "sample.pdf",
-            useUniqueFilename = true,
+            useUniqueFileName = true,
             tags = arrayOf("test"),
             folder = "/tmp/test",
             imageKitCallback = object : ImageKitCallback {
@@ -294,8 +256,9 @@ class UploadTests {
 
         ImageKit.getInstance().uploader().upload(
             file = "http://ik.imagekit.io/demo/img/default-image.jpg",
+            token = "",
             fileName = "default-image-test.jpg",
-            useUniqueFilename = true,
+            useUniqueFileName = true,
             tags = arrayOf("test"),
             folder = "/tmp/test",
             customCoordinates = "0,0,200,200",
@@ -346,7 +309,9 @@ class UploadTests {
 
         ImageKit.getInstance().uploader().upload(
             file = "http://ik.imagekit.io/demo/img/default-image.jpg",
+            token = "",
             fileName = "default-image-test.jpg",
+            policy = UploadPolicy.defaultPolicy(),
             imageKitCallback = object : ImageKitCallback {
 
                 override fun onSuccess(uploadResponse: UploadResponse) {
@@ -386,8 +351,9 @@ class UploadTests {
 
         ImageKit.getInstance().uploader().upload(
             file = "http://ik.imagekit.io/demo/img/default-image.jpg",
+            token = "",
             fileName = "default-image-test.jpg",
-            useUniqueFilename = true,
+            useUniqueFileName = true,
             tags = arrayOf("test"),
             folder = "/tmp/test",
             imageKitCallback = object : ImageKitCallback {
@@ -424,8 +390,9 @@ class UploadTests {
 
         ImageKit.getInstance().uploader().upload(
             file = bitmap,
+            token = "",
             fileName = "default-image-test.jpg",
-            useUniqueFilename = true,
+            useUniqueFileName = true,
             tags = arrayOf("test"),
             folder = "/tmp/test",
             imageKitCallback = object : ImageKitCallback {
@@ -470,6 +437,7 @@ class UploadTests {
 
         ImageKit.getInstance().uploader().upload(
             file = bitmap,
+            token = "",
             fileName = "sample.jpg",
             imageKitCallback = object : ImageKitCallback {
 
@@ -506,7 +474,6 @@ class UploadTests {
 
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(logging)
-            .addInterceptor(BuildVersionQueryInterceptor())
             .build()
 
         val url: String = mockWebServer.url("/").toString()
