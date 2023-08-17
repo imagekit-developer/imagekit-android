@@ -8,12 +8,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Twitter Follow](https://img.shields.io/twitter/follow/imagekitio?label=Follow&style=social)](https://twitter.com/imagekitio)
 
-Android SDK for [ImageKit.io](https://imagekit.io) which implements client-side upload and URL generation for use inside an Android application.
+Android SDK for [ImageKit.io](https://imagekit.io) implements client-side upload and URL generation for use inside an Android application.
 
-ImageKit is a complete image optimization and transformation solution that comes with an [image CDN](https://imagekit.io/features/imagekit-infrastructure) and media storage. It can be integrated with your existing infrastructure - storages like AWS S3, web servers, your CDN and custom domain names, allowing you to deliver optimized images in minutes with minimal code changes.
-
-ImageKit Android SDK allows you to use real-time [image resizing](https://docs.imagekit.io/features/image-transformations), [optimization](https://docs.imagekit.io/features/image-optimization), and [file uploading](https://docs.imagekit.io/api-reference/upload-file-api/client-side-file-upload) in the client-side.
-
+ImageKit is a complete media storage, optimization, and transformation solution that comes with an image and video CDN. It can be integrated with your existing infrastructure - storage like AWS S3, web servers, your CDN, and custom domain names, allowing you to deliver optimized images in minutes with minimal code changes.
 
 ## Table of contents
 * [Installation](#installation)
@@ -63,13 +60,13 @@ implementation 'com.github.imagekit-developer:imagekit-android:<VERSION>'
 ## Usage
 
 ### Initialization
-`urlEndpoint` is the required parameter. You can get the value of URL-endpoint from your ImageKit dashboard - https://imagekit.io/dashboard#url-endpoints.
+`urlEndpoint` is the required parameter. You can get the value of the URL-endpoint from your ImageKit dashboard - https://imagekit.io/dashboard#url-endpoints.
 
 `transformationPosition` is optional. The default value for this parameter is `TransformationPosition.PATH`. Acceptable values are `TransformationPosition.PATH` & `TransformationPosition.QUERY`.
 
 `defaultUploadPolicy` is optional and only needed if you want to use the SDK for client-side file upload. This sets the default constraints for all the upload requests.
 
-_Note: Do not include your Private Key in any client side code, including this SDK or its initialization._
+_Note: Do not include your Private Key in any client-side code, including this SDK or its initialization._
 
 ```kotlin
 // In kotlin
@@ -302,13 +299,13 @@ ImageKit.Companion.init(
 > Note: Do not include your Private Key in any client-side code.
 
 ## Constructing Image URLs
-The `ImageKitURLConstructor` is used to create a url that can be used for rendering and manipulating images in real-time. `ImageKitURLConstructor` consists of functions that can be chained together to perform transformations.
+The `ImageKitURLConstructor` is used to create a url that can be used for rendering and manipulating images in real time. `ImageKitURLConstructor` consists of functions that can be chained together to perform transformations.
 
 `ImageKitURLConstructor` can be initialized by calling `ImageKit.getInstance().url(...)` with a set of parameters defined below.
 
 | Parameter              | Type                                                                                             | Description                                                                                                                                                                                                                                                                                                                                |
 |:-----------------------|:-------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| urlEndpoint            | String                                                                                           | Optional. The base URL to be appended before the path of the image. If not specified, the URL-endpoint specified in the parent `IKContext` component is used. For example, https://ik.imagekit.io/your_imagekit_id/endpoint/                                                                                                               |
+| urlEndpoint            | String                                                                                           | Optional. The base URL to be appended before the path of the image. If not specified, the URL endpoint specified in the parent `IKContext` component is used. For example, https://ik.imagekit.io/your_imagekit_id/endpoint/                                                                                                               |
 | path                   | String                                                                                           | Conditional. This is the path at which the image exists. For example, `/path/to/image.jpg`. Either the `path` or `src` parameter needs to be specified for URL generation.                                                                                                                                                                 |
 | src                    | String                                                                                           | Conditional. This is the complete URL of an image already mapped to ImageKit. For example, `https://ik.imagekit.io/your_imagekit_id/endpoint/path/to/image.jpg`. Either the `path` or `src` parameter needs to be specified for URL generation.                                                                                            |
 | transformationPosition | [TransformationPosition](/imagekit/src/main/java/com/imagekit/android/ImagekitUrlConstructor.kt) | Optional. The default value is `.PATH` that places the transformation string as a URL path parameter. It can also be specified as `.QUERY`, which adds the transformation string as the URL's query parameter i.e.`tr`. If you use `src` parameter to create the URL, then the transformation string is always added as a query parameter. |
@@ -599,7 +596,7 @@ val preprocessor = ImagePreprocessor.Builder()
 ### Video preprocessing
 The `VideoPreprocessor` class encapsulates a set of methods to apply certain transformations to a video before uploading. This will create a copy of the selected video, which will be transformed as per the given parameters before uploading.
 
-`VideoPreprocessor.Builder` class is responsible for building the VideoPreprocess instances. This class provides following methods to access and modify the policy parameters:
+`VideoPreprocessor.Builder` class is responsible for building the VideoPreprocess instances. This class provides the following methods to access and modify the policy parameters:
 
 | Parameter                            | Type                      | Description                                          |
 |:-------------------------------------|:--------------------------|:-----------------------------------------------------|
@@ -760,7 +757,7 @@ IKFrescoExtension.buildWithTarget(
 ```
 
 ## Support
-For any feedback or to report any issues or general implementation support please reach out to [support@imagekit.io](mailto:support@imagekit.io)
+For any feedback or to report any issues or general implementation support, please reach out to [support@imagekit.io](mailto:support@imagekit.io)
 
 ## Links
 * [Documentation](https://docs.imagekit.io)
