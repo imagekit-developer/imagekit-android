@@ -4,7 +4,6 @@ import android.content.pm.ApplicationInfo
 import android.util.Log
 import com.google.gson.Gson
 import com.imagekit.android.ImageKit
-import com.imagekit.android.entity.SignatureResponse
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -55,16 +54,6 @@ internal object NetworkManager {
             createRetrofitObject()
         }
         return apiInterface!!
-    }
-
-    fun getSignature(
-        endPoint: String,
-        expire: String
-    ): Single<SignatureResponse> {
-        return getApiInterface()
-            .getSignature(endPoint, expire)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
     }
 
     fun getFileUploadCall(

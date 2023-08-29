@@ -1,6 +1,5 @@
 package com.imagekit.android.retrofit
 
-import com.imagekit.android.entity.SignatureResponse
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
@@ -28,9 +27,4 @@ interface ApiInterface {
         @Part customMetadata: MultipartBody.Part?,
     ): Single<ResponseBody>
 
-    @GET
-    fun getSignature(
-        @Url url: String,
-        @Query("expire") expire: String
-    ): Single<SignatureResponse>
 }

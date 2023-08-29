@@ -54,7 +54,7 @@ allprojects {
 
 In the module build.gradle file, add:
 ```gradle 
-implementation 'com.github.imagekit-developer:imagekit-android:<VERSION>'
+implementation 'com.github.imagekit-developer.imagekit-android:imagekit-android:<VERSION>'
 ```
 
 ## Usage
@@ -136,7 +136,7 @@ ImageKit.Companion.getInstance()
 // https://ik.imagekit.io/your_imagekit_id/medium_cafe_B1iTdD0C.jpg?tr=oi-logo-white_SJwqB4Nfe.png,ox-10,oy-20
 ImageKit.getInstance()
     .url(
-        src = https://ik.imagekit.io/your_imagekit_id/medium_cafe_B1iTdD0C.jpg",
+        src = "https://ik.imagekit.io/your_imagekit_id/medium_cafe_B1iTdD0C.jpg",
         transformationPosition = TransformationPosition.PATH
     )
     .create()
@@ -532,7 +532,7 @@ ImageKit.getInstance().uploader().upload(
         .requireNetworkType(UploadPolicy.UploadPolicy.NetworkType.UNMETERED)
         .setMaxRetries(5)
         .build(),
-    preprocessor = ImagePreprocess.Builder()
+    preprocessor = ImageUploadPreprocessor.Builder()
         .limit(512, 512)
         .rotate(90f)
         .build(),
@@ -574,41 +574,41 @@ This code snippet will set the policy to allow the upload request to be placed o
 
 ## Upload preprocessing
 ### Image preprocessing
-The `ImagePreprocessor` class encapsulates a set of methods to apply certain transformations to an image before uploading. This will create a copy of the selected image, which will be transformed as per the given parameters before uploading.
+The `ImageUploadPreprocessor` class encapsulates a set of methods to apply certain transformations to an image before uploading. This will create a copy of the selected image, which will be transformed as per the given parameters before uploading.
 
-`ImagePreprocessor.Builder` class is responsible for building the ImagePreprocess instances. This class provides following methods to access and modify the policy parameters:
+`ImageUploadPreprocessor.Builder` class is responsible for building the ImageUploadPreprocessor instances. This class provides following methods to access and modify the policy parameters:
 
 | Parameter                                                                                                               | Type                      | Description                                                              |
 |:------------------------------------------------------------------------------------------------------------------------|:--------------------------|:-------------------------------------------------------------------------|
-| limit(width: Int, height: Int)                                                                                          | ImagePreprocessor.Builder | Specifies the maximum width and height of the image                      |
-| crop(p1: Point, p2: Point)                                                                                              | ImagePreprocessor.Builder | Specifies the two points on the diagonal of the rectangle to be cropped. |
-| format(format: [Bitmap.CompressFormat](https://developer.android.com/reference/android/graphics/Bitmap.CompressFormat)) | ImagePreprocessor.Builder | Specify the target image format.                                         |
-| rotate(degrees: Float)                                                                                                  | ImagePreprocessor.Builder | Specify the rotation angle of the target image.                          |
+| limit(width: Int, height: Int)                                                                                          | ImageUploadPreprocessor.Builder | Specifies the maximum width and height of the image                      |
+| crop(p1: Point, p2: Point)                                                                                              | ImageUploadPreprocessor.Builder | Specifies the two points on the diagonal of the rectangle to be cropped. |
+| format(format: [Bitmap.CompressFormat](https://developer.android.com/reference/android/graphics/Bitmap.CompressFormat)) | ImageUploadPreprocessor.Builder | Specify the target image format.                                         |
+| rotate(degrees: Float)                                                                                                  | ImageUploadPreprocessor.Builder | Specify the rotation angle of the target image.                          |
 
 Example code
 ```kotlin
-val preprocessor = ImagePreprocessor.Builder()
+val preprocessor = ImageUploadPreprocessor.Builder()
     .limit(1280, 720)
     .format(Bitmap.CompressFormat.WEBP)
     .rotate(45f)
     .build()
 ```
 ### Video preprocessing
-The `VideoPreprocessor` class encapsulates a set of methods to apply certain transformations to a video before uploading. This will create a copy of the selected video, which will be transformed as per the given parameters before uploading.
+The `VideoUploadPreprocessor` class encapsulates a set of methods to apply certain transformations to a video before uploading. This will create a copy of the selected video, which will be transformed as per the given parameters before uploading.
 
-`VideoPreprocessor.Builder` class is responsible for building the VideoPreprocess instances. This class provides the following methods to access and modify the policy parameters:
+`VideoUploadPreprocessor.Builder` class is responsible for building the VideoUploadPreprocessor instances. This class provides the following methods to access and modify the policy parameters:
 
 | Parameter                            | Type                      | Description                                          |
 |:-------------------------------------|:--------------------------|:-----------------------------------------------------|
-| limit(width: Int, height: Int)       | VideoPreprocessor.Builder | Specifies the maximum width and height of the video. |
-| frameRate(frameRateValue: Int)       | VideoPreprocessor.Builder | Specifies the target frame rate of the video.        |
-| keyFramesInterval(interval: Int)     | VideoPreprocessor.Builder | Specify the target keyframes interval of video.      |
-| targetAudioBitrateKbps(bitrate: Int) | VideoPreprocessor.Builder | Specify the target audio bitrate of the video.       |
-| targetVideoBitrateKbps(bitrate: Int) | VideoPreprocessor.Builder | Specify the target video bitrate of the video.       |
+| limit(width: Int, height: Int)       | VideoUploadPreprocessor.Builder | Specifies the maximum width and height of the video. |
+| frameRate(frameRateValue: Int)       | VideoUploadPreprocessor.Builder | Specifies the target frame rate of the video.        |
+| keyFramesInterval(interval: Int)     | VideoUploadPreprocessor.Builder | Specify the target keyframes interval of video.      |
+| targetAudioBitrateKbps(bitrate: Int) | VideoUploadPreprocessor.Builder | Specify the target audio bitrate of the video.       |
+| targetVideoBitrateKbps(bitrate: Int) | VideoUploadPreprocessor.Builder | Specify the target video bitrate of the video.       |
 
 Example code
 ```kotlin
-val preprocessor = VideoPreprocessor.Builder()
+val preprocessor = VideoUploadPreprocessor.Builder()
     .frameRate(90)      
     .targetAudioBitrateKbps(320)
     .targetVideoBitrateKbps(480)
@@ -620,7 +620,7 @@ val preprocessor = VideoPreprocessor.Builder()
 ### Glide
 In the module build.gradle file, add:
 ```gradle 
-implementation 'com.github.imagekit-developer:imagekit-glide-extension:1.0.0'
+implementation 'com.github.imagekit-developer.imagekit-android:imagekit-glide-extension:<VERSION>'
 ```
 Then add the `createWithGlide()` extension function to the ImageKit URL constructor chain to get Glide's `RequestBuilder` instance to load into any target.
 The `placeholderImage` and `errorImage` parameters can be optionally set to pass the drawables to show for placeholder and error states respectively.
@@ -653,7 +653,7 @@ IKGlideExtension.createWithGlide(
 ### Picasso
 In the module build.gradle file, add:
 ```gradle 
-implementation 'com.github.imagekit-developer:imagekit-picasso-extension:1.0.0'
+implementation 'com.github.imagekit-developer.imagekit-android:imagekit-picasso-extension:<VERSION>'
 ```
 Then add the `createWithPicasso()` extension function to the ImageKit URL constructor chain to get Picasso's `RequestCreator` instance to load into any target.
 The `placeholderImage` and `errorImage` parameters can be optionally set to pass the drawables to show for placeholder and error states respectively.
@@ -686,7 +686,7 @@ IKPicassoExtension.createWithPicasso(
 ### Coil
 In the module build.gradle file, add:
 ```gradle 
-implementation 'com.github.imagekit-developer:imagekit-coil-extension:1.0.0'
+implementation 'com.github.imagekit-developer.imagekit-android:imagekit-coil-extension:<VERSION>'
 ```
 Then add the `createWithCoil()` extension function to the ImageKit URL constructor chain to get Coil's `ImageRequest.Builder` instance to load into any target, which can be enqueued with an `ImageLoader` instance.
 The `placeholderImage` and `errorImage` parameters can be optionally set to pass the drawables to show for placeholder and error states respectively.
@@ -726,7 +726,7 @@ Coil.imageLoader(context)
 ### Fresco
 In the module build.gradle file, add:
 ```gradle 
-implementation 'com.github.imagekit-developer:imagekit-fresco-extension:1.0.0'
+implementation 'com.github.imagekit-developer.imagekit-android:imagekit-fresco-extension:<VERSION>'
 ```
 Then add the `createWithFresco()` extension function to the ImageKit URL constructor chain to get Fresco's `ImageRequest` instance to load into any target, which can be loaded into the controller of target `DraweeView` provided by Fresco by calling the `buildWithTarget()` method.
 The `postprocessor` parameter can be optionally set to pass a `Postprocessor` for [post-precessing of images](https://frescolib.org/docs/modifying-image.html).
